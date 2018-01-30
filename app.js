@@ -12,6 +12,7 @@
 var passport = require("passport");
 var express = require("express");
 var bodyParser = require("body-parser");
+const PORT = process.env.PORT || 8888
 
 var app = express();
 
@@ -29,6 +30,6 @@ app.use(bodyParser.json())
 //routes
 require('./routes/main')(app, passport, jwtOptions);
 
-app.listen(8888, function(){
-    console.log("Server is waiting for requests...");
+app.listen(PORT, function(){
+    console.log(`Server is waiting for requests on port ${PORT}...`);
 });
