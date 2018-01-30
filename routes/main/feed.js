@@ -64,6 +64,9 @@ module.exports = function(app, passport) {
       }) 
     });      
   });
+  app.get("/feed/test",  function(req, res){  
+    res.json({});     
+  });
 };
 
 // app.get("/feed/saveimage",  function(req, res){  
