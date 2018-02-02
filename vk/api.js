@@ -51,7 +51,7 @@ var getImages = function () {
                 try{
                     body = JSON.parse(chunk);
                 }
-                catch(err) { continue; }
+                catch(err) { return; }
                 if(body && body.response && body.response[1].media && body.response[1].media.thumb_src){
                     path = body.response[1].media.thumb_src;
                     https.get(path, function (res) {
