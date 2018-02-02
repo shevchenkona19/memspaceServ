@@ -48,14 +48,17 @@ var getImages = function () {
         https.get(path, function (res) {
             var body = '';
             res.on('data', function (chunk) {
-                body = JSON.parse(chunk);
-                
+                try{
+                    body = JSON.parse(chunk);
+                }
+                catch { continue; }
                 if(body && body.response && body.response[1].media && body.response[1].media.thumb_src){
                     path = body.response[1].media.thumb_src;
                     https.get(path, function (res) {
                         res.on('data', function (chunk) {
                             //console.log(chunk);
-                            db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [chunk, key], (err, data) => {                       
+                            db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [chunk, key], (err, data) => { 
+                                                      
                             }) 
                         });
                     });
@@ -63,6 +66,7 @@ var getImages = function () {
             });
         });
     }   
+    res.JSON({ message: "200"});
     // var proxy = process.env.HTTP_PROXY;
     // var path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-154095846&count=${process.env.POSTS_COUNT}&offset=0`;
     // // HTTPS endpoint for the proxy to connect to
