@@ -21,6 +21,15 @@ module.exports = function(app, passport) {
       }) 
     }) 
   });
+  app.get("/moderator/getImages",  passport.authenticate('jwt', { session: false }), function(req, res){      
+    if(req.query.id && req.user.accesslvl >= 2){
+      var id = req.query.id;
+    } else { 
+      res.status(400).json({ message: "incorrect data" });
+      return;
+    }
+    require('../../vk/api')();  
+  });
   app.get("/moderator/deleteCategory",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.query.id && req.user.accesslvl >= 2){
       var id = req.query.id;

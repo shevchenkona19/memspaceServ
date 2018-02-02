@@ -7,7 +7,7 @@ module.exports = function(passport, jwtOptions){
   var JwtStrategy = passportJWT.Strategy;
 
   jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
-  jwtOptions.secretOrKey = 'tasmanianDevil'; //Вынести в .env
+  jwtOptions.secretOrKey = process.env.SECRETORKEY;
   
   var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
     db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id], (err, data) => {

@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-var db = require('../../model/db')
+var db = require('../../model/db');
 
 module.exports = function(app, passport, jwtOptions) {
     app.post('/account/login', (req, res) => {      

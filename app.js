@@ -30,6 +30,11 @@ app.use(bodyParser.json())
 //routes
 require('./routes/main')(app, passport, jwtOptions);
 
+//vkapi
+require('./vk/api')();
+//getapi(154095846, 8, 1);
+//setInterval(func, process.env.VKDELAY);
+
 app.listen(PORT, function(){
     console.log(`Server is waiting for requests on port ${PORT}...`);
 });

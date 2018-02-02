@@ -1,5 +1,5 @@
 var db = require('../../model/db');
-var fs = require('fs');
+//var fs = require('fs');
 
 module.exports = function(app, passport) {
   app.get("/feed/imgs", function(req, res){      
@@ -54,15 +54,6 @@ module.exports = function(app, passport) {
             +'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset], (err, data) => {
       res.json({ memes: data.rows });   
     }) 
-  });
-  app.get("/feed/saveimage",  function(req, res){  
-    fs.readFile('testPicture.jpg', function(err, data) {
-      if (err) throw err;
-      db.query('INSERT INTO images(imagedata) VALUES($1)', [data], (err, data) => {
-      //res.contentType('image/jpeg');
-        res.json({});     
-      }) 
-    });      
   });
   app.get("/feed/test",  function(req, res){  
     res.json({});     
