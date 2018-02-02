@@ -66,7 +66,6 @@ var getImages = function () {
             });
         });
     }   
-    res.JSON({ message: "200"});
     // var proxy = process.env.HTTP_PROXY;
     // var path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-154095846&count=${process.env.POSTS_COUNT}&offset=0`;
     // // HTTPS endpoint for the proxy to connect to
