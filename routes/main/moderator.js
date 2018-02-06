@@ -22,10 +22,9 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/moderator/getImages",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.query.id && req.user.accesslvl >= 2){
-      var id = req.query.id;
+    if(req.user.accesslvl >= 2){
     } else { 
-      res.status(400).json({ message: "incorrect data" });
+      res.status(400).json({ message: "incorrect lvl" });
       return;
     }
     require('../../vk/api')();  

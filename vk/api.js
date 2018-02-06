@@ -2,6 +2,7 @@ var https = require('https');
 var url = require('url');
 var HttpsProxyAgent = require('https-proxy-agent');
 var db = require('../model/db');
+var request = require('request');
 
 var groups = { 
     'Борщ':460389,   
