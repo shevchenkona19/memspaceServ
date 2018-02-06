@@ -44,27 +44,41 @@ var getImages = function () {
         path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=0`;
 
         console.log('attempting to GET %j', path);
-     
-        https.get(path, function (res) {
-            var body = '';
-            res.on('data', function (chunk) {
-                try{
-                    body = JSON.parse(chunk);
-                }
-                catch(err) { return; }
-                if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
-                    path = body.response[1].attachment.photo.src_big;
-                    https.get(path, function (res) {
-                        res.on('data', function (chunk) {
-                            //console.log(chunk);
-                            db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [chunk, key], (err, data) => { 
+        
+        request({url:path, encoding:null}, function (error, response, body) {
+            try {
+                body = JSON.parse(chunk);
+            }
+            catch(err) { return; }
+            if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
+                path = body.response[1].attachment.photo.src_big;
+                request({url:path, encoding:null}, function (error, response, body) {
+                    db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => { 
                                                       
-                            }) 
-                        });
-                    });
-                }
-            });
+                    })
+                });
+            }
         });
+        // https.get(path, function (res) {
+        //     var body = '';
+        //     res.on('data', function (chunk) {
+        //         try{
+        //             body = JSON.parse(chunk);
+        //         }
+        //         catch(err) { return; }
+        //         if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
+        //             path = body.response[1].attachment.photo.src_big;
+        //             https.get(path, function (res) {
+        //                 res.on('data', function (chunk) {
+        //                     //console.log(chunk);
+        //                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [chunk, key], (err, data) => { 
+                                                      
+        //                     }) 
+        //                 });
+        //             });
+        //         }
+        //     });
+        // });
     }   
     // var proxy = process.env.HTTP_PROXY;
     // var path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-154095846&count=${process.env.POSTS_COUNT}&offset=0`;
