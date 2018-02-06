@@ -48,12 +48,14 @@ var getImages = function () {
         
         request({url:path, encoding:null}, function (error, response, body) {
             try {
-                body = JSON.parse(chunk);
+                body = JSON.parse(body);
+                console.log(body);
             }
             catch(err) { return; }
             if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
                 path = body.response[1].attachment.photo.src_big;
                 request({url:path, encoding:null}, function (error, response, body) {
+                    console.log(body);
                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => { 
                                                       
                     })
