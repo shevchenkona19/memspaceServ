@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
         var ob = data.rows[0];
         var arr = [];
         for(var prop in ob){
-          arr.push('"' + prop + '":"' + ob[prop] + '"'); 
+          arr.push('{"categoryname":' + prop + ', "categoryIsUsed":' + ob[prop] + '}'); 
         }
         res.json({ categories:arr });
       })
