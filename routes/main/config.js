@@ -35,7 +35,12 @@ module.exports = function(app, passport) {
       }
       catsString = catsString.slice(0, -2);
       db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
-        res.json(data.rows[0]);
+        var ob = data.rows[0];
+        var arr = [];
+        for(var prop in ob){
+          arr.push(ob[prop]); 
+        }
+        res.json({ categories:arr });
       })
     })
   });
