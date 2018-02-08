@@ -27,18 +27,22 @@ module.exports = function(app, passport) {
     })
   });
   app.get("/config/getPersonalCategories",  passport.authenticate('jwt', { session: false }), function(req, res){
-    db.query('SELECT categoryname FROM categories', [], (err, data) => {
+    db.query('SELECT categoryid, categoryname FROM categories', [], (err, data) => {
       var catsString = '';
+      var ids = [];
       for(var i = 0; i < data.rows.length; i++){
         catsString += data.rows[i].categoryname;
         catsString += ', ';
+        ids.push(data.rows[i].categoryid);
       }
       catsString = catsString.slice(0, -2);
       db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
         var ob = data.rows[0];
         var arr = [];
+        var j = 0;
         for(var prop in ob){
-          arr.push({categoryname:prop, categoryIsUsed:ob[prop]}); 
+          arr.push({categoryname:prop, categoryIsUsed:ob[prop], categoryId:ids[j]}); 
+          j++;
         }
         res.json({ categories:arr });
       })
