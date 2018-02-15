@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
   app.get("/feed/imgs", function(req, res){      
     if(req.query.id){
       var id = req.query.id;
-    } 
+    } else return res.status(400).json({message: "incorrect query"});
     db.query('SELECT imagedata FROM images WHERE imageId = $1', [id], (err, data) => {
       res.contentType('image/jpeg');
       res.end(data.rows[0].imagedata, 'binary');     

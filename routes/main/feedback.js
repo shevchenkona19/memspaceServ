@@ -3,7 +3,7 @@ var db = require('../../model/db');
 module.exports = function(app, passport) {
   app.get("/feedback/postLike",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
       var imageId = req.query.id;
@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
   });
   app.get("/feedback/postDislike",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
       var imageId = req.query.id;
@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
   });
   app.get("/feedback/deleteLike",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
       var imageId = req.query.id;
@@ -64,7 +64,7 @@ module.exports = function(app, passport) {
   });
   app.get("/feedback/deleteDislike",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
       var imageId = req.query.id;
@@ -83,7 +83,7 @@ module.exports = function(app, passport) {
   });
   app.post("/feedback/postComment",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id && req.body.text){
       var imageId = req.query.id;
@@ -98,7 +98,7 @@ module.exports = function(app, passport) {
   });
   app.get("/feedback/getComments",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl != -1){
-      res.status(400).json({ message: "unauthorized" });
+      return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id && req.query.count && req.query.offset){
       var imageid = req.query.id;
