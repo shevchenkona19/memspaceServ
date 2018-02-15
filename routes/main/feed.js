@@ -64,7 +64,7 @@ module.exports = function(app, passport) {
       res.json({ memes: data.rows });   
     }) 
   });
-  app.get("/feed/getUserPhoto",  passport.authenticate('jwt', { session: false }), function(req, res){      
+  app.get("/feed/getUserPhoto",  function(req, res){      
     if(req.query.targetUsername){
       var targetUsername = req.query.targetUsername;
     } else return res.status(400).json({message: "incorrect query"})
