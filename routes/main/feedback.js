@@ -2,7 +2,7 @@ var db = require('../../model/db');
 
 module.exports = function(app, passport) {
   app.get("/feedback/postLike",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
@@ -23,7 +23,7 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/feedback/postDislike",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
@@ -44,7 +44,7 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/feedback/deleteLike",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/feedback/deleteDislike",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id){
@@ -82,7 +82,7 @@ module.exports = function(app, passport) {
     }) 
   });
   app.post("/feedback/postComment",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id && req.body.text){
@@ -97,7 +97,7 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/feedback/getComments",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
+    if(req.user.accesslvl == -1){
       return res.status(400).json({ message: "unauthorized" });
     }
     if(req.query.id && req.query.count && req.query.offset){
