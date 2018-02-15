@@ -18,6 +18,8 @@ module.exports = function(app, passport, jwtOptions) {
           })
     });
     app.get("/account/getMyUsername", passport.authenticate('jwt', { session: false }), function(req, res){ 
+      if(req.user.accesslvl != -1){
+      } else res.status(400).json({ message: "unauthorized" });
       res.json({"username":req.user.username});     
     });
     app.get("/account/getMyPhoto", passport.authenticate('jwt', { session: false }), function(req, res){ 

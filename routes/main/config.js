@@ -2,6 +2,8 @@ var db = require('../../model/db');
 
 module.exports = function(app, passport) {
   app.get("/config/getCategories",  passport.authenticate('jwt', { session: false }), function(req, res){      
+    if(req.user.accesslvl != -1){
+    } else res.status(400).json({ message: "unauthorized" });
     db.query('SELECT * FROM categories', [], (err, data) => {
       if(data.rows){
         res.json({ categories: data.rows });
@@ -9,6 +11,9 @@ module.exports = function(app, passport) {
     }) 
   });
   app.post("/config/postSelectedCategories",  passport.authenticate('jwt', { session: false }), function(req, res){      
+    if(req.user.accesslvl != -1){
+      res.status(400).json({ message: "unauthorized" });
+    }
     if(req.body.Ids){
       var Ids = req.body.Ids;
     } else return res.status(400).json({ message: "incorrect data" });
@@ -19,6 +24,9 @@ module.exports = function(app, passport) {
     res.status(200).json({ message: "200" });
   });
   app.post("/config/postPhoto",  passport.authenticate('jwt', { session: false }), function(req, res){      
+    if(req.user.accesslvl != -1){
+      res.status(400).json({ message: "unauthorized" });
+    }
     if(req.body.imagedata){
       var imagedata = req.body.imagedata;
     } else return res.status(400).json({ message: "incorrect data" });
@@ -27,6 +35,9 @@ module.exports = function(app, passport) {
     })
   });
   app.get("/config/getPersonalCategories",  passport.authenticate('jwt', { session: false }), function(req, res){
+    if(req.user.accesslvl != -1){
+      res.status(400).json({ message: "unauthorized" });
+    }
     db.query('SELECT categoryid, categoryname FROM categories', [], (err, data) => {
       var catsString = '';
       var ids = [];

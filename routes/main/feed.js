@@ -23,7 +23,7 @@ module.exports = function(app, passport) {
         })  
   });
   app.get("/feed/getCategoriesFeed",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.query.count && req.query.offset){
+    if(req.query.count && req.query.offset && req.user.accesslvl != -1){
       var count = req.query.count;
       var offset = req.query.offset;
     } else return res.status(400).json({message: "incorrect query"})
