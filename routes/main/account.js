@@ -23,12 +23,6 @@ module.exports = function(app, passport, jwtOptions) {
       } else return res.status(400).json({ message: "unauthorized" });
       res.json({"username":req.user.username});     
     });
-    app.get("/account/getMyPhoto", passport.authenticate('jwt', { session: false }), function(req, res){ 
-      db.query('SELECT imagedata FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
-        res.contentType('image/jpeg');
-        res.end(data.rows[0].imagedata, 'binary');     
-      })      
-    });
     app.post('/account/register', (req, res) => {
       if(req.body.username && req.body.password && req.body.email){
         var username = req.body.username;
