@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 var db = require('../../model/db');
+var fs = require('fs');
 
 module.exports = function(app, passport, jwtOptions) {
     app.post('/account/login', (req, res) => {      
@@ -39,15 +40,18 @@ module.exports = function(app, passport, jwtOptions) {
       }
       db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email], (err, data) => {
         if(data && data.rows[0].cnt == 0){
-          db.query('INSERT INTO users(username, password, email) VALUES($1, $2, $3)', [username, password, email], (err, data) => {
-            db.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], (err, data) => {
-              if(data.rows[0]){
-                var payload = {id: data.rows[0].userid};
-                var token = jwt.sign(payload, jwtOptions.secretOrKey);
-                res.json({token: token});
-              }
-            }) 
-          })
+            fs.readFile('noimage.png', function(err, image) {
+              if (err) throw err;  
+              db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, password, email, image], (err, data) => {
+                db.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], (err, data) => {
+                  if(data.rows[0]){
+                    var payload = {id: data.rows[0].userid};
+                    var token = jwt.sign(payload, jwtOptions.secretOrKey);
+                    res.json({token: token});
+                  }
+                }) 
+              })  
+            }); 
         } else {
           res.status(400).json({message:"already registered"});
         }
