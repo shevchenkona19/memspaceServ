@@ -17,11 +17,13 @@ module.exports = function(app, passport) {
     if(req.body.Ids){
       var Ids = req.body.Ids;
     } else return res.status(400).json({ message: "incorrect data" });
+    db.query(`UPDATE users SET ${categoryname} = '0' WHERE userid = ${userid}`, [], (err, data) => {
+        for(var i = 0; i < Ids.length; i++){
+            setCategory(req.user.userid, Ids[i]);
+        }
+        res.status(200).json({ message: "200" });
+    })
 
-    for(var i = 0; i < Ids.length; i++){
-      setCategory(req.user.userid, Ids[i]);
-    }
-    res.status(200).json({ message: "200" });
   });
   app.post("/config/postPhoto",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.user.accesslvl == -1){
