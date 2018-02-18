@@ -55,6 +55,7 @@ module.exports = function(app, passport) {
               console.log('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
               +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${str} ` 
               +`ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+              console.log(data);
               res.json({ memes: data.rows });   
         }) 
       })
