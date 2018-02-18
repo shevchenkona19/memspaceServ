@@ -25,7 +25,7 @@ module.exports = function (app, passport) {
             }
 
             catsString = catsString.substring(0, catsString.length - 2);
-            db.query(`UPDATE users SET ${catsString} WHERE userid = ${userid}`, [], (err, data) => {
+            db.query(`UPDATE users SET ${catsString} WHERE userid = ${req.user.userid}`, [], (err, data) => {
                 for (var i = 0; i < Ids.length; i++) {
                     setCategory(req.user.userid, Ids[i]);
                 }
