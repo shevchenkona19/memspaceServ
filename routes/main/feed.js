@@ -43,7 +43,7 @@ module.exports = function(app, passport) {
         for(var prop in ob){
           if(ob[prop] == '1'){
             str += prop + ' = ' + ob[prop] ; 
-            str += ' AND ';
+            str += ' OR ';
           }
         }
         console.log(str);
