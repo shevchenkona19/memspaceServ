@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
           }
         }
         console.log(str);
-        str = str.substring(0, str.length - 5);
+        str = str.substring(0, str.length - 4);
         console.log(str);
         db.query('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
             +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} ` 
