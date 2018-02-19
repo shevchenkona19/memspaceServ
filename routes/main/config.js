@@ -2,8 +2,6 @@ var db = require('../../model/db');
 
 module.exports = function(app, passport) {
   app.get("/config/getCategories",  passport.authenticate('jwt', { session: false }), function(req, res){      
-    if(req.user.accesslvl != -1){
-    } else return res.status(400).json({ message: "unauthorized" });
     db.query('SELECT * FROM categories', [], (err, data) => {
       if(data.rows){
         res.json({ categories: data.rows });

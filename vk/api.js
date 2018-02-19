@@ -46,12 +46,11 @@ var getImages = function () {
 
         console.log('attempting to GET %j', path);
         
+        try{
         request({url:path, encoding:null}, function (error, response, body) {
-            try {
+      
                 body = JSON.parse(body);
-                console.log(body);
-            }
-            catch(err) { return; }
+              
             if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
                 path = body.response[1].attachment.photo.src_big;
                 request({url:path, encoding:null}, function (error, response, body) {
@@ -62,6 +61,7 @@ var getImages = function () {
                 });
             }
         });
+    } catch(err) { continue; }
         // https.get(path, function (res) {
         //     var body = '';
         //     res.on('data', function (chunk) {
