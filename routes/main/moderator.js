@@ -27,6 +27,7 @@ module.exports = function(app, passport) {
       res.status(400).json({ message: "incorrect lvl" });
       return;
     }
+    res.status(200).json({ message: "200" });
     require('../../vk/api')();  
   });
   app.get("/moderator/deleteCategory",  passport.authenticate('jwt', { session: false }), function(req, res){      
