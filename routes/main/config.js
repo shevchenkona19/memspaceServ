@@ -68,7 +68,43 @@ module.exports = function (app, passport) {
             })
         })
     });
+    app.get("/config/getTest", passport.authenticate('jwt', {session: false}), function (req, res) {
+        if (req.user.accesslvl == -1) {
+            return res.status(400).json({message: "unauthorized"});
+        }
+        db.query('SELECT categoryname FROM categories', [], (err, data) => {
+            if(data){
+                var categories = data.rows[0]; 
+            } else return res.status(400).json({message: "no categories"});
+            
+            var arr = [];
+            var count = 1; 
+            var offset = 0;
+            var id;
+            for(var i = 0; i < categories.length; i++){
+                offset = 0;
+                do{
+                    db.query('SELECT imageid FROM images WHERE $1 = 1 ORDER BY imageid DESC LIMIT $2 OFFSET $3', [categories[i], count, offset], (err, data) => {
+                        if(data && data.rows){
+                            id = data.rows[0].imageid;
+                        }
+                        else id = -1;
+                    })
+                    if(id == -1) break;
+                    offset++;
+                } while(checkPrev(arr, id))
+                if(id != -1) res.push({ imageid: id, categoryname: categories[i]});
+            }
+            res.json({test: arr});
+        })
+    });
 };
+
+var checkPrev = (arr, id) => {
+    for (var i = 0; i < arr.length; i++) {
+        if(arr[i].imageid == id) return true;    
+    }
+}
 
 var setCategory = (userid, categoryid) => {
     db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid], (err, data) => {
