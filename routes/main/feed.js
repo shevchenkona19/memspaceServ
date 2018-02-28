@@ -30,7 +30,7 @@ module.exports = function(app, passport) {
     db.query('SELECT categoryname FROM categories', [], (err, data) => {
       var catsString = '';
       for(var i = 0; i < data.rows.length; i++){
-        catsString += data.rows[i].categoryname;
+        catsString += `"` + data.rows[i].categoryname + `"`;
         catsString += ', ';
       }
       catsString = catsString.slice(0, -2);
