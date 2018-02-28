@@ -34,6 +34,7 @@ module.exports = function(app, passport) {
         catsString += ', ';
       }
       catsString = catsString.slice(0, -2);
+      console.log(catsString);
       db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
         var ob = data.rows[0];
         var str = '';
