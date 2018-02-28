@@ -40,7 +40,7 @@ module.exports = function(app, passport) {
         var str = '';
         for(var prop in ob){
           if(ob[prop] == '1'){
-            str += prop + " = '" + ob[prop] + "'"; 
+            str += `"` + prop + `"` + " = '" + ob[prop] + "'"; 
             str += ' OR ';
           }
         }
