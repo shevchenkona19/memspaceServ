@@ -64,6 +64,9 @@ module.exports = function(app, passport) {
     db.query(`SELECT images.imageid, likes, dislikes, likes.opinion AS opinion `
             +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' ` 
             +`ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
+      console.log(`SELECT images.imageid, likes, dislikes, likes.opinion AS opinion `
+      +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' ` 
+      +`ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
       res.json({ memes: data.rows });   
     }) 
   });
