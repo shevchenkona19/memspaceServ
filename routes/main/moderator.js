@@ -10,9 +10,9 @@ module.exports = function(app, passport) {
     }
     
     db.query('INSERT INTO categories(categoryname) VALUES($1)', [categoryname], (err, data) => {
-      db.query(`ALTER TABLE users ADD ${categoryname} BIT, ALTER COLUMN ${categoryname} SET DEFAULT '0'`, [], (err, data) => {
+      db.query(`ALTER TABLE users ADD "${categoryname}" BIT, ALTER COLUMN ${categoryname} SET DEFAULT '0'`, [], (err, data) => {
         db.query(`UPDATE users SET ${categoryname} = '0'`, [], (err, data) => {
-          db.query(`ALTER TABLE images ADD ${categoryname} BIT, ALTER COLUMN ${categoryname} SET DEFAULT '0'`, [], (err, data) => {
+          db.query(`ALTER TABLE images ADD "${categoryname}" BIT, ALTER COLUMN ${categoryname} SET DEFAULT '0'`, [], (err, data) => {
             db.query(`UPDATE images SET ${categoryname} = '0'`, [], (err, data) => {
               res.status(200).json({ message: "200" });
             })
@@ -40,8 +40,8 @@ module.exports = function(app, passport) {
     db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [id], (err, data) => {
       var categoryname = data.rows[0].categoryname;
       db.query('DELETE FROM categories WHERE categoryid = $1', [id], (err, data) => {
-        db.query(`ALTER TABLE users DROP ${categoryname}`, [], (err, data) => {
-          db.query(`ALTER TABLE images DROP ${categoryname}`, [], (err, data) => {
+        db.query(`ALTER TABLE users DROP "${categoryname}"`, [], (err, data) => {
+          db.query(`ALTER TABLE images DROP "${categoryname}"`, [], (err, data) => {
             res.status(200).json({ message: "200" });
           })
         })
