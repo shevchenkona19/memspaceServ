@@ -93,7 +93,7 @@ module.exports = function (app, passport) {
                     if(id == -1) break;
                     offset++;
                 } while(checkPrev(arr, id))
-                if(id != -1) res.push({ imageid: id, categoryname: categories[i]});
+                if(id != -1) arr.push({ imageid: id, categoryname: categories[i]});
             }
             res.json({test: arr});
         })
