@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     } else return res.status(400).json({ message: "incorrect data" });
     db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
       if(data && data.rows[0]){
-        var favarr = json.parse(data.rows[0].favorites); 
+        var favarr = JSON.parse(data.rows[0].favorites); 
         for(var i = 0; i < favarr.length; i++){
           if(favarr[i] == id) return res.status(200).json({ message: "already favorite" });
         }
