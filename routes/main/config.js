@@ -85,11 +85,13 @@ module.exports = function (app, passport) {
             var count = 1; 
             var offset = 0;
             var id;
-            for(var i = 0; i < categories.length; i++){
+            for(var j = 0; j < categories.length; j++){
                 offset = 0;
+                console.log('j=' + j);
                 do{
-                    db.query(`SELECT imageid FROM images WHERE "${categories[i]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
-                        console.log(`SELECT imageid FROM images WHERE "${categories[i]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+                    console.log('do');
+                    db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
+                        console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
                         if(data && data.rows){
                             id = data.rows[0].imageid;
                             console.log(id);
@@ -99,7 +101,7 @@ module.exports = function (app, passport) {
                     if(id == -1) break;
                     offset++;
                 } while(checkPrev(arr, id))
-                if(id != -1) arr.push({ imageid: id, categoryname: categories[i]});
+                if(id != -1) arr.push({ imageid: id, categoryname: categories[j]});
             }
             res.json({test: arr});
         })
@@ -110,6 +112,7 @@ var checkPrev = (arr, id) => {
     for (var i = 0; i < arr.length; i++) {
         if(arr[i].imageid == id) return true;    
     }
+    return false;
 }
 
 var setCategory = (userid, categoryid) => {
