@@ -88,7 +88,7 @@ module.exports = function (app, passport) {
             for(var i = 0; i < categories.length; i++){
                 offset = 0;
                 do{
-                    db.query('SELECT imageid FROM images WHERE $1 = 1 ORDER BY imageid DESC LIMIT $2 OFFSET $3', [categories[i], count, offset], (err, data) => {
+                    db.query(`SELECT imageid FROM images WHERE "${categories[i]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
                         if(data && data.rows){
                             id = data.rows[0].imageid;
                             console.log(id);
