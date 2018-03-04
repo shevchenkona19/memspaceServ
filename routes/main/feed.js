@@ -36,6 +36,7 @@ module.exports = function(app, passport) {
       catsString = catsString.slice(0, -2);
       console.log(catsString);
       db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
+        console.log(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
         var ob = data.rows[0];
         var str = '';
         for(var prop in ob){
@@ -45,6 +46,7 @@ module.exports = function(app, passport) {
           }
         }
         str = str.substring(0, str.length - 4);
+        console.log(str);
         db.query('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
             +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} ` 
             +'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset], (err, data) => {
