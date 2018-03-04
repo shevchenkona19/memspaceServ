@@ -35,7 +35,7 @@ module.exports = function (app, passport) {
       }
       catsString = catsString.slice(0, -2);
       console.log(catsString);
-      db.query(`SELECT "Оленья прошивка" FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
+      db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
         console.log(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
         var ob = data.rows[0];
         console.log(data.rows);
