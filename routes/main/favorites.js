@@ -27,7 +27,7 @@ module.exports = function(app, passport) {
     if(req.user.accesslvl != -1){
     } else return res.status(400).json({ message: "unauthorized" });      
     db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
-      res.json({favorites : data.rows[0] });
+      res.json(data.rows[0]);
     }) 
   });
   app.get("/favorites/removeFromFavorites",  passport.authenticate('jwt', { session: false }), function(req, res){      
@@ -37,7 +37,7 @@ module.exports = function(app, passport) {
     db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
       var favarr = data.rows[0].favorites;
       if (favarr.indexOf(id) !== -1) {
-        items.splice(items.indexOf(id), 1);
+        favarr.splice(favarr.indexOf(id), 1);
       } else res.status(200).json({ message: "not a favorite" });
       db.query('UPDATE users SET favorites = $1 WHERE userid = $2', [favarr, req.user.userid], (err, data) => {
         res.status(200).json({ message: "200" });
