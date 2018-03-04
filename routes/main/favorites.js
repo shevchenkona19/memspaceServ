@@ -35,11 +35,11 @@ module.exports = function(app, passport) {
       var id = req.query.id;
     } else return res.status(400).json({ message: "incorrect data" });
     db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
-      var favarr = data.rows[0].favorites;
+      var favarr = JSON.parse(data.rows[0].favorites);
       if (favarr.indexOf(id) !== -1) {
         favarr.splice(favarr.indexOf(id), 1);
       } else res.status(200).json({ message: "not a favorite" });
-      db.query('UPDATE users SET favorites = $1 WHERE userid = $2', [favarr, req.user.userid], (err, data) => {
+      db.query(`UPDATE users SET favorites = '${JSON.stringify(favarr)}' WHERE userid = ${req.user.userid}`, [], (err, data) => {
         res.status(200).json({ message: "200" });
       }) 
     }) 
