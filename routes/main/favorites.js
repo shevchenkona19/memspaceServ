@@ -8,10 +8,13 @@ module.exports = function(app, passport) {
     db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid], (err, data) => {
       if(data && data.rows[0]){
         var favarr = data.rows[0].favorites;
-      } else return res.status(400);
-      favarr.forEach(element => {
-        if(element == id) return res.status(200).json({ message: "already favorite" });
-      });
+        for(var i = 0; i < favarr.length; i++){
+          if(favarr[i] == id) return res.status(200).json({ message: "already favorite" });
+        }
+        // favarr.forEach(element => {
+        //   if(element == id) return res.status(200).json({ message: "already favorite" });
+        // });
+      } else return res.status(200).json({ message:"200" });
       favarr.push(id);
       db.query('UPDATE users SET favories = $1 WHERE userid = $2', [favarr, req.user.userid], (err, data) => {
         res.status(200).json({ message: "200" });
