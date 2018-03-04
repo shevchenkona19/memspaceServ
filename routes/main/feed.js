@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
       }
       catsString = catsString.slice(0, -2);
       console.log(catsString);
-      db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
+      db.query(`SELECT Смешные FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
         console.log(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
         var ob = data.rows[0];
         var str = '';
@@ -64,9 +64,6 @@ module.exports = function(app, passport) {
     db.query(`SELECT images.imageid, likes, dislikes, likes.opinion AS opinion `
             +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' ` 
             +`ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
-      console.log(`SELECT images.imageid, likes, dislikes, likes.opinion AS opinion `
-      +`FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' ` 
-      +`ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
       res.json({ memes: data.rows });   
     }) 
   });
