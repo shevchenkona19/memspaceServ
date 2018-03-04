@@ -74,8 +74,10 @@ module.exports = function (app, passport) {
         }
         db.query('SELECT categoryname FROM categories', [], (err, data) => {
             if(data){
-                console.log(data.rows);
-                var categories = data.rows[0].categoryname;
+                var categories = [];
+                for(var i = 0; i < data.rows.length; i++){
+                    categories.push(data.rows[i].categoryname);
+                }
                 console.log(categories);
             } else return res.status(400).json({message: "no categories"});
             
