@@ -16,7 +16,9 @@ module.exports = function(app, passport) {
         // });
       } else return res.status(200).json({ message:"200" });
       favarr.push(id);
-      db.query('UPDATE users SET favories = $1 WHERE userid = $2', [favarr, req.user.userid], (err, data) => {
+      console.log(favarr);
+      db.query('UPDATE users SET favories = $1 WHERE userid = $2', [JSON.stringify(favarr), req.user.userid], (err, data) => {
+        console.log(`UPDATE users SET favories = ${JSON.stringify(favarr)} WHERE userid = ${req.user.userid}`);
         res.status(200).json({ message: "200" });
       })
     }) 
