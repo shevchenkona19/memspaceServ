@@ -68,44 +68,43 @@ module.exports = function (app, passport) {
             })
         })
     });
-    app.get("/config/getTest", passport.authenticate('jwt', {session: false}), function (req, res) {
-        if (req.user.accesslvl == -1) {
-            return res.status(400).json({message: "unauthorized"});
-        }
-        db.query('SELECT categoryname FROM categories', [], (err, data) => {
-            if(data){
-                var categories = [];
-                for(var i = 0; i < data.rows.length; i++){
-                    categories.push(data.rows[i].categoryname);
-                }
-                console.log(categories);
-            } else return res.status(400).json({message: "no categories"});
+    // app.get("/config/getTest", passport.authenticate('jwt', {session: false}), function (req, res) {
+    //     if (req.user.accesslvl == -1) {
+    //         return res.status(400).json({message: "unauthorized"});
+    //     }
+    //     db.query('SELECT categoryname FROM categories', [], (err, data) => {
+    //         if(data){
+    //             var categories = [];
+    //             for(var i = 0; i < data.rows.length; i++){
+    //                 categories.push(data.rows[i].categoryname);
+    //             }
+    //             console.log(categories);
+    //         } else return res.status(400).json({message: "no categories"});
             
-            var arr = [];
-            var count = 1; 
-            var offset = 0;
-            var id;
-            for(var j = 0; j < categories.length; j++){
-                offset = 0;
-                console.log('j=' + j);
-                do{
-                    console.log('do');
-                    db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
-                        console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-                        if(data && data.rows){
-                            id = data.rows[0].imageid;
-                            console.log(id);
-                        }
-                        else id = -1;
-                    })
-                    if(id == -1) break;
-                    offset++;
-                } while(checkPrev(arr, id))
-                if(id != -1) arr.push({ imageid: id, categoryname: categories[j]});
-            }
-            res.json({test: arr});
-        })
-    });
+    //         var arr = [];
+    //         var count = 1; 
+    //         var offset = 0;
+    //         var id;
+    //         for(var j = 0; j < categories.length; j++){
+    //             offset = 0;
+    //             console.log('j=' + j);
+    //             do{
+    //                 db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
+    //                     console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+    //                     if(data && data.rows){
+    //                         id = data.rows[0].imageid;
+    //                         console.log(id);
+    //                     }
+    //                     else id = -1;
+    //                 })
+    //                 if(id == -1) break;
+    //                 offset++;
+    //             } while(checkPrev(arr, id))
+    //             if(id != -1) arr.push({ imageid: id, categoryname: categories[j]});
+    //         }
+    //         res.json({test: arr});
+    //     })
+    // });
 };
 
 var checkPrev = (arr, id) => {
