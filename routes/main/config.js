@@ -74,7 +74,8 @@ module.exports = function (app, passport) {
         }
         db.query('SELECT categoryname FROM categories', [], (err, data) => {
             if(data){
-                var categories = data.rows[0]; 
+                var categories = JSON.parse(data.rows[0].categoryname);
+                console.log(categories);
             } else return res.status(400).json({message: "no categories"});
             
             var arr = [];
@@ -87,6 +88,7 @@ module.exports = function (app, passport) {
                     db.query('SELECT imageid FROM images WHERE $1 = 1 ORDER BY imageid DESC LIMIT $2 OFFSET $3', [categories[i], count, offset], (err, data) => {
                         if(data && data.rows){
                             id = data.rows[0].imageid;
+                            console.log(id);
                         }
                         else id = -1;
                     })
