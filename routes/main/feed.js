@@ -38,6 +38,7 @@ module.exports = function(app, passport) {
       db.query(`SELECT Смешные FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
         console.log(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
         var ob = data.rows[0];
+        console.log(data.rows);
         var str = '';
         for(var prop in ob){
           if(ob[prop] == '1'){
