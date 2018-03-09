@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var db = require('../../model/db');
 var fs = require('fs');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 var salt = process.env.BCRYPTSALT;
 var saltRounds = process.env.SALTROUNDS;
@@ -45,7 +45,7 @@ module.exports = function (app, passport, jwtOptions) {
             console.log(err.stack);
             return res.status(500).json({ message: "default image error" });
           }
-          var passwordToSave = bcrypt.hashSync(password, salt);
+          var passwordToSave = bcrypt.hashSync(password);
           db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image], (err, data) => {
             if (err) {
               console.log(err.stack);
