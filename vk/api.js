@@ -50,9 +50,11 @@ var getImages = function () {
         request({url:path, encoding:null}, function (error, response, body) {
       
                 body = JSON.parse(body);
-              
-            if(body && body.response && body.response.items && body.response.items[0] && body.response.items[0].attachments && body.response.items[0].attachments.photo && body.response.items[0].attachments.photo.photo_604){
-                path = body.response.items[0].attachments.photo.photo_604;
+              console.log(body);
+            if(body && body.response && body.response.items && body.response.items[0] 
+                && body.response.items[0].attachments && body.response.items[0].attachments[0] 
+                    && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604){
+                path = body.response.items[0].attachments[0].photo.photo_604;
                 request({url:path, encoding:null}, function (error, response, body) {
                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => { 
                         if (err) {
