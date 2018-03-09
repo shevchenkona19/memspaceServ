@@ -42,7 +42,7 @@ var getImages = function () {
     var path;
     for (let key in groups) {
         let value = groups[key];
-        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=0`;
+        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=0&v=5.73`;
 
         console.log('attempting to GET %j', path);
         
@@ -51,7 +51,7 @@ var getImages = function () {
       
                 body = JSON.parse(body);
               
-            if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
+            if(body && body.response && body.response[1].attachments && body.response[1].attachments.photo && body.response[1].attachment.photo.photo_604){
                 path = body.response[1].attachment.photo.src_big;
                 request({url:path, encoding:null}, function (error, response, body) {
                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => { 
