@@ -18,7 +18,7 @@ module.exports = function (app, passport, jwtOptions) {
         return res.status(500).json({ message: "BD error" });
       }
       if (data.rows[0]) {
-        bcrypt.compare(password, hash, (err, res) => {
+        bcrypt.compare(password, data.rows[0].password, (err, res) => {
           if (res) {
             var payload = { id: data.rows[0].userid };
             var token = jwt.sign(payload, jwtOptions.secretOrKey);
@@ -47,28 +47,31 @@ module.exports = function (app, passport, jwtOptions) {
             console.log(err.stack);
             return res.status(500).json({ message: "default image error" });
           }
-          bcrypt.hash(password, saltRounds, function(err, hash) {
-            console.log(saltRounds);
-            console.log(hash);
-            db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, hash, email, image], (err, data) => {
-              if (err) {
-                console.log(err.stack);
-                return res.status(500).json({ message: "BD error" });
-              }
-              db.query('SELECT userid FROM users WHERE username = $1', [username], (err, data) => {
+          bcrypt.genSalt(saltRounds, function (err, salt) {
+            bcrypt.hash(password, salt, function (err, hash) {
+              console.log(saltRounds);
+              console.log(hash);
+              console.log(salt);
+              db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, hash, email, image], (err, data) => {
                 if (err) {
                   console.log(err.stack);
                   return res.status(500).json({ message: "BD error" });
                 }
-                if (data.rows[0] && data.rows[0].userid) {
-                  var payload = { id: data.rows[0].userid };
-                  var token = jwt.sign(payload, jwtOptions.secretOrKey);
-                  return res.json({ token: token });
-                } else {
-                  return res.status(500).json({ message: "BD error" });
-                }
+                db.query('SELECT userid FROM users WHERE username = $1', [username], (err, data) => {
+                  if (err) {
+                    console.log(err.stack);
+                    return res.status(500).json({ message: "BD error" });
+                  }
+                  if (data.rows[0] && data.rows[0].userid) {
+                    var payload = { id: data.rows[0].userid };
+                    var token = jwt.sign(payload, jwtOptions.secretOrKey);
+                    return res.json({ token: token });
+                  } else {
+                    return res.status(500).json({ message: "BD error" });
+                  }
+                })
               })
-            })
+            });
           });
         });
       } else {
