@@ -51,7 +51,7 @@ var getImages = function () {
       
                 body = JSON.parse(body);
               
-            if(body && body.response && body.response[1].attachments && body.response[1].attachments.photo && body.response[1].attachment.photo.photo_604){
+            if(body && body.response && body.response.items && body.response.items[0] && body.response.items[0].attachment && body.response.items[0].attachment.photo && bbody.response.items[0].attachment.photo.photo_604){
                 path = body.response[1].attachment.photo.src_big;
                 request({url:path, encoding:null}, function (error, response, body) {
                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => { 
