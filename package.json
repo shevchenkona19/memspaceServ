@@ -2,6 +2,7 @@
   "name": "serverapp",
   "version": "1.0.0",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "https-proxy-agent": "^2.1.1",
