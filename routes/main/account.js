@@ -13,7 +13,6 @@ module.exports = function(app, passport, jwtOptions) {
             var password = req.body.password;
           } else return res.status(400).json({ message: "incorrect data" });
           db.query('SELECT userid, password FROM users WHERE username = $1', [username], (err, data) => {
-            if(err)
             if(data.rows[0]){
               if (bcrypt.hashSync(password, salt) === data.rows[0].password) {
                 var payload = {id: data.rows[0].userid};
