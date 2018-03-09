@@ -48,6 +48,8 @@ module.exports = function (app, passport, jwtOptions) {
             return res.status(500).json({ message: "default image error" });
           }
           bcrypt.hash(password, saltRounds, function(err, hash) {
+            console.log(saltRounds);
+            console.log(hash);
             db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, hash, email, image], (err, data) => {
               if (err) {
                 console.log(err.stack);
