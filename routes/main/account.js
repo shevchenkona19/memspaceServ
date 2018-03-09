@@ -10,8 +10,9 @@ module.exports = function (app, passport, jwtOptions) {
     if (req.body.username && req.body.password) {
       var username = req.body.username;
       var password = req.body.password;
+      var email = req.body.email;
     } else return res.status(400).json({ message: "incorrect data" });
-    db.query('SELECT userid, password FROM users WHERE username = $1', [username], (err, data) => {
+    db.query(email, [username], (err, data) => {
       if (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
