@@ -43,8 +43,10 @@ module.exports = function(app, passport, jwtOptions) {
       db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email], (err, data) => {
         if(data && data.rows[0].cnt == 0){
             fs.readFile('noimage.png', function(err, image) {
-              if (err) throw err; 
+              if (err) throw err;
+              console.log(password);
               var passwordToSave = bcrypt.hashSync(password, salt);
+              console.log(passwordToSave);
               db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image], (err, data) => {
                 db.query('SELECT userid FROM users WHERE username = $1', [username], (err, data) => {
                   if(data.rows[0]){
