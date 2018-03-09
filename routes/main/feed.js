@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
       var count = req.query.count;
       var offset = req.query.offset;
     } else return res.status(400).json({ message: "incorrect query" })
-    db.query('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
+    db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
       + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
       + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset], (err, data) => {
         res.json({ memes: data.rows });
@@ -48,7 +48,7 @@ module.exports = function (app, passport) {
         }
         str = str.substring(0, str.length - 4);
         console.log(str);
-        db.query('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
+        db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
           + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
           + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset], (err, data) => {
             if (data && data.rows) {
@@ -64,7 +64,7 @@ module.exports = function (app, passport) {
       var offset = req.query.offset;
       var categoryname = req.query.categoryname;
     } else return res.status(400).json({ message: "incorrect query" })
-    db.query(`SELECT images.imageid, likes, dislikes, likes.opinion AS opinion `
+    db.query(`SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion `
       + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' `
       + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
         res.json({ memes: data.rows });
@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
       var count = req.query.count;
       var offset = req.query.offset;
     } else return res.status(400).json({ message: "incorrect query" })
-    db.query('SELECT images.imageid, likes, dislikes, likes.opinion AS opinion '
+    db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
       + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE likes >= $2 '
       + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset], (err, data) => {
         res.json({ memes: data.rows });

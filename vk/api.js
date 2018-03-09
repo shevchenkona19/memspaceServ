@@ -50,7 +50,7 @@ var getImages = function () {
         request({url:path, encoding:null}, function (error, response, body) {
       
                 body = JSON.parse(body);
-              console.log(body);
+
             if(body && body.response && body.response.items && body.response.items[0] 
                 && body.response.items[0].attachments && body.response.items[0].attachments[0] 
                     && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604){
