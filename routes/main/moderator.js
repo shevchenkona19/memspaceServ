@@ -22,13 +22,16 @@ module.exports = function(app, passport) {
     }) 
   });
   app.get("/moderator/getImages",  passport.authenticate('jwt', { session: false }), function(req, res){      
+    if(req.query.offset){
+      var offset = req.query.offset;
+    } else return res.status(400).json({ message: "incorrect data" });
     if(req.user.accesslvl >= 2){
+      require('../../vk/api')(count, offset);  
+      return res.status(200).json({ message: "200" });
     } else { 
       res.status(400).json({ message: "incorrect lvl" });
       return;
     }
-    res.status(200).json({ message: "200" });
-    require('../../vk/api')();  
   });
   app.get("/moderator/deleteCategory",  passport.authenticate('jwt', { session: false }), function(req, res){      
     if(req.query.id && req.user.accesslvl >= 2){

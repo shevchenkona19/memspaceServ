@@ -38,11 +38,11 @@ var groups = {
             // 131348832,//Файнi меми про Укр.лiт
 };
 //Vkapi
-var getImages = function () {
+var getImages = function (offset) {
     var path;
     for (let key in groups) {
         let value = groups[key];
-        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=0&v=5.73`;
+        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=${offset}&v=5.73`;
 
         console.log('attempting to GET %j', path);
         
