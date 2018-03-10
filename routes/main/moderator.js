@@ -57,7 +57,7 @@ module.exports = function(app, passport) {
       res.status(400).json({ message: "access lvl too low" });
       return;
     }
-    db.query(`SELECT imageid FROM images WHERE ischecked = '0' ORDER BY imageid DESC LIMIT 1`, [], (err, data) => {
+    db.query(`SELECT imageid FROM images WHERE ischecked = '0' ORDER BY imageid LIMIT 1`, [], (err, data) => {
       res.json(data.rows[0]);
       db.query(`UPDATE images SET isChecked = '1' WHERE imageid = ${data.rows[0].imageid}`, [], (err, data) => {
       })
