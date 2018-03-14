@@ -7,11 +7,17 @@ module.exports = function (app, passport) {
       var id = req.query.id;
     } else return res.status(400).json({ message: "incorrect query" });
     db.query('SELECT imagedata FROM images WHERE imageId = $1', [id], (err, data) => {
-      res.contentType('image/jpeg');
-      res.end(data.rows[0].imagedata, 'binary');
+      if (err) {
+        console.log(err.stack);
+        return res.status(500).json({ message: "BD error" });
+      }
+      if (data.rows[0]) {
+        res.contentType('image/jpeg');
+        return res.end(data.rows[0].imagedata, 'binary');
+      } else return res.status(400).json({ message: "no image found" });
     })
   });
-  app.get("/feed/getFeed", passport.authenticate('jwt', { session: false }), function (req, res) {
+  app.get("/feed/getFeed", passport.authenticate('jwt', { session: false }), (req, res) => {
     if (req.query.count && req.query.offset) {
       var count = req.query.count;
       var offset = req.query.offset;
@@ -19,26 +25,41 @@ module.exports = function (app, passport) {
     db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
       + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
       + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset], (err, data) => {
-        res.json({ memes: data.rows });
+        if (err) {
+          console.log(err.stack);
+          return res.status(500).json({ message: "BD error" });
+        }
+        return res.json({ memes: data.rows });
       })
   });
-  app.get("/feed/getCategoriesFeed", passport.authenticate('jwt', { session: false }), function (req, res) {
+  app.get("/feed/getCategoriesFeed", passport.authenticate('jwt', { session: false }), (req, res) => {
     if (req.query.count && req.query.offset && req.user.accesslvl != -1) {
       var count = req.query.count;
       var offset = req.query.offset;
     } else return res.status(400).json({ message: "incorrect query" })
     db.query('SELECT categoryname FROM categories', [], (err, data) => {
+      if (err) {
+        console.log(err.stack);
+        return res.status(500).json({ message: "BD error" });
+      }
+      if(data.rows[0]){
+        return res.status(400).json({ message: "no categories" });
+      }
       var catsString = '';
       for (var i = 0; i < data.rows.length; i++) {
         catsString += `"` + data.rows[i].categoryname + `"`;
         catsString += ', ';
       }
       catsString = catsString.slice(0, -2);
-      console.log(catsString);
       db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [], (err, data) => {
-        console.log(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
+        if (err) {
+          console.log(err.stack);
+          return res.status(500).json({ message: "BD error" });
+        }
+        if(data.rows[0]){
+          return res.status(500).json({ message: "BD error" });
+        }
         var ob = data.rows[0];
-        console.log(data.rows);
         var str = '';
         for (var prop in ob) {
           if (ob[prop] == '1') {
@@ -47,11 +68,14 @@ module.exports = function (app, passport) {
           }
         }
         str = str.substring(0, str.length - 4);
-        console.log(str);
         db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
           + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
           + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset], (err, data) => {
-            if (data && data.rows) {
+            if (err) {
+              console.log(err.stack);
+              return res.status(500).json({ message: "BD error" });
+            }
+            if (data.rows[0]) {
               return res.json({ memes: data.rows });
             } else return res.json({ memes: {} });
           })
@@ -67,20 +91,17 @@ module.exports = function (app, passport) {
     db.query(`SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion `
       + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' `
       + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [], (err, data) => {
-        res.json({ memes: data.rows });
+        if (err) {
+          console.log(err.stack);
+          return res.status(500).json({ message: "BD error" });
+        }
+        if (data.rows[0]) {
+          return res.json({ memes: data.rows });
+        } else return res.json({ memes: {} });
       })
   });
-  app.get("/feed/getUserPhoto", function (req, res) {
-    if (req.query.targetUsername) {
-      var targetUsername = req.query.targetUsername;
-    } else return res.status(400).json({ message: "incorrect query" })
-    db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername], (err, data) => {
-      res.contentType('image/jpeg');
-      res.end(data.rows[0].imagedata, 'binary');
-    })
-  });
   app.get("/feed/getHotFeed", passport.authenticate('jwt', { session: false }), function (req, res) {
-    var filter = 1;
+    var filter = process.env.HOTFILTER;
     if (req.query.count && req.query.offset) {
       var count = req.query.count;
       var offset = req.query.offset;
@@ -88,11 +109,29 @@ module.exports = function (app, passport) {
     db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
       + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE likes >= $2 '
       + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset], (err, data) => {
-        res.json({ memes: data.rows });
+        if (err) {
+          console.log(err.stack);
+          return res.status(500).json({ message: "BD error" });
+        }
+        if (data.rows[0]) {
+          return res.json({ memes: data.rows });
+        } else return res.json({ memes: {} });
       })
   });
-  app.get("/feed/test", function (req, res) {
-    res.json({});
+  app.get("/feed/getUserPhoto", function (req, res) {
+    if (req.query.targetUsername) {
+      var targetUsername = req.query.targetUsername;
+    } else return res.status(400).json({ message: "incorrect query" })
+    db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername], (err, data) => {
+      if (err) {
+        console.log(err.stack);
+        return res.status(500).json({ message: "BD error" });
+      }
+      if (data.rows[0]) {
+        res.contentType('image/jpeg');
+        return res.end(data.rows[0].imagedata, 'binary');
+      } else return res.status(400).json({ message: "no image found" });
+    })
   });
 };
 
