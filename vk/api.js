@@ -1,7 +1,7 @@
 var https = require('https');
 var url = require('url');
-var HttpsProxyAgent = require('https-proxy-agent');
-var db = require('../model/db');
+//var HttpsProxyAgent = require('https-proxy-agent');
+var db = require('../model');
 var request = require('request');
 
 var groups = {
@@ -55,12 +55,23 @@ var getImages = function (offset) {
                     && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
                     path = body.response.items[0].attachments[0].photo.photo_604;
                     request({ url: path, encoding: null }, function (error, response, body) {
+<<<<<<< HEAD
                         db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => {
                             if (err) {
                                 console.log(err.stack);
                             }
                             console.log('image downloaded');
                         })
+=======
+                        async () => {
+                            try {
+                                await db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key])
+                            } catch (err) {
+                                console.log(err.stack);
+                            }
+                        }
+                        console.log('image downloaded');
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
                     });
                 } else console.log('not full response')
             });
