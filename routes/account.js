@@ -67,7 +67,7 @@ router.post('/register', async (req, res) => {
     })
   } else {
   return res.status(400).json({ message: "username or email is already taken" });
-}
+  }
 })
 router.get("/getMyUsername", passport.authenticate('jwt', { session: false }), function (req, res) {
   if (req.user.accesslvl != -1) {

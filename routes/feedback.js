@@ -19,11 +19,11 @@ router.get("/postLike", passport.authenticate('jwt', { session: false }), async 
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 0) {
-      delDislike(userId, imageId);
-      setLike(userId, imageId);
+      await delDislike(userId, imageId);
+      await setLike(userId, imageId);
     }
   } else {
-    setLike(userId, imageId);
+    await setLike(userId, imageId);
   }
   res.status(200).json({ message: "200" });
 });
@@ -43,11 +43,11 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
-      delLike(userId, imageId);
-      setDislike(userId, imageId);
+      await delLike(userId, imageId);
+      await setDislike(userId, imageId);
     }
   } else {
-    setDislike(userId, imageId);
+    await setDislike(userId, imageId);
   }
   res.status(200).json({ message: "200" });
 });
@@ -67,7 +67,7 @@ router.get("/deleteLike", passport.authenticate('jwt', { session: false }), asyn
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
-      delLike(userId, imageId);
+      await delLike(userId, imageId);
       return res.status(200).json({ message: "200" });
     }
   }
@@ -89,7 +89,7 @@ router.get("/deleteDislike", passport.authenticate('jwt', { session: false }), a
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 0) {
-      delDislike(userId, imageId);
+      await delDislike(userId, imageId);
       return res.status(200).json({ message: "200" });
     }
   }

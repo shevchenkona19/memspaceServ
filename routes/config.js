@@ -42,7 +42,7 @@ router.post("/postSelectedCategories", passport.authenticate('jwt', { session: f
         return res.status(500).json({ message: "BD error" });
     }
     for (var i = 0; i < Ids.length; i++) {
-        setCategory(req.user.userid, Ids[i]);
+        await setCategory(req.user.userid, Ids[i]);
     }
     res.status(200).json({ message: "200" });
 });
@@ -94,7 +94,7 @@ router.get("/getPersonalCategories", passport.authenticate('jwt', { session: fal
     }
     res.json({ categories: arr });
 });
-router.get("/config/getTest", passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get("/getTest", passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.accesslvl == -1) {
         return res.status(400).json({ message: "unauthorized" });
     }
@@ -162,7 +162,7 @@ var setCategory = async (userid, categoryid) => {
         return res.status(500).json({ message: "BD error" });
     }
 }
-
+/*
 var getCategoriesArray = async () => {
     try {
         var data = await db.query('SELECT categoryname FROM categories', [])
@@ -176,6 +176,6 @@ var getCategoriesArray = async () => {
     }
     console.log(result);
     return result;
-}
+}*/
 
 module.exports = router;
