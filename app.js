@@ -1,18 +1,10 @@
 //cd D:\OneDrive\Dust IT\MemSpace Server\serverapp
 //localhost:3000/
 
-//TODO:
-// Разобрать bcrypt
-// Разобрать .env
-// Добавить return в методы
-// Добавить колонки с категориями
-// В getfeed отправлять Opinion (1 -1 0)
-// error handler
-// переписать с async await
 var passport = require("passport");
 var express = require("express");
 var bodyParser = require("body-parser");
-const PORT = process.env.PORT || 8888
+const PORT = process.env.PORT || 8888;
 
 var app = express();
 
@@ -21,14 +13,29 @@ var jwtOptions = {};
 require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
+module.exports.passport = passport;
+
 //Настройки bodyParser`a
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+var config = require('./routes/config');
+var account = require('./routes/account');
+var favorites = require('./routes/favorites');
+var feed = require('./routes/feed');
+var feedback = require('./routes/feedback');
+var moderator = require('./routes/moderator');
 
 //routes
-require('./routes/main')(app, passport, jwtOptions);
+app.use('/config', config);
+app.use('/feed', feed);
+app.use('/favorites', favorites);
+app.use('/account', account);
+app.use('/feedback', feedback);
+app.use('/moderator', moderator);
+//require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);
 //setInterval(func, process.env.VKDELAY);
