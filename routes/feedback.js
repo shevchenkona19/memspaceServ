@@ -1,9 +1,17 @@
+<<<<<<< HEAD
+var db = require('../model/db');
+=======
 var db = require('../model');
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
 var express = require('express');
 var router = express.Router();
 var passport = require('../app').passport;
 
+<<<<<<< HEAD
+router.get("/postLike", passport.authenticate('jwt', { session: false }), function (req, res) {
+=======
 router.get("/postLike", passport.authenticate('jwt', { session: false }), async (req, res) => {
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
   if (req.user.accesslvl == -1) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -11,6 +19,26 @@ router.get("/postLike", passport.authenticate('jwt', { session: false }), async 
     var imageId = req.query.id;
     var userId = req.user.userid;
   } else return res.status(400).json({ message: "incorrect query" });
+<<<<<<< HEAD
+
+  db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId], (err, data) => {
+    if (err) {
+      console.log(err.stack);
+      return res.status(500).json({ message: "BD error" });
+    }
+    if (data.rows[0]) {
+      if (data.rows[0].opinion == 0) {
+        delDislike(userId, imageId);
+        setLike(userId, imageId);
+      }
+    } else {
+      setLike(userId, imageId);
+    }
+    res.status(200).json({ message: "200" });
+  })
+});
+router.get("/postDislike", passport.authenticate('jwt', { session: false }), function (req, res) {
+=======
   try {
     var data = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
   } catch (err) {
@@ -19,15 +47,16 @@ router.get("/postLike", passport.authenticate('jwt', { session: false }), async 
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 0) {
-      delDislike(userId, imageId);
-      setLike(userId, imageId);
+      await delDislike(userId, imageId);
+      await setLike(userId, imageId);
     }
   } else {
-    setLike(userId, imageId);
+    await setLike(userId, imageId);
   }
   res.status(200).json({ message: "200" });
 });
 router.get("/postDislike", passport.authenticate('jwt', { session: false }), async (req, res) => {
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
   if (req.user.accesslvl == -1) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -35,6 +64,26 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
     var imageId = req.query.id;
     var userId = req.user.userid;
   } else return res.status(400).json({ message: "incorrect query" });
+<<<<<<< HEAD
+
+  db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId], (err, data) => {
+    if (err) {
+      console.log(err.stack);
+      return res.status(500).json({ message: "BD error" });
+    }
+    if (data.rows[0]) {
+      if (data.rows[0].opinion == 1) {
+        delLike(userId, imageId);
+        setDislike(userId, imageId);
+      }
+    } else {
+      setDislike(userId, imageId);
+    }
+    res.status(200).json({ message: "200" });
+  })
+});
+router.get("/deleteLike", passport.authenticate('jwt', { session: false }), function (req, res) {
+=======
   try {
     var data = db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
   } catch (err) {
@@ -43,15 +92,16 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
-      delLike(userId, imageId);
-      setDislike(userId, imageId);
+      await delLike(userId, imageId);
+      await setDislike(userId, imageId);
     }
   } else {
-    setDislike(userId, imageId);
+    await setDislike(userId, imageId);
   }
   res.status(200).json({ message: "200" });
 });
 router.get("/deleteLike", passport.authenticate('jwt', { session: false }), async (req, res) => {
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
   if (req.user.accesslvl == -1) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -59,6 +109,24 @@ router.get("/deleteLike", passport.authenticate('jwt', { session: false }), asyn
     var imageId = req.query.id;
     var userId = req.user.userid;
   } else return res.status(400).json({ message: "incorrect query" });
+<<<<<<< HEAD
+
+  db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId], (err, data) => {
+    if (err) {
+      console.log(err.stack);
+      return res.status(500).json({ message: "BD error" });
+    }
+    if (data.rows[0]) {
+      if (data.rows[0].opinion == 1) {
+        delLike(userId, imageId);
+        return res.status(200).json({ message: "200" });
+      }
+    }
+    return res.status(200).json({ message: "200" });
+  })
+});
+router.get("/deleteDislike", passport.authenticate('jwt', { session: false }), function (req, res) {
+=======
   try {
     var data = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
   } catch (err) {
@@ -67,13 +135,14 @@ router.get("/deleteLike", passport.authenticate('jwt', { session: false }), asyn
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
-      delLike(userId, imageId);
+      await delLike(userId, imageId);
       return res.status(200).json({ message: "200" });
     }
   }
   return res.status(200).json({ message: "200" });
 });
 router.get("/deleteDislike", passport.authenticate('jwt', { session: false }), async (req, res) => {
+>>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
   if (req.user.accesslvl == -1) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -89,7 +158,7 @@ router.get("/deleteDislike", passport.authenticate('jwt', { session: false }), a
   }
   if (data.rows[0]) {
     if (data.rows[0].opinion == 0) {
-      delDislike(userId, imageId);
+      await delDislike(userId, imageId);
       return res.status(200).json({ message: "200" });
     }
   }
