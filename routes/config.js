@@ -5,22 +5,13 @@ var passport = require('../app').passport;
 
 router.get("/getCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-<<<<<<< HEAD
-        var rows = await db.query('SELECT * FROM categories', []);
-=======
         var data = await db.query('SELECT * FROM categories', []);
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
-<<<<<<< HEAD
-    if (rows[0]) {
-        res.json({ categories: rows });
-=======
     if (data.rows[0]) {
         res.json({ categories: data.rows });
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     }
 });
 router.post("/postSelectedCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -31,24 +22,11 @@ router.post("/postSelectedCategories", passport.authenticate('jwt', { session: f
         var Ids = req.body.Ids;
     } else return res.status(400).json({ message: "incorrect data" });
     try {
-<<<<<<< HEAD
-        var rows = await db.query('SELECT categoryname FROM categories', [])
-=======
         var data = await db.query('SELECT categoryname FROM categories', [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
-    }
-    catch (err) {
-        console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
-    }
     var catsString = '';
-<<<<<<< HEAD
-    for (var i = 0; i < rows.length; i++) {
-        catsString += rows[i].categoryname;
-=======
     for (var i = 0; i < data.rows.length; i++) {
         catsString += data.rows[i].categoryname;
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
         catsString += ` = '0', `;
     }
 
@@ -84,27 +62,13 @@ router.get("/getPersonalCategories", passport.authenticate('jwt', { session: fal
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-<<<<<<< HEAD
-        var rows = await db.query('SELECT categoryid, categoryname FROM categories', [])
-=======
         var data = await db.query('SELECT categoryid, categoryname FROM categories', [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
     var catsString = '';
     var ids = [];
-<<<<<<< HEAD
-    for (var i = 0; i < rows.length; i++) {
-        catsString += rows[i].categoryname;
-        catsString += ', ';
-        ids.push(rows[i].categoryid);
-    }
-    catsString = catsString.slice(0, -2);
-    try {
-        rows = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
-=======
     for (var i = 0; i < data.rows.length; i++) {
         catsString += data.rows[i].categoryname;
         catsString += ', ';
@@ -113,16 +77,11 @@ router.get("/getPersonalCategories", passport.authenticate('jwt', { session: fal
     catsString = catsString.slice(0, -2);
     try {
         data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
-<<<<<<< HEAD
-    var ob = rows[0];
-=======
     var ob = data.rows[0];
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     var arr = [];
     var j = 0;
     for (var prop in ob) {
@@ -136,11 +95,7 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-<<<<<<< HEAD
-        var rows = await db.query('SELECT categoryname FROM categories', [])
-=======
         var data = await db.query('SELECT categoryname FROM categories', [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
@@ -149,17 +104,10 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
     if (rows[0]) {
         var categories = [];
         for (var i = 0; i < rows.length; i++) {
-            categories.push(rows[i].categoryname);
-=======
-    if (data.rows[0]) {
-        var categories = [];
-        for (var i = 0; i < data.rows.length; i++) {
-            categories.push(data.rows[i].categoryname);
 >>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
         }
     } else return res.status(400).json({ message: "no categories" });
 
-    var arr = [];
     var count = 1;
     var offset = 0;
     var id;
@@ -168,23 +116,14 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
         console.log('j=' + j);
         do {
             try {
-<<<<<<< HEAD
-                rows = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
-=======
                 data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
             } catch (err) {
                 console.log(err.stack);
                 return res.status(500).json({ message: "BD error" });
             }
             console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-<<<<<<< HEAD
-            if (rows) {
-                id = rows[0].imageid;
-=======
             if (data.rows) {
                 id = data.rows[0].imageid;
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
                 console.log(id);
             }
             else id = -1;
@@ -205,20 +144,12 @@ var checkPrev = (arr, id) => {
 
 var setCategory = async (userid, categoryid) => {
     try {
-<<<<<<< HEAD
-        var rows = db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
-=======
         var data = db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
-<<<<<<< HEAD
-    var categoryname = rows[0].categoryname;
-=======
     var categoryname = data.rows[0].categoryname;
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     console.log(categoryname);
     try {
         await db.query(`UPDATE users SET ${categoryname} = '1' WHERE userid = ${userid}`, [])
@@ -230,23 +161,14 @@ var setCategory = async (userid, categoryid) => {
 /*
 var getCategoriesArray = async () => {
     try {
-<<<<<<< HEAD
-        var rows = await db.query('SELECT categoryname FROM categories', [])
-=======
         var data = await db.query('SELECT categoryname FROM categories', [])
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
     var result = [];
-<<<<<<< HEAD
-    for (var i = 0; i < rows.length; i++) {
-        result[i] = rows[i].categoryname;
-=======
     for (var i = 0; i < data.rows.length; i++) {
         result[i] = data.rows[i].categoryname;
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
     }
     console.log(result);
     return result;
