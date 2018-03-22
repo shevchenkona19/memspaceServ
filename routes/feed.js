@@ -55,7 +55,7 @@ router.get("/getCategoriesFeed", passport.authenticate('jwt', { session: false }
   }
   catsString = catsString.slice(0, -2);
   try {
-    data = db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
+    data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
   } catch (err) {
     console.log(err.stack);
     return res.status(500).json({ message: "BD error" });
