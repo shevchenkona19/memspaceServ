@@ -41,6 +41,7 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
     console.log(err.stack);
     return res.status(500).json({ message: "BD error" });
   }
+  console.log(data.rows[0]);
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
       await delLike(userId, imageId);
