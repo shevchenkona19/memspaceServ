@@ -45,7 +45,7 @@ router.get("/getCategoriesFeed", passport.authenticate('jwt', { session: false }
     console.log(err.stack);
     return res.status(500).json({ message: "BD error" });
   }
-  if (data.rows[0]) {
+  if (!data.rows[0]) {
     return res.status(400).json({ message: "no categories" });
   }
   var catsString = '';

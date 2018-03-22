@@ -144,7 +144,6 @@ var setCategory = async (userid, categoryid) => {
         return res.status(500).json({ message: "BD error" });
     }
     var categoryname = data.rows[0].categoryname;
-    console.log(categoryname);
     try {
         await db.query(`UPDATE users SET ${categoryname} = '1' WHERE userid = ${userid}`, [])
     } catch (err) {
