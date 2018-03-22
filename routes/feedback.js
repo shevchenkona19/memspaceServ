@@ -34,7 +34,7 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
   if (req.query.id) {
     var imageId = req.query.id;
     var userId = req.user.userid;
-    console.log(imageid, userId);
+    console.log(imageId, userId);
   } else return res.status(400).json({ message: "incorrect query" });
   try {
     var data = db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
