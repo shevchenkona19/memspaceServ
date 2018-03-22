@@ -34,14 +34,15 @@ router.get("/postDislike", passport.authenticate('jwt', { session: false }), asy
   if (req.query.id) {
     var imageId = req.query.id;
     var userId = req.user.userid;
+    console.log(imageid, userId);
   } else return res.status(400).json({ message: "incorrect query" });
   try {
     var data = db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
+    console.log(data);
   } catch (err) {
     console.log(err.stack);
     return res.status(500).json({ message: "BD error" });
   }
-  console.log(data.rows[0]);
   if (data.rows[0]) {
     if (data.rows[0].opinion == 1) {
       await delLike(userId, imageId);
