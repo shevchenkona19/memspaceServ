@@ -138,7 +138,7 @@ var checkPrev = (arr, id) => {
 
 var setCategory = async (userid, categoryid) => {
     try {
-        var data = db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
+        var data = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
