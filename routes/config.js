@@ -23,7 +23,9 @@ router.post("/postSelectedCategories", passport.authenticate('jwt', { session: f
     } else return res.status(400).json({ message: "incorrect data" });
     try {
         var data = await db.query('SELECT categoryname FROM categories', [])
+    } catch(err){
         return res.status(500).json({ message: "BD error" });
+    }
     var catsString = '';
     for (var i = 0; i < data.rows.length; i++) {
         catsString += data.rows[i].categoryname;
@@ -100,14 +102,6 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
-<<<<<<< HEAD
-    if (rows[0]) {
-        var categories = [];
-        for (var i = 0; i < rows.length; i++) {
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
-        }
-    } else return res.status(400).json({ message: "no categories" });
-
     var count = 1;
     var offset = 0;
     var id;
