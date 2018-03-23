@@ -49,7 +49,8 @@ router.post("/postPhoto", passport.authenticate('jwt', { session: false }), asyn
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-        console.log(req);
+        if(req.file){
+        console.log(req.file);}
         var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
         await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
         await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
