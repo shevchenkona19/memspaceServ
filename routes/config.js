@@ -50,7 +50,7 @@ router.post("/postPhoto", passport.authenticate('jwt', { session: false }), asyn
     }
     try {
         console.log(JSON.stringify(req.body));
-        await db.query(`UPDATE users SET imagedata = CAST('${req.body}' AS VARBINARY) WHERE userid = ${req.user.userid}`, [])
+        await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
