@@ -49,7 +49,7 @@ router.post("/postPhoto", passport.authenticate('jwt', { session: false }), asyn
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-        await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [req.body, req.user.userid])
+        await db.query(`UPDATE users SET imagedata = '$1' WHERE userid = $2`, [req.body, req.user.userid])
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
