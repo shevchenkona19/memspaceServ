@@ -49,7 +49,7 @@ router.post("/postPhoto", passport.authenticate('jwt', { session: false }), asyn
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-        console.log(body);
+        console.log(req.body);
         await db.query(`UPDATE users SET imagedata = CAST('${req.body}' AS VARBINARY) WHERE userid = ${req.user.userid}`, [])
     } catch (err) {
         console.log(err.stack);
