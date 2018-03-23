@@ -49,8 +49,13 @@ router.post("/postPhoto", passport.authenticate('jwt', { session: false }), asyn
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-        console.log(JSON.stringify(req.body));
-        await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
+        console.log(JSON.stringify(req));
+        var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
+        await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
+        await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
+            data.rows[0].password, data.rows[0].email, req.body])
+       // await db.query(`INSERT INTO users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
+     //   await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
