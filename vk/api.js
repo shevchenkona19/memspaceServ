@@ -47,22 +47,20 @@ var getImages = function (offset) {
         console.log('attempting to GET %j', path);
 
         try {
-            request({ url: path, encoding: null }, function (error, response, body) {
+            request({url: path, encoding: null}, function (error, response, body) {
                 body = JSON.parse(body);
 
                 if (body && body.response && body.response.items && body.response.items[0]
                     && body.response.items[0].attachments && body.response.items[0].attachments[0]
                     && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
                     path = body.response.items[0].attachments[0].photo.photo_604;
-                    request({ url: path, encoding: null }, function (error, response, body) {
-<<<<<<< HEAD
+                    request({url: path, encoding: null}, function (error, response, body) {
                         db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => {
                             if (err) {
                                 console.log(err.stack);
                             }
                             console.log('image downloaded');
                         })
-=======
                         async () => {
                             try {
                                 await db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key])
@@ -71,11 +69,12 @@ var getImages = function (offset) {
                             }
                         }
                         console.log('image downloaded');
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
                     });
                 } else console.log('not full response')
             });
-        } catch (err) { continue; }
+        } catch (err) {
+            continue;
+        }
         // https.get(path, function (res) {
         //     var body = '';
         //     res.on('data', function (chunk) {

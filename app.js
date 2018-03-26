@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-//cd D:\OneDrive\Dust IT\MemSpace Server\serverapp
-//localhost:3000/
-
-=======
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
 var passport = require("passport");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -17,10 +11,7 @@ require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
 module.exports.passport = passport;
-<<<<<<< HEAD
-=======
 module.exports.jwtOptions = jwtOptions;
->>>>>>> f006481d3aa49f31e3db712ff4be4d51ad370cb1
 
 //Настройки bodyParser`a
 app.use(bodyParser.urlencoded({
