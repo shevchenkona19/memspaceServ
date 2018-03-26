@@ -2,6 +2,8 @@ var db = require('../model');
 var express = require('express');
 var router = express.Router();
 var passport = require('../app').passport;
+var path = require('path'),
+    fs = require('fs');
 
 router.get("/getCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -45,23 +47,15 @@ router.post("/postSelectedCategories", passport.authenticate('jwt', { session: f
     res.status(200).json({ message: "200" });
 });
 router.post("/postPhoto", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.accesslvl == -1) {
+    console.log('1');
+	if (req.user.accesslvl == -1) {
         return res.status(400).json({ message: "unauthorized" });
     }
-    try {
-        if(req.file){
-        console.log(req.file);}
-        var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
-        await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
-        await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
-            data.rows[0].password, data.rows[0].email, req.body])
-       // await db.query(`INSERT INTO users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
-     //   await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
+	console.log('2');
+	console.log(req.files);
+	console.log('3');
     res.status(200).json({ message: "200" });
+	console.log('4');
 });
 router.get("/getPersonalCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.accesslvl == -1) {
@@ -169,6 +163,19 @@ var getCategoriesArray = async () => {
     }
     console.log(result);
     return result;
-}*/
+}
+    ///try {
+        //if(req.file){
+      //  console.log(req.file);}
+        //var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
+        //await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
+       // await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
+         //   data.rows[0].password, data.rows[0].email, req.body])
+       // await db.query(`INSERT INTO users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
+     //   await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
+    //} catch (err) {
+        //console.log(err.stack);
+      //  return res.status(500).json({ message: "BD error" });
+    //}*/
 
 module.exports = router;
