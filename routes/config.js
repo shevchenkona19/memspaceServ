@@ -95,13 +95,14 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
         return res.status(400).json({ message: "unauthorized" });
     }
     try {
-        var data = await db.query('SELECT categoryname FROM categories', [])
+        var categories = await getCategoriesArray();
+        //var data = await db.query('SELECT categoryname FROM categories', []);
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({ message: "BD error" });
     }
     var count = 1;
-    var offset = 0;
+    var offset;
     var id;
     for (var j = 0; j < categories.length; j++) {
         offset = 0;
@@ -149,7 +150,7 @@ var setCategory = async (userid, categoryid) => {
         return res.status(500).json({ message: "BD error" });
     }
 }
-/*
+
 var getCategoriesArray = async () => {
     try {
         var data = await db.query('SELECT categoryname FROM categories', [])
@@ -164,7 +165,7 @@ var getCategoriesArray = async () => {
     console.log(result);
     return result;
 }
-    ///try {
+/*  ///try {
         //if(req.file){
       //  console.log(req.file);}
         //var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
