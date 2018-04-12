@@ -109,7 +109,7 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
         console.log('j=' + j);
         do {
             try {
-                data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
+                data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
             } catch (err) {
                 console.log(err.stack);
                 return res.status(500).json({ message: "BD error" });
