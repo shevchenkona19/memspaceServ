@@ -104,6 +104,7 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
     var count = 1;
     var offset;
     var id;
+    var arr = [];
     for (var j = 0; j < categories.length; j++) {
         offset = 0;
         console.log('j=' + j);
