@@ -1,139 +1,105 @@
-var db = require('../model');
-var express = require('express');
-var router = express.Router();
-var passport = require('../app').passport;
-//var fs = require('fs');
+const db = require('../model');
+const express = require('express');
+const router = express.Router();
+const passport = require('../app').passport;
+//let fs = require('fs');
 
 router.get("/imgs", async (req, res) => {
-  if (req.query.id) {
-    var id = req.query.id;
-  } else return res.status(400).json({ message: "incorrect query" });
-  try {
-    var data = await db.query('SELECT imagedata FROM images WHERE imageId = $1', [id])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (data.rows[0]) {
-    res.contentType('image/jpeg');
-    return res.end(data.rows[0].imagedata, 'binary');
-  } else return res.status(400).json({ message: "no image found" });
-});
-router.get("/getFeed", passport.authenticate('jwt', { session: false }), async (req, res) => {
-  if (req.query.count && req.query.offset) {
-    var count = req.query.count;
-    var offset = req.query.offset;
-  } else return res.status(400).json({ message: "incorrect query" })
-  try {
-    var data = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
-      + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
-      + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  return res.json({ memes: data.rows });
-});
-router.get("/getCategoriesFeed", passport.authenticate('jwt', { session: false }), async (req, res) => {
-  if (req.query.count && req.query.offset && req.user.accesslvl != -1) {
-    var count = req.query.count;
-    var offset = req.query.offset;
-  } else return res.status(400).json({ message: "incorrect query" })
-  try {
-    var data = await db.query('SELECT categoryname FROM categories', [])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (!data.rows[0]) {
-    return res.status(400).json({ message: "no categories" });
-  }
-  var catsString = '';
-  for (var i = 0; i < data.rows.length; i++) {
-    catsString += `"` + data.rows[i].categoryname + `"`;
-    catsString += ', ';
-  }
-  catsString = catsString.slice(0, -2);
-  try {
-    data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (!data.rows[0]) {
-    return res.status(500).json({ message: "BD error" });
-  }
-  var ob = data.rows[0];
-  var str = '';
-  for (var prop in ob) {
-    if (ob[prop] == '1') {
-      str += `"` + prop + `"` + " = '" + ob[prop] + "'";
-      str += ' OR ';
+    if (!req.query.id) {
+        return res.status(400).json({message: "incorrect query"});
     }
-  }
-  str = str.substring(0, str.length - 4);
-  try {
-    data = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
-      + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
-      + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (data.rows[0]) {
-    return res.json({ memes: data.rows });
-  } else return res.json({ memes: {} });
+    const data = await db.query('SELECT imagedata FROM images WHERE imageId = $1', [id])
+    if (data.rows[0]) {
+        res.contentType('image/*');
+        return res.end(data.rows[0].imagedata, 'binary');
+    } else return res.status(400).json({message: "no image found"});
 });
-router.get("/getCategoryFeed", passport.authenticate('jwt', { session: false }), async (req, res) => {
-  if (req.query.count && req.query.offset && req.query.categoryname) {
-    var count = req.query.count;
-    var offset = req.query.offset;
-    var categoryname = req.query.categoryname;
-  } else return res.status(400).json({ message: "incorrect query" })
-  try {
-    var data = await db.query(`SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion `
-      + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryname} = '1' `
-      + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (data.rows[0]) {
-    return res.json({ memes: data.rows });
-  } else return res.json({ memes: {} });
+router.get("/feed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (!(req.query.count && req.query.offset)) {
+        return res.status(400).json({message: "incorrect query"})
+    }
+    const count = req.query.count;
+    const offset = req.query.offset;
+    const data = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+        + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
+        + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset]);
+    return res.status(200).json({memes: data.rows});
 });
-router.get("/getHotFeed", passport.authenticate('jwt', { session: false }), async (req, res) => {
-  if (req.query.count && req.query.offset) {
-    var count = req.query.count;
-    var offset = req.query.offset;
-  } else return res.status(400).json({ message: "incorrect query" })
-  var filter = process.env.HOTFILTER;
-  try {
-    var data = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
-      + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE likes >= $2 '
-      + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (data.rows[0]) {
-    return res.json({ memes: data.rows });
-  } else return res.json({ memes: {} });
+router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (!(req.query.count && req.query.offset && req.user.accesslvl === -1)) {
+        return res.status(400).json({message: "incorrect query"})
+    }
+    const count = req.query.count;
+    const offset = req.query.offset;
+    const data = await db.query('SELECT categoryname FROM categories');
+    if (!data.rows[0]) {
+        return res.status(400).json({message: "no categories"});
+    }
+    let catsString = '';
+    for (let i = 0; i < data.rows.length; i++) {
+        catsString += `"` + data.rows[i].categoryname + `"`;
+        if (i !== data.rows.length - 1) {
+            catsString += ', ';
+        }
+    }
+    const categories = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
+    if (!data.rows[0]) {
+        return res.status(200).json({memes: {}});
+    }
+    const obj = categories.rows[0];
+    let str = '';
+    for (let prop in obj) {
+        if (obj[prop].toString() === '1') {
+            str += `"` + prop + `"` + " = '" + obj[prop] + "'";
+            str += ' OR ';
+        }
+    }
+    str = str.substring(0, str.length - 4);
+    const memes = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+        + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
+        + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
+    if (memes.rows[0]) {
+        return res.status(200).json({memes: memes.rows});
+    } else return res.status(200).json({memes: {}});
 });
-router.get("/getUserPhoto", async (req, res) => {
-  if (req.query.targetUsername) {
-    var targetUsername = req.query.targetUsername;
-  } else return res.status(400).json({ message: "incorrect query" })
-  try {
-    var data = await db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername])
-  } catch (err) {
-    console.log(err.stack);
-    return res.status(500).json({ message: "BD error" });
-  }
-  if (data.rows[0]) {
-    res.contentType('image/jpeg');
-    return res.end(data.rows[0].imagedata, 'binary');
-  } else return res.status(400).json({ message: "no image found" });
+router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (!(req.query.count && req.query.offset && req.query.categoryName)) {
+        return res.status(400).json({message: "incorrect query"});
+    }
+    const count = req.query.count;
+    const offset = req.query.offset;
+    const categoryName = req.query.categoryName;
+    const memes = await db.query(`SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion `
+        + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryName} = '1' `
+        + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+    if (memes.rows[0]) {
+        return res.json({memes: memes.rows});
+    } else return res.json({memes: {}});
+});
+router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (!(req.query.count && req.query.offset && req.query.categoryName)) {
+        return res.status(400).json({message: "incorrect query"});
+    }
+    const count = req.query.count;
+    const offset = req.query.offset;
+    const filter = process.env.HOTFILTER;
+    const memes = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+        + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE likes >= $2 '
+        + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset])
+    if (memes.rows[0]) {
+        return res.json({memes: memes.rows});
+    } else return res.json({memes: {}});
+});
+router.get("/userPhoto", async (req, res) => {
+    if (!req.query.targetUsername) {
+        return res.status(400).json({message: "incorrect query"});
+    }
+    const targetUsername = req.query.targetUsername;
+    const image = await db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername])
+    if (image.rows[0]) {
+        res.contentType('image/*');
+        return res.end(image.rows[0].imagedata, 'binary');
+    } else return res.status(400).json({message: "no image found"});
 });
 
 module.exports = router;
