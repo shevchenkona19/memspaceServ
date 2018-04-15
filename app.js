@@ -1,12 +1,12 @@
-var passport = require("passport");
-var express = require("express");
-var bodyParser = require("body-parser");
+const passport = require("passport");
+const express = require("express");
+const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8888;
 
-var app = express();
+const app = express();
 
 //Настройки авторизации
-var jwtOptions = {};
+let jwtOptions = {};
 require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
@@ -19,12 +19,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-var config = require('./routes/config');
-var account = require('./routes/account');
-var favorites = require('./routes/favorites');
-var feed = require('./routes/feed');
-var feedback = require('./routes/feedback');
-var moderator = require('./routes/moderator');
+const config = require('./routes/config');
+const account = require('./routes/account');
+const favorites = require('./routes/favorites');
+const feed = require('./routes/feed');
+const feedback = require('./routes/feedback');
+const moderator = require('./routes/moderator');
 
 //routes
 app.use('/config', config);

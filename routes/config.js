@@ -1,175 +1,156 @@
-var db = require('../model');
-var express = require('express');
-var router = express.Router();
-var passport = require('../app').passport;
-var path = require('path'),
-    fs = require('fs');
+const db = require('../model');
+const express = require('express');
+const router = express.Router();
+const passport = require('../app').passport;
 
-router.get("/getCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
-        var data = await db.query('SELECT * FROM categories', []);
+        const data = await db.query('SELECT * FROM categories');
+        res.json({categories: data.rows});
     } catch (err) {
         console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    if (data.rows[0]) {
-        res.json({ categories: data.rows });
+        return res.status(500).json({message: "BD error"});
     }
 });
-router.post("/postSelectedCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.accesslvl == -1) {
-        return res.status(400).json({ message: "unauthorized" });
+router.post("/selectedCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (req.user.accesslvl === -1) {
+        return res.status(400).json({message: "unauthorized"});
     }
-    if (req.body.Ids) {
-        var Ids = req.body.Ids;
-    } else return res.status(400).json({ message: "incorrect data" });
+    if (!req.body.Ids) {
+        return res.status(400).json({message: "incorrect data"});
+    }
+    const Ids = req.body.Ids;
     try {
-        var data = await db.query('SELECT categoryname FROM categories', [])
-    } catch(err){
-        return res.status(500).json({ message: "BD error" });
-    }
-    var catsString = '';
-    for (var i = 0; i < data.rows.length; i++) {
-        catsString += data.rows[i].categoryname;
-        catsString += ` = '0', `;
-    }
-
-    catsString = catsString.substring(0, catsString.length - 2);
-    try {
-        await db.query(`UPDATE users SET ${catsString} WHERE userid = ${req.user.userid}`, [])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    for (var i = 0; i < Ids.length; i++) {
-        await setCategory(req.user.userid, Ids[i]);
-    }
-    res.status(200).json({ message: "200" });
-});
-router.post("/postPhoto", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    console.log('1');
-	if (req.user.accesslvl == -1) {
-        return res.status(400).json({ message: "unauthorized" });
-    }
-	console.log('2');
-	console.log(req.files);
-	console.log('3');
-    res.status(200).json({ message: "200" });
-	console.log('4');
-});
-router.get("/getPersonalCategories", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.accesslvl == -1) {
-        return res.status(400).json({ message: "unauthorized" });
-    }
-    try {
-        var data = await db.query('SELECT categoryid, categoryname FROM categories', [])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    var catsString = '';
-    var ids = [];
-    for (var i = 0; i < data.rows.length; i++) {
-        catsString += data.rows[i].categoryname;
-        catsString += ', ';
-        ids.push(data.rows[i].categoryid);
-    }
-    catsString = catsString.slice(0, -2);
-    try {
-        data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`, [])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    var ob = data.rows[0];
-    var arr = [];
-    var j = 0;
-    for (var prop in ob) {
-        arr.push({ categoryname: prop, categoryIsUsed: ob[prop], categoryId: ids[j] });
-        j++;
-    }
-    res.json({ categories: arr });
-});
-router.get("/getTest", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.accesslvl == -1) {
-        return res.status(400).json({ message: "unauthorized" });
-    }
-    try {
-        var categories = await getCategoriesArray();
-        //var data = await db.query('SELECT categoryname FROM categories', []);
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    var count = 1;
-    var offset;
-    var id;
-    var arr = [];
-    for (var j = 0; j < categories.length; j++) {
-        offset = 0;
-        console.log('j=' + j);
-        do {
-            try {
-                data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`, [])
-            } catch (err) {
-                console.log(err.stack);
-                return res.status(500).json({ message: "BD error" });
+        const data = await db.query('SELECT categoryname FROM categories');
+        let catsString = '';
+        for (let i = 0; i < data.rows.length; i++) {
+            catsString = catsString.concat(data.rows[i].categoryname);
+            if (i !== data.rows.length - 1) {
+                catsString = catsString.concat(" = '0', ");
+            } else {
+                catsString = catsString.concat(" = '0'")
             }
-            console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-            if (data.rows && data.rows[0] && data.rows[0].imageid) {
-                id = data.rows[0].imageid;
-                console.log(id);
-            }
-            else id = -1;
-            if (id == -1) break;
-            offset++;
-        } while (checkPrev(arr, id))
-        if (id != -1) arr.push({ imageid: id, categoryname: categories[j] });
+        }
+        await db.query(`UPDATE users SET ${catsString} WHERE userid = ${req.user.userid}`)
+        for (let i = 0; i < Ids.length; i++) {
+            await setCategory(req.user.userid, Ids[i]);
+        }
+        res.status(200).json({message: "200"});
+    } catch (err) {
+        return res.status(500).json({message: "BD error"});
     }
-    res.json({ test: arr });
+});
+router.post("/photo", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (req.user.accesslvl === -1) {
+        return res.status(400).json({message: "unauthorized"});
+    }
+    return res.status(200)
+    // TODO: implement busboy multipart http
+});
+router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (req.user.accesslvl === -1) {
+        return res.status(400).json({message: "unauthorized"});
+    }
+    try {
+        let data = await db.query('SELECT categoryid, categoryname FROM categories');
+        if (!data) {
+            return res.status(400).json({message: 'No categories'});
+        }
+        let catsString = '';
+        const ids = [];
+        for (let i = 0; i < data.rows.length; i++) {
+            catsString = catsString.concat(data.rows[i].categoryname);
+            if (i !== data.rows.length - 1) {
+                catsString = catsString.concat(', ');
+            }
+            ids.push(data.rows[i].categoryid);
+        }
+        data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
+        const queryResult = data.rows[0];
+        const toSendArray = [];
+        let j = 0;
+        for (let prop in queryResult) {
+            toSendArray.push({
+                categoryName: prop,
+                categoryIsUsed: queryResult[prop],
+                categoryId: ids[j]
+            });
+            j++;
+        }
+        return res.status(200).json({categories: toSendArray});
+    } catch (err) {
+        console.log(err.stack);
+        return res.status(500).json({message: "BD error"});
+    }
+});
+router.get("/test", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (req.user.accesslvl === -1) {
+        return res.status(400).json({message: "unauthorized"});
+    }
+    try {
+        const categories = await getCategoriesArray();
+        let count = 1;
+        let offset = 0;
+        let id = -1;
+        const arr = [];
+        for (let j = 0; j < categories.length; j++) {
+            offset = 0;
+            console.log('j=' + j);
+            do {
+                const data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+                console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+                if (data.rows) {
+                    id = data.rows[0].imageid;
+                } else {
+                    id = -1;
+                    break;
+                }
+                offset++;
+            } while (checkPrev(arr, id));
+            if (id !== -1) arr.push({imageId: id, categoryName: categories[j]});
+        }
+        res.status(200).json({test: arr});
+    } catch (err) {
+        console.log(err.stack);
+        return res.status(500).json({message: "BD error"});
+    }
 });
 
-var checkPrev = (arr, id) => {
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].imageid == id) return true;
+checkPrev = (arr, id) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].imageid === id) return true;
     }
     return false;
-}
+};
 
-var setCategory = async (userid, categoryid) => {
+setCategory = async (userid, categoryid) => {
     try {
-        var data = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
-    }
-    var categoryname = data.rows[0].categoryname;
-    try {
+        const data = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
+        const categoryname = data.rows[0].categoryname;
         await db.query(`UPDATE users SET ${categoryname} = '1' WHERE userid = ${userid}`, [])
     } catch (err) {
         console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
+        return res.status(500).json({message: "BD error"});
     }
-}
+};
 
-var getCategoriesArray = async () => {
+getCategoriesArray = async () => {
     try {
-        var data = await db.query('SELECT categoryname FROM categories', [])
+        const data = await db.query('SELECT categoryname FROM categories');
+        const result = [];
+        for (let i = 0; i < data.rows.length; i++) {
+            result[i] = data.rows[i].categoryname;
+        }
+        return result;
     } catch (err) {
         console.log(err.stack);
-        return res.status(500).json({ message: "BD error" });
+        return res.status(500).json({message: "BD error"});
     }
-    var result = [];
-    for (var i = 0; i < data.rows.length; i++) {
-        result[i] = data.rows[i].categoryname;
-    }
-    console.log(result);
-    return result;
 }
 /*  ///try {
         //if(req.file){
       //  console.log(req.file);}
-        //var data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
+        //let data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
         //await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
        // await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
          //   data.rows[0].password, data.rows[0].email, req.body])
