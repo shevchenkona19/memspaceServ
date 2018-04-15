@@ -9,6 +9,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pg": "^7.4.1",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "busboy": "^0.2.14"
   }
 }

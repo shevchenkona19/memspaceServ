@@ -14,7 +14,7 @@ router.get("/imgs", async (req, res) => {
         return res.end(data.rows[0].imagedata, 'binary');
     } else return res.status(400).json({message: "no image found"});
 });
-router.get("/feed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!(req.query.count && req.query.offset)) {
         return res.status(400).json({message: "incorrect query"})
     }

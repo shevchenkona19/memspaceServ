@@ -14,10 +14,10 @@ module.exports.passport = passport;
 module.exports.jwtOptions = jwtOptions;
 
 //Настройки bodyParser`a
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.json());
 
 const config = require('./routes/config');
 const account = require('./routes/account');
