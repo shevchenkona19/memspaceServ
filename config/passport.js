@@ -11,7 +11,7 @@ module.exports = function (passport, jwtOptions) {
 
     const strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
         try {
-            const data = await db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id]);
+            var data = await db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id]);
         }
         catch(err) {
             console.log(err.stack);
