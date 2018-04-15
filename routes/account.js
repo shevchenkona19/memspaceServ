@@ -8,6 +8,7 @@ const passport = require('../app').passport;
 const jwtOptions = require('../app').jwtOptions;
 
 router.post('/login', async (req, res) => {
+    console.warn(req.body);
     const body = req.body;
     if (!(body.username && body.password)) {
         return res.status(400).json({message: 'incorrect data'})

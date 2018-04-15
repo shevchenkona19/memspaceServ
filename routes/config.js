@@ -2,6 +2,9 @@ const db = require('../model');
 const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
+const Busboy = require('busboy');
+const path = require('path');
+const fs = require('fs');
 
 router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
@@ -44,7 +47,16 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (req.user.accesslvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
-    return res.status(200)
+    let bus = new Busboy({headers: req.headers});
+    bus.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        let saveTo = path.join('.', filename);
+        console.log("Upload: " + saveTo);
+        file.pipe(fs.createWriteStream(saveTo));
+    });
+    bus.on('finish', () => {
+        res.status(200)
+    })
+    return req.pipe(bus)
     // TODO: implement busboy multipart http
 });
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
