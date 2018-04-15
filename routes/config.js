@@ -91,7 +91,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         const categories = await getCategoriesArray();
         let count = 1;
         let offset = 0;
-        let id = -1;
+        let id = -1; 
         const arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
