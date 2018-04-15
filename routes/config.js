@@ -92,7 +92,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         let count = 1;
         let offset = 0;
         let id = -1;
-        const arr = [];
+        var arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
             console.log('j=' + j);
@@ -119,6 +119,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
 checkPrev = (arr, id) => {
     if(id == -1) return false;
     for (let i = 0; i < arr.length; i++) {
+        console.log(arr);
         console.log(arr[i].imageid);
         if (arr[i].imageid === id) return true;
     }
