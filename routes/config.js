@@ -92,7 +92,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         let count = 1;
         let offset = 0;
         let id = -1;
-        var arr = [];
+        const arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
             console.log('j=' + j);
@@ -107,7 +107,6 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
             } while (checkPrev(arr, id));
             console.log('id=' + id);
             if (id !== -1) arr.push({imageId: id, categoryName: categories[j]});
-            console.log(arr);
         }
         res.status(200).json({test: arr});
     } catch (err) {
@@ -119,9 +118,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
 checkPrev = (arr, id) => {
     if(id == -1) return false;
     for (let i = 0; i < arr.length; i++) {
-        console.log(arr);
-        console.log(arr[i].imageid);
-        if (arr[i].imageid === id) return true;
+        if (arr[i].imageId === id) return true;
     }
     return false;
 };
