@@ -95,15 +95,13 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         const arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
+            id = -1;
             console.log('j=' + j);
             do {
                 const data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
                 console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-                if (data.rows) {
+                if (data.rows && data.rows[0] && data.rows[0].imageid) {
                     id = data.rows[0].imageid;
-                } else {
-                    id = -1;
-                    break;
                 }
                 offset++;
             } while (checkPrev(arr, id));
@@ -117,6 +115,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
 });
 
 checkPrev = (arr, id) => {
+    if(id == -1) return false;
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].imageid === id) return true;
     }
