@@ -119,6 +119,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
 checkPrev = (arr, id) => {
     if(id == -1) return false;
     for (let i = 0; i < arr.length; i++) {
+        console.log(arr[i].imageid);
         if (arr[i].imageid === id) return true;
     }
     return false;
