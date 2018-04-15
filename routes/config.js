@@ -95,9 +95,9 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         const arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
-            id = -1;
             console.log('j=' + j);
             do {
+                id = -1;
                 const data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
                 console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
                 if (data.rows && data.rows[0] && data.rows[0].imageid) {
@@ -105,7 +105,9 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
                 }
                 offset++;
             } while (checkPrev(arr, id));
+            console.log('id=' + id);
             if (id !== -1) arr.push({imageId: id, categoryName: categories[j]});
+            console.log(arr);
         }
         res.status(200).json({test: arr});
     } catch (err) {
