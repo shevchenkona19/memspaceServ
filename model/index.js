@@ -5,12 +5,5 @@ const pool = new Pool({
 });
 
 module.exports = {
-    query: (text, params) => {
-        try {
-            pool.query(text, params)
-        } catch (e) {
-            console.error(e);
-            throw e
-        }
-    }
+    query: (text, params) => pool.query(text, params)
 };

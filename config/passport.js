@@ -10,7 +10,12 @@ module.exports = function (passport, jwtOptions) {
     jwtOptions.secretOrKey = process.env.SECRETORKEY || "tasmanianDevil";
 
     const strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
-        const data = await db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id]);
+        try {
+            const data = await db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id]);
+        }
+        catch(err) {
+            console.log(err.stack);
+        }
         if (data.rows[0]) {
             next(null, data.rows[0]);
         } else {
