@@ -116,7 +116,7 @@ router.get("/getTest", passport.authenticate('jwt', { session: false }), async (
                 return res.status(500).json({ message: "BD error" });
             }
             console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-            if (data.rows) {
+            if (data.rows && data.rows[0] && data.rows[0].imageid) {
                 id = data.rows[0].imageid;
                 console.log(id);
             }
