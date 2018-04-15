@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({message: "no such user found"});
         }
     } catch (err) {
-        console.log(err.stack);
+        console.log(err.stack); 
         return res.status(500).json({message: "BD error"});
     }
 });
