@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
     const password = body.password;
     const email = body.email;
     try {
-        data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
+        const data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
         if (!(data.rows[0] && data.rows[0].cnt === 0)) {
             return res.status(400).json({message: "username or email is already taken"});
         }
@@ -57,11 +57,11 @@ router.post('/register', async (req, res) => {
                     return res.status(500).json({message: 'failed to create password'})
                 }
                 await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image])
-                data = await db.query('SELECT userid FROM users WHERE username = $1', [username])
-                if (!(data.rows[0] && data.rows[0].userid)) {
+                const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username])
+                if (!(userid.rows[0] && userid.rows[0].userid)) {
                     return res.status(500).json({message: "BD error"});
                 }
-                const payload = {id: data.rows[0].userid};
+                const payload = {id: userid.rows[0].userid};
                 const token = jwt.sign(payload, jwtOptions.secretOrKey);
                 return res.json({token: token});
             });
@@ -77,9 +77,5 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
     }
     return res.status(400).json({message: "unregistered"});
 })
-router.get("/test", async (req, res) => {
-    console.log('test');
-    res.send('tttttttttt');
-});
 
 module.exports = router;
