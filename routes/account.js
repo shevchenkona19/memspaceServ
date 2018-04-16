@@ -36,16 +36,13 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     const body = req.body;
     if (!(body.username && body.password && body.email)) {
-        console.log(body.username);
-        console.log(body.password);
-        console.log(body.email);
         return res.status(400).json({message: "incorrect data"});
     }
     const username = body.username;
     const password = body.password;
     const email = body.email;
     try {
-        data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
+        const data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
         if (!(data.rows[0] && data.rows[0].cnt === 0)) {
             return res.status(400).json({message: "username or email is already taken"});
         }
@@ -59,11 +56,11 @@ router.post('/register', async (req, res) => {
                     return res.status(500).json({message: 'failed to create password'})
                 }
                 await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image])
-                data = await db.query('SELECT userid FROM users WHERE username = $1', [username])
-                if (!(data.rows[0] && data.rows[0].userid)) {
+                const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username])
+                if (!(userid.rows[0] && userid.rows[0].userid)) {
                     return res.status(500).json({message: "BD error"});
                 }
-                const payload = {id: data.rows[0].userid};
+                const payload = {id: userid.rows[0].userid};
                 const token = jwt.sign(payload, jwtOptions.secretOrKey);
                 return res.json({token: token});
             });
