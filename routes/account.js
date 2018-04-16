@@ -52,19 +52,15 @@ router.post('/register', async (req, res) => {
                 console.log(err.stack);
                 return res.status(500).json({message: "default image error"});
             }
-            bcrypt.hash(password, 10, async (err, hash) => {
-                if (err) {
-                    return res.status(500).json({message: 'failed to create password'})
-                }
-                await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image])
-                const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username])
-                if (!(userid.rows[0] && userid.rows[0].userid)) {
-                    return res.status(500).json({message: "BD error"});
-                }
-                const payload = {id: userid.rows[0].userid};
-                const token = jwt.sign(payload, jwtOptions.secretOrKey);
-                return res.json({token: token});
-            });
+            const passwordToSave = bcrypt.hashSync(password);
+            await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image])
+            const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username])
+            if (!(userid.rows[0] && userid.rows[0].userid)) {
+                return res.status(500).json({message: "BD error"});
+            }
+            const payload = {id: userid.rows[0].userid};
+            const token = jwt.sign(payload, jwtOptions.secretOrKey);
+            return res.json({token: token});
         })
     } catch (err) {
         console.log(err.stack);
