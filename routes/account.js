@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
     const email = body.email;
     try {
         const data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
-        if (!(data.rows[0] && data.rows[0].cnt === 0)) {
+        if (!(data.rows[0] && data.rows[0].cnt == 0)) {
             return res.status(400).json({message: "username or email is already taken"});
         }
         fs.readFile('noimage.png', async (err, image) => {
