@@ -147,18 +147,5 @@ getCategoriesArray = async () => {
         return res.status(500).json({message: "BD error"});
     }
 }
-/*  ///try {
-        //if(req.file){
-      //  console.log(req.file);}
-        //let data = await db.query('SELECT * FROM users WHERE userid = $1', [req.user.userid])
-        //await db.query('DELETE * FROM users WHERE userid = $1', [req.user.userid])
-       // await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [data.rows[0].username,
-         //   data.rows[0].password, data.rows[0].email, req.body])
-       // await db.query(`INSERT INTO users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
-     //   await db.query(`UPDATE users SET imagedata = '${req.body}' WHERE userid = ${req.user.userid}`, [])
-    //} catch (err) {
-        //console.log(err.stack);
-      //  return res.status(500).json({ message: "BD error" });
-    //}*/
 
 module.exports = router;

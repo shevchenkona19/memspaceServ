@@ -36,6 +36,9 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     const body = req.body;
     if (!(body.username && body.password && body.email)) {
+        console.log(body.username);
+        console.log(body.password);
+        console.log(body.email);
         return res.status(400).json({message: "incorrect data"});
     }
     const username = body.username;
@@ -76,9 +79,5 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
     }
     return res.status(400).json({message: "unregistered"});
 })
-router.get("/test", async (req, res) => {
-    console.log('test');
-    res.send('tttttttttt');
-});
 
 module.exports = router;
