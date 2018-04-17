@@ -8,6 +8,7 @@ router.get("/imgs", async (req, res) => {
     if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
+    const id = req.query.id;
     const data = await db.query('SELECT imagedata FROM images WHERE imageId = $1', [id])
     if (data.rows[0]) {
         res.contentType('image/*');
