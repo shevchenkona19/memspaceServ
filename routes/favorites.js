@@ -47,7 +47,7 @@ router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: fal
     const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
     let favArr = JSON.parse(data.rows[0].favorites);
     if (favArr.indexOf(id) !== -1) {
-        favArr = delete favArr[id]
+        delete favArr[id];
     } else res.status(200).json({message: "not a favorite"});
     await db.query(`UPDATE users SET favorites = '${JSON.stringify(favArr)}' WHERE userid = ${req.user.userid}`);
     res.status(200).json({message: "200"});
