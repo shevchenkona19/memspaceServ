@@ -31,7 +31,7 @@ router.get("/allFavorites", passport.authenticate('jwt', {session: false}), asyn
     }
     const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
     if (data.rows[0]) {
-        return res.json({favorites: data.rows[0].favorites});
+        return res.json({favorites: JSON.parse(data.rows[0].favorites)});
     } else {
         return res.json({favorites: []})
     }
