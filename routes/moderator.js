@@ -34,10 +34,10 @@ router.delete("/category", passport.authenticate('jwt', {session: false}), async
     if (req.user.accesslvl < 2) {
         return res.status(401).json({message: 'unauthorized'})
     }
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: "incorrect data"});
     }
-    const id = req.body.id;
+    const id = req.query.id;
     const categories = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [id]);
     const categoryName = categories.rows[0].categoryname;
     await db.query('DELETE FROM categories WHERE categoryid = $1', [id]);
@@ -59,18 +59,18 @@ router.post("/discardMem", passport.authenticate('jwt', {session: false}), async
     if (req.user.accesslvl < 1) {
         return res.status(401).json({message: 'unauthorized'})
     }
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: 'incorrect quarry'})
     }
-    const id = req.body.id;
+    const id = req.query.id;
     await db.query(`DELETE FROM images WHERE imageid = ${id}`);
     res.status(200).json({message: "200"});
 });
 router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!(req.body.id && req.body.Ids)) {
+    if (!(req.query.id && req.body.Ids)) {
         return res.status(400).json({message: "incorrect data"});
     }
-    const id = req.body.id;
+    const id = req.query.id;
     const Ids = req.body.Ids;
     for (let i = 0; i < Ids.length; i++) {
         await setCategory(id, Ids[i]);

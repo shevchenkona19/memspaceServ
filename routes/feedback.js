@@ -7,12 +7,10 @@ router.post("/like", passport.authenticate('jwt', {session: false}), async (req,
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    console.warn("Query: ",req.query);
-    console.warn("Body: ",req.body);
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
-    const imageId = req.body.id;
+    const imageId = req.query.id;
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
@@ -29,7 +27,7 @@ router.post("/dislike", passport.authenticate('jwt', {session: false}), async (r
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.body.id;
@@ -49,10 +47,10 @@ router.delete("/like", passport.authenticate('jwt', {session: false}), async (re
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
-    const imageId = req.body.id;
+    const imageId = req.query.id;
     const userId = req.user.userid;
     const data = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (data.rows[0]) {
@@ -67,10 +65,10 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
-    const imageId = req.body.id;
+    const imageId = req.query.id;
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
     if (likes.rows[0]) {
