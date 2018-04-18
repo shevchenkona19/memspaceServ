@@ -16,7 +16,7 @@ router.get("/imgs", async (req, res) => {
     } else return res.status(400).json({message: "no image found"});
 });
 router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!(req.query.count && req.query.offset)) {
+    if (!req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"})
     }
     const count = req.query.count;
@@ -27,7 +27,7 @@ router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (r
     return res.status(200).json({memes: data.rows});
 });
 router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!(req.query.count && req.query.offset && req.user.accesslvl === -1)) {
+    if (!req.query.count || !req.query.offset || !req.user.accesslvl === -1) {
         return res.status(400).json({message: "incorrect query"})
     }
     const count = req.query.count;
