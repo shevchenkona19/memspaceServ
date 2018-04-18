@@ -43,6 +43,7 @@ router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: fal
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
+    const id = req.query.id;
     const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
     let favArr = JSON.parse(data.rows[0].favorites);
     if (favArr.indexOf(id) !== -1) {
