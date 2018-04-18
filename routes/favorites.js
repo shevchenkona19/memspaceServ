@@ -30,7 +30,7 @@ router.get("/allFavorites", passport.authenticate('jwt', {session: false}), asyn
         return res.status(401).json({message: 'unauthorized'})
     }
     const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
-    console.warn("FAVS: ", data.rows[0].favorites);
+    console.warn("FAVS: ", data.rows[0]);
     if (data.rows[0]) {
         return res.json({favorites: data.rows[0].favorites});
     } else {
