@@ -4,7 +4,10 @@ const router = express.Router();
 const passport = require('../app').passport;
 
 router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!(req.query.id || req.user.accesslvl === -1)) {
+    if (req.user.accesslvl === -1) {
+        return res.status(401).json({message: 'unauthorized'})
+    }
+    if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
     const id = req.query.id;
@@ -34,7 +37,10 @@ router.get("/allFavorites", passport.authenticate('jwt', {session: false}), asyn
     }
 });
 router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!(req.query.id || req.user.accesslvl === -1)) {
+    if (req.user.accesslvl === -1) {
+        return res.status(401).json({message: 'unauthorized'})
+    }
+    if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
     const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);

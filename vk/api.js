@@ -60,7 +60,7 @@ var getImages = function (offset) {
                                 console.log(err.stack);
                             }
                             console.log('image downloaded');
-                        })
+                        });
                         async () => {
                             try {
                                 await db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key])

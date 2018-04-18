@@ -10,7 +10,7 @@ const jwtOptions = require('../app').jwtOptions;
 router.post('/login', async (req, res) => {
     console.warn(req.body);
     const body = req.body;
-    if (!(body.username && body.password)) {
+    if (!body.username || !body.password) {
         return res.status(400).json({message: 'incorrect data'})
     }
     const username = body.username;
@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
 });
 router.post('/register', async (req, res) => {
     const body = req.body;
-    if (!(body.username && body.password && body.email)) {
+    if (!body.username || !body.password || !body.email) {
         return res.status(400).json({message: "incorrect data"});
     }
     const username = body.username;
