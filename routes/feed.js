@@ -98,10 +98,11 @@ router.get("/userPhoto", async (req, res) => {
         return res.status(400).json({message: "incorrect query"});
     }
     const targetUsername = req.query.targetUsername;
-    const image = await db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername])
+    const image = await db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername]);
     if (image.rows[0]) {
+        const dataSend = new Buffer(image.rows[0].imagedata, 'base64');
         res.contentType('image/*');
-        return res.end(image.rows[0].imagedata, 'binary');
+        return res.end(dataSend, 'binary');
     } else return res.status(400).json({message: "no image found"});
 });
 

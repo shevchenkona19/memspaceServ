@@ -18,13 +18,13 @@ router.post("/createCategory", passport.authenticate('jwt', {session: false}), a
     await db.query(`UPDATE images SET ${categoryName} = '0'`);
     res.status(200).json({message: "200"});
 });
-router.get("/getImages",/* passport.authenticate('jwt', {session: false}),*/ async (req, res) => {
+router.get("/getImages", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.offset) {
         return res.status(400).json({message: "incorrect data"});
     }
-    /*if (!req.user.accesslvl >= 2) {
+    if (!req.user.accesslvl >= 2) {
         return res.status(400).json({message: "incorrect lvl"});
-    }*/
+    }
     let offset = req.query.offset;
     
     await require('../vk/api')(offset);
