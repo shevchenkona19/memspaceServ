@@ -64,12 +64,12 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
     } else return res.status(200).json({memes: {}});
 });
 router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!req.query.count || !req.query.offset || !req.query.categoryName) {
+    if (!req.query.count || !req.query.offset || !req.query.categoryname) {
         return res.status(400).json({message: "incorrect query"});
     }
     const count = req.query.count;
     const offset = req.query.offset;
-    const categoryName = req.query.categoryName;
+    const categoryName = req.query.categoryname;
     const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
         + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryName} = '1' `
         + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
