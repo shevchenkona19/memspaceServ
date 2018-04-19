@@ -56,7 +56,7 @@ var getImages = async (offset) => {
                 const width = body.response.items[0].attachments[0].photo.width;
                 path = body.response.items[0].attachments[0].photo.photo_604;
 
-                response = await request(path, { encoding: null });
+                response = await request(path);
                 console.log(response.body);
                 await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [response.body, groupName, width, height])
                 
