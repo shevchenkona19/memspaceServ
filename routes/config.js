@@ -48,22 +48,7 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (req.user.accesslvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
-    let bus = new Busboy({headers: req.headers});
-    bus.on('file', (fieldname, file, filename, encoding, mimetype) => {
-        const fr = new FileReader();
-        console.log("Upload begin");
-        console.warn("fieldname", fieldname);
-        console.warn("file", file)
-        console.warn("filename", filename)
-        console.warn("encoding", encoding)
-        console.warn("mimetype", mimetype)
-        fr.readAsBinaryString(file);
-        console.log("Upload: " + fr.result);
-    });
-    bus.on('finish', () => {
-        res.status(200)
-    })
-    return req.pipe(bus)
+    console.log(req.body.photo);
     // TODO: implement busboy multipart http
 });
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
