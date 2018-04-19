@@ -21,7 +21,7 @@ router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (r
     }
     const count = req.query.count;
     const offset = req.query.offset;
-    const data = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+    const data = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
         + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
         + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset]);
     return res.status(200).json({memes: data.rows});
@@ -56,7 +56,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         }
     }
     str = str.substring(0, str.length - 4);
-    const memes = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+    const memes = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
         + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
         + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
     if (memes.rows[0]) {
@@ -70,7 +70,7 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     const count = req.query.count;
     const offset = req.query.offset;
     const categoryName = req.query.categoryName;
-    const memes = await db.query(`SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion `
+    const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
         + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE ${categoryName} = '1' `
         + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
     if (memes.rows[0]) {
@@ -84,7 +84,7 @@ router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (re
     const count = req.query.count;
     const offset = req.query.offset;
     const filter = process.env.HOTFILTER;
-    const memes = await db.query('SELECT images.imageid, images.source, likes, dislikes, likes.opinion AS opinion '
+    const memes = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
         + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE likes >= $2 '
         + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset])
     if (memes.rows[0]) {
