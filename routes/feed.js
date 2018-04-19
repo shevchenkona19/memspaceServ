@@ -100,9 +100,8 @@ router.get("/userPhoto", async (req, res) => {
     const targetUsername = req.query.targetUsername;
     const image = await db.query('SELECT imagedata FROM users WHERE username = $1', [targetUsername]);
     if (image.rows[0]) {
-        const dataSend = Buffer.from(image.rows[0].imagedata.toString(), 'base64').toString('ascii');
         res.contentType('image/*');
-        return res.end(dataSend, 'binary');
+        return res.end(image.role[0].imagedata, 'binary');
     } else return res.status(400).json({message: "no image found"});
 });
 
