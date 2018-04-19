@@ -49,7 +49,8 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     }
     let bus = new Busboy({headers: req.headers});
     bus.on('file', (fieldname, file, filename, encoding, mimetype) => {
-        const fr = new FileReaderSync();
+        const fr = new FileReader();
+        console.log("Upload begin");
         fr.readAsBinaryString(file);
         console.log("Upload: " + fr.result);
     });
