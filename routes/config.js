@@ -52,7 +52,7 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
         return res.status(401).json({message: 'incorrect quarry'})
     }
     const photo = req.body.photo;
-    await db.query('UPDATE users SET users.imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
+    await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
     return req.status(200).json({message: "200"})
 });
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
