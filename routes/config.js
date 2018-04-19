@@ -48,8 +48,12 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (req.user.accesslvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
-    console.log(req.body.photo);
-    // TODO: implement busboy multipart http
+    if (!req.body.photo) {
+        return res.status(401).json({message: 'incorrect quarry'})
+    }
+    const photo = req.body.photo;
+    await db.query('UPDATE users SET users.imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
+    return req.status(200).json({message: "200"})
 });
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
@@ -95,7 +99,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         const categories = await getCategoriesArray();
         let count = 1;
         let offset = 0;
-        let id = -1; 
+        let id = -1;
         const arr = [];
         for (let j = 0; j < categories.length; j++) {
             offset = 0;
@@ -120,7 +124,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
 });
 
 checkPrev = (arr, id) => {
-    if(id == -1) return false;
+    if (id == -1) return false;
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].imageId === id) return true;
     }
