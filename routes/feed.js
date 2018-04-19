@@ -104,13 +104,3 @@ router.get("/userPhoto", async (req, res) => {
 });
 
 module.exports = router;
-
-// app.get("/feed/saveimage",  function(req, res){  
-//   fs.readFile('testPicture.jpg', function(err, data) {
-//     if (err) throw err;
-//     db.query('INSERT INTO images(imagedata) VALUES($1)', [data], (err, data) => {
-//       //res.contentType('image/jpeg');
-//       res.json({});     
-//     }) 
-//   });      
-// });

@@ -54,16 +54,12 @@ var getImages = function (offset) {
                     && body.response.items[0].attachments && body.response.items[0].attachments[0]
                     && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
                     path = body.response.items[0].attachments[0].photo.photo_604;
+                    const height = body.response.items[0].attachments[0].photo.height;
+                    const width = body.response.items[0].attachments[0].photo.width;
                     request({url: path, encoding: null}, function (error, response, body) {
-                        db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key], (err, data) => {
-                            if (err) {
-                                console.log(err.stack);
-                            }
-                            console.log('image downloaded');
-                        });
                         async () => {
                             try {
-                                await db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [body, key])
+                                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, key, width, height])
                             } catch (err) {
                                 console.log(err.stack);
                             }
