@@ -19,12 +19,11 @@ router.post("/createCategory", passport.authenticate('jwt', {session: false}), a
     res.status(200).json({message: "200"});
 });
 router.get("/getImages", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    //что за метод ваще
     if (req.query.offset) {
         let offset = req.query.offset;
     } else return res.status(400).json({message: "incorrect data"});
     if (req.user.accesslvl >= 2) {
-        require('../../vk/api')(offset);
+        require('../vk/api')(offset);
         return res.status(200).json({message: "200"});
     } else {
         res.status(400).json({message: "incorrect lvl"});
