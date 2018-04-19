@@ -24,7 +24,9 @@ router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (r
     const data = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
         + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
         + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset]);
-    return res.status(200).json({memes: data.rows});
+    if (data.rows[0]) {
+        return res.status(200).json({memes: data.rows});
+    } else return res.status(200).json({memes: []})
 });
 router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset || !req.user.accesslvl === -1) {
@@ -61,7 +63,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
     if (memes.rows[0]) {
         return res.status(200).json({memes: memes.rows});
-    } else return res.status(200).json({memes: {}});
+    } else return res.status(200).json({memes: []});
 });
 router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset || !req.query.categoryname) {
@@ -75,7 +77,7 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
         + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
     if (memes.rows[0]) {
         return res.json({memes: memes.rows});
-    } else return res.json({memes: {}});
+    } else return res.json({memes: []});
 });
 router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset) {
@@ -89,7 +91,7 @@ router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (re
         + 'ORDER BY imageid DESC LIMIT $3 OFFSET $4', [req.user.userid, filter, count, offset])
     if (memes.rows[0]) {
         return res.json({memes: memes.rows});
-    } else return res.json({memes: {}});
+    } else return res.json({memes: []});
 });
 router.get("/userPhoto", async (req, res) => {
     if (!req.query.targetUsername) {
