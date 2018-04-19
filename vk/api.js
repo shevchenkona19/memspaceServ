@@ -59,7 +59,8 @@ var getImages = async (offset) => {
 
                 console.log('attempting to GET %j', path);
                 request1({ url: path, encoding: null }, async (error, response, body) => {
-                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                    //await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                    console.log(body);
                     console.log('image downloaded');
                 });
                 //response = await request(path);
