@@ -1,6 +1,5 @@
 var https = require('https');
 var url = require('url');
-//var HttpsProxyAgent = require('https-proxy-agent');
 var db = require('../model');
 var request = require('request');
 
@@ -38,33 +37,32 @@ var groups = {
     // 131348832,//Файнi меми про Укр.лiт
 };
 //Vkapi
-var getImages = function (offset) {
-    var path;
-    for (let key in groups) {
-        let value = groups[key];
-        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${value}&count=${process.env.POSTS_COUNT}&offset=${offset}&v=5.73`;
+var getImages = async (offset) => {
+    let path;
+    for (let groupName in groups) {
+        let groupId = groups[groupName];
+        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
 
         console.log('attempting to GET %j', path);
 
         try {
-            request({url: path, encoding: null}, function (error, response, body) {
+            request({ url: path, encoding: null }, function (error, response, body) {
                 body = JSON.parse(body);
 
                 if (body && body.response && body.response.items && body.response.items[0]
                     && body.response.items[0].attachments && body.response.items[0].attachments[0]
                     && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
+                    
                     path = body.response.items[0].attachments[0].photo.photo_604;
                     const height = body.response.items[0].attachments[0].photo.height;
                     const width = body.response.items[0].attachments[0].photo.width;
-                    console.log("height:" + height + " width:" + width);
-                    request({url: path, encoding: null}, function (error, response, body) {
-                        async () => {
-                            try {
-                                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, key, width, height])
-                                console.log('image downloaded');
-                            } catch (err) {
-                                console.log(err.stack);
-                            }
+
+                    request({ url: path, encoding: null }, function (error, response, body) {
+                        try {
+                            await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                            console.log('image downloaded');
+                        } catch (err) {
+                            console.log(err.stack);
                         }
                     });
                 } else console.log('not full response')
@@ -73,53 +71,7 @@ var getImages = function (offset) {
             console.log('download failed');
             continue;
         }
-        // https.get(path, function (res) {
-        //     var body = '';
-        //     res.on('data', function (chunk) {
-        //         try{
-        //             body = JSON.parse(chunk);
-        //         }
-        //         catch(err) { return; }
-        //         if(body && body.response && body.response[1].attachment && body.response[1].attachment.photo && body.response[1].attachment.photo.src_big){
-        //             path = body.response[1].attachment.photo.src_big;
-        //             https.get(path, function (res) {
-        //                 res.on('data', function (chunk) {
-        //                     //console.log(chunk);
-        //                     db.query('INSERT INTO images(imagedata, source) VALUES($1, $2)', [chunk, key], (err, data) => { 
-
-        //                     }) 
-        //                 });
-        //             });
-        //         }
-        //     });
-        // });
     }
-    // var proxy = process.env.HTTP_PROXY;
-    // var path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-154095846&count=${process.env.POSTS_COUNT}&offset=0`;
-    // // HTTPS endpoint for the proxy to connect to
-    // var endpoint = path;
-    // console.log('attempting to GET %j', endpoint);
-    // var options = url.parse(endpoint);
-
-    // // create an instance of the `HttpsProxyAgent` class with the proxy server information
-    // var agent = new HttpsProxyAgent(proxy);
-    // options.agent = agent;
-    // https.get(options, function (res) {
-    //     var body = '';
-    //     res.on('data', function (chunk) {
-    //         body = JSON.parse(chunk);
-    //         endpoint = body.response[1].media.thumb_src;
-    //         options = url.parse(endpoint);
-    //         options.agent = agent;
-    //         https.get(options, function (res) {
-    //             res.on('data', function (chunk) {
-    //                 console.log(chunk);
-    //             });
-    //         });
-    //     });
-    //     //console.log(res.body);
-    //     //var body = '';
-    //     //var body = res.pipe(process.stdout);
-    // });
 }
+
 module.exports = getImages;
