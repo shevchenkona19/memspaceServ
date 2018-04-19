@@ -56,19 +56,21 @@ var getImages = function (offset) {
                     path = body.response.items[0].attachments[0].photo.photo_604;
                     const height = body.response.items[0].attachments[0].photo.height;
                     const width = body.response.items[0].attachments[0].photo.width;
+                    console.log("height:" + height + " width:" + width);
                     request({url: path, encoding: null}, function (error, response, body) {
                         async () => {
                             try {
                                 await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, key, width, height])
+                                console.log('image downloaded');
                             } catch (err) {
                                 console.log(err.stack);
                             }
                         }
-                        console.log('image downloaded');
                     });
                 } else console.log('not full response')
             });
         } catch (err) {
+            console.log('download failed');
             continue;
         }
         // https.get(path, function (res) {
