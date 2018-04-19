@@ -2,6 +2,7 @@ var https = require('https');
 var url = require('url');
 var db = require('../model');
 var request = require('async-request');
+var request1 = require('request');
 
 var groups = {
     'Борщ': 460389,
@@ -57,11 +58,12 @@ var getImages = async (offset) => {
                 path = body.response.items[0].attachments[0].photo.photo_604;
 
                 console.log('attempting to GET %j', path);
-                response = await request(path);
-                let imagedata = response.body.replace(/\0/g, '');
-                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [imagedata, groupName, width, height])
-                
-                console.log('image downloaded');
+                request1({ url: path, encoding: null }, async (error, response, body) => {
+                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                    console.log('image downloaded');
+                });
+                //response = await request(path);
+                //let imagedata = response.body.replace(/\0/g, '');
                 
             } else console.log('not full response')
         } catch (err) {
