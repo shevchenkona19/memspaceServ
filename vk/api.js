@@ -57,7 +57,7 @@ var getImages = async (offset) => {
                 path = body.response.items[0].attachments[0].photo.photo_604;
 
                 response = await request(path);
-                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [response.body, groupName, width, height])
                 
                 console.log('image downloaded');
                 
