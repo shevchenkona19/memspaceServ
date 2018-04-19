@@ -14,11 +14,8 @@ module.exports.passport = passport;
 module.exports.jwtOptions = jwtOptions;
 
 //Настройки bodyParser`a
-app.use(bodyParser.json());
-app.use(bodyParser({limit: '100mb'}));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 
 const config = require('./routes/config');
 const account = require('./routes/account');
