@@ -5,6 +5,7 @@ const passport = require('../app').passport;
 const Busboy = require('busboy');
 const path = require('path');
 const fs = require('fs');
+const FileReader = require('filereader');
 
 router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
