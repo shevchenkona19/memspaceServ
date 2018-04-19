@@ -27,7 +27,7 @@ router.get("/getImages", passport.authenticate('jwt', {session: false}), async (
     }
     let offset = req.query.offset;
     
-    require('../vk/api')(offset);
+    await require('../vk/api')(offset);
     return res.status(200).json({message: "200"});
 });
 router.delete("/category", passport.authenticate('jwt', {session: false}), async (req, res) => {

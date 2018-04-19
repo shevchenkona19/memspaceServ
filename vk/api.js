@@ -1,7 +1,7 @@
 var https = require('https');
 var url = require('url');
 var db = require('../model');
-var request = require('request');
+var request = require('async-request');
 
 var groups = {
     'Борщ': 460389,
@@ -38,35 +38,30 @@ var groups = {
 };
 //Vkapi
 var getImages = async (offset) => {
-    let path;
+    let path, response;
     for (let groupName in groups) {
         let groupId = groups[groupName];
         path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
 
-        console.log('attempting to GET %j', path);
-
         try {
-            request({ url: path, encoding: null }, function (error, response, body) {
-                body = JSON.parse(body);
+            console.log('attempting to GET %j', path);
+            response = await request(path);
+            body = JSON.parse(response.body);
 
-                if (body && body.response && body.response.items && body.response.items[0]
-                    && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                    && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
-                    
-                    path = body.response.items[0].attachments[0].photo.photo_604;
-                    const height = body.response.items[0].attachments[0].photo.height;
-                    const width = body.response.items[0].attachments[0].photo.width;
+            if (body && body.response && body.response.items && body.response.items[0]
+                && body.response.items[0].attachments && body.response.items[0].attachments[0]
+                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
 
-                    request({ url: path, encoding: null }, function (error, response, body) {
-                        try {
-                            await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
-                            console.log('image downloaded');
-                        } catch (err) {
-                            console.log(err.stack);
-                        }
-                    });
-                } else console.log('not full response')
-            });
+                const height = body.response.items[0].attachments[0].photo.height;
+                const width = body.response.items[0].attachments[0].photo.width;
+                path = body.response.items[0].attachments[0].photo.photo_604;
+
+                response = await request(path);
+                await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
+                
+                console.log('image downloaded');
+                
+            } else console.log('not full response')
         } catch (err) {
             console.log('download failed');
             continue;
