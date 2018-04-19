@@ -46,7 +46,7 @@ var getImages = async (offset) => {
         try {
             console.log('attempting to GET %j', path);
             response = await request(path);
-            body = JSON.parse(response.body);
+            let body = JSON.parse(response.body);
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
@@ -63,6 +63,7 @@ var getImages = async (offset) => {
                 
             } else console.log('not full response')
         } catch (err) {
+            console.log(err.stack); 
             console.log('download failed');
             continue;
         }
