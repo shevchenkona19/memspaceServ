@@ -15,6 +15,7 @@ module.exports.jwtOptions = jwtOptions;
 
 //Настройки bodyParser`a
 app.use(bodyParser.json());
+app.use(express.limit('100mb'));
 app.use(bodyParser({limit: '100mb'}));
 app.use(bodyParser.urlencoded({
     extended: true
