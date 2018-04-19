@@ -58,7 +58,7 @@ var getImages = async (offset) => {
 
                 console.log('attempting to GET %j', path);
                 response = await request(path);
-                imagedata = response.body.replace("\u0000", "");
+                let imagedata = response.body.replace(/\0/g, '');
                 await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [imagedata, groupName, width, height])
                 
                 console.log('image downloaded');
