@@ -78,7 +78,7 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     } else return res.json({memes: {}});
 });
 router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (!req.query.count || !req.query.offset || !req.query.categoryName) {
+    if (!req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"});
     }
     const count = req.query.count;
