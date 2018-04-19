@@ -51,7 +51,8 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (!req.body.photo) {
         return res.status(401).json({message: 'incorrect quarry'})
     }
-    const photo = Buffer.from(req.body.photo, 'image64');
+    const photo = Buffer.from(req.body.photo, 'base64');
+
     await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
     return res.status(200).json({message: "200"})
 });
