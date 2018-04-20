@@ -14,7 +14,7 @@ router.post("/like", passport.authenticate('jwt', {session: false}), async (req,
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
-        if (likes.rows[0].opinion === 0) {
+        if (likes.rows[0].opinion == 0) {
             await delDislike(userId, imageId);
             await setLike(userId, imageId);
         }
@@ -34,7 +34,7 @@ router.post("/dislike", passport.authenticate('jwt', {session: false}), async (r
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
-        if (likes.rows[0].opinion === 1) {
+        if (likes.rows[0].opinion == 1) {
             await delLike(userId, imageId);
             await setDislike(userId, imageId);
         }
@@ -54,7 +54,7 @@ router.delete("/like", passport.authenticate('jwt', {session: false}), async (re
     const userId = req.user.userid;
     const data = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (data.rows[0]) {
-        if (data.rows[0].opinion === 1) {
+        if (data.rows[0].opinion == 1) {
             await delLike(userId, imageId);
             return res.status(200).json({message: "200"});
         }
@@ -73,7 +73,7 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
-        if (likes.rows[0].opinion === 0) {
+        if (likes.rows[0].opinion == 0) {
             await delDislike(userId, imageId);
             return res.status(200).json({message: "200"});
         }
