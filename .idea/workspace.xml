@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/config.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -41,8 +40,8 @@
       <file leaf-file-name="feedback.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/feedback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="81" column="14" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="14" />
+            <state relative-caret-position="772">
+              <caret line="87" column="5" lean-forward="true" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -59,8 +58,8 @@
       <file leaf-file-name="feed.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/feed.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="105" column="3" selection-start-line="105" selection-start-column="3" selection-end-line="105" selection-end-column="3" />
+            <state relative-caret-position="-110">
+              <caret line="31" column="45" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -124,15 +123,15 @@
         <option value="$PROJECT_DIR$/routes/main/config.js" />
         <option value="$PROJECT_DIR$/model/index.js" />
         <option value="$PROJECT_DIR$/routes/favorites.js" />
-        <option value="$PROJECT_DIR$/routes/feedback.js" />
         <option value="$PROJECT_DIR$/config/passport.js" />
         <option value="$PROJECT_DIR$/routes/account.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/vk/api.js" />
         <option value="$PROJECT_DIR$/routes/moderator.js" />
-        <option value="$PROJECT_DIR$/routes/feed.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/routes/config.js" />
+        <option value="$PROJECT_DIR$/routes/feedback.js" />
+        <option value="$PROJECT_DIR$/routes/feed.js" />
       </list>
     </option>
   </component>
@@ -149,10 +148,10 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-14" />
+    <option name="x" value="-8" />
     <option name="y" value="37" />
-    <option name="width" value="1940" />
-    <option name="height" value="1060" />
+    <option name="width" value="977" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -382,11 +381,46 @@
       <option name="project" value="LOCAL" />
       <updated>1524222744269</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fixed comments">
+      <created>1524225951064</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1524225951064</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Changed from body to quarry">
+      <created>1524226105332</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1524226105332</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Created new request refreshMem">
+      <created>1524227609687</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1524227609688</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Created new request refreshMem">
+      <created>1524230781963</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1524230781963</updated>
+    </task>
+    <task id="LOCAL-00028" summary="RefreshMem fixes">
+      <created>1524230899694</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1524230899694</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26661000" />
+    <option name="totallyTimeSpent" value="32964000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="23" width="1550" height="848" extended-state="6" />
@@ -401,7 +435,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49966952" weight="0.73876405" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3293348" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3286517" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.6081461" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -469,7 +503,11 @@
     <MESSAGE value="Photo fixed??" />
     <MESSAGE value="fuck this photo" />
     <MESSAGE value="Tryfix photo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tryfix photo" />
+    <MESSAGE value="Fixed comments" />
+    <MESSAGE value="Changed from body to quarry" />
+    <MESSAGE value="Created new request refreshMem" />
+    <MESSAGE value="RefreshMem fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="RefreshMem fixes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/routes/favorites.js">
@@ -769,13 +807,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/feed.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="105" column="3" selection-start-line="105" selection-start-column="3" selection-end-line="105" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -790,10 +821,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/feed.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-110">
+          <caret line="31" column="45" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/feedback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="81" column="14" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="14" />
+        <state relative-caret-position="772">
+          <caret line="87" column="5" lean-forward="true" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
         </state>
       </provider>
     </entry>

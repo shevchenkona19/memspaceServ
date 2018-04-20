@@ -30,7 +30,7 @@ router.post("/dislike", passport.authenticate('jwt', {session: false}), async (r
     if (!req.query.id) {
         return res.status(400).json({message: "incorrect query"});
     }
-    const imageId = req.body.id;
+    const imageId = req.query.id;
     const userId = req.user.userid;
     const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
@@ -70,7 +70,7 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
     }
     const imageId = req.query.id;
     const userId = req.user.userid;
-    const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId])
+    const likes = await db.query('SELECT * FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     if (likes.rows[0]) {
         if (likes.rows[0].opinion === 0) {
             await delDislike(userId, imageId);
