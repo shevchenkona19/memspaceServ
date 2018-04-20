@@ -83,7 +83,7 @@ router.post("/comment", passport.authenticate('jwt', {session: false}), async (r
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    if (!(req.body.id && req.body.text)) {
+    if (!req.body.id || !req.body.text) {
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.body.id;
@@ -97,7 +97,7 @@ router.get("/comments", passport.authenticate('jwt', {session: false}), async (r
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: "unauthorized"});
     }
-    if (!(req.query.id && req.query.count && req.query.offset)) {
+    if (!req.query.id || !req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
