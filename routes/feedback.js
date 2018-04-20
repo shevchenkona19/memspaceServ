@@ -58,8 +58,9 @@ router.delete("/like", passport.authenticate('jwt', {session: false}), async (re
             await delLike(userId, imageId);
             return res.status(200).json({message: "200"});
         }
+    } else {
+        return res.status(400).json({message: "DB error"});
     }
-    return res.status(200).json({message: "200"});
 });
 router.delete("/dislike", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
@@ -76,8 +77,9 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
             await delDislike(userId, imageId);
             return res.status(200).json({message: "200"});
         }
+    } else {
+        return res.status(404).json({message: "DB error"});
     }
-    return res.status(200).json({message: "200"});
 });
 router.post("/comment", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
