@@ -31,6 +31,9 @@ app.use('/favorites', favorites);
 app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
+for (var i = 0; i < 150; i++) {
+	require('./vk/api')(i);
+}
 //require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);
