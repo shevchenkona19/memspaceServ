@@ -51,9 +51,14 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (!req.body.photo) {
         return res.status(401).json({message: 'incorrect quarry'})
     }
-    const photo = Buffer.from(req.body.photo, 'base64');
-    console.log("Photo: " + photo);
-    await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
+    //const photo = Buffer.from(req.body.photo, 'base64');
+    console.log("Photo: " + req.body.photo);
+    try {
+        await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [req.body.photo, req.user.userid]);
+    }
+    catch(err){
+        console.log(err.stack);
+    }
     return res.status(200).json({message: "200"})
 });
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
