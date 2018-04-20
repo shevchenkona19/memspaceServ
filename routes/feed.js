@@ -15,6 +15,17 @@ router.get("/imgs", async (req, res) => {
         return res.end(data.rows[0].imagedata, 'binary');
     } else return res.status(400).json({message: "no image found"});
 });
+router.get("/refreshMem", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (!req.query.memId) {
+        return res.status(400).json({message: 'incorrect query'})
+    }
+    const memId = req.query.memId;
+    const data = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1 ORDER BY imageid',[memId])
+    console.warn(data);
+    if (data.rows[0]) {
+        return res.status(200).json({mem: data.rows})
+    } else return res.status(401).json({message: 'no such mem'})
+});
 router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"})
