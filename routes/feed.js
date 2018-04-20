@@ -19,11 +19,20 @@ router.get("/refreshMem", passport.authenticate('jwt', {session: false}), async 
     if (!req.query.memId) {
         return res.status(400).json({message: 'incorrect query'})
     }
+    let isFavorite = false;
     const memId = req.query.memId;
-    const data = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1 ORDER BY imageid',[memId])
-    console.warn(data);
+    const allFavorites = await db.query('SELECT users.favorites FROM users WHERE userid = $1', [req.user.userid]);
+    for (let i = 0; i < allFavorites.rows.length; i++) {
+        if (allFavorites.rows[i] == memId) {
+           isFavorite = true;
+           break
+        }
+    }
+    const data = await db.query('SELECT images.likes, images.dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1',[memId])
+    const obj = {mem: {...data.rows[0], isFavorite}};
+    console.warn(obj);
     if (data.rows[0]) {
-        return res.status(200).json({mem: data.rows})
+        return res.status(200).json(obj)
     } else return res.status(401).json({message: 'no such mem'})
 });
 router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
