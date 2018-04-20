@@ -7,11 +7,12 @@
     "body-parser": "^1.18.2",
     "busboy": "^0.2.14",
     "express": "^4.16.2",
+    "filereader": "^0.10.3",
+    "js-base64": "^2.4.3",
     "jsonwebtoken": "^8.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pg": "^7.4.1",
-    "request": "^2.83.0",
-    "filereader": "^0.10.3"
+    "request": "^2.83.0"
   }
 }

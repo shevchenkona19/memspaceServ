@@ -6,6 +6,7 @@ const Busboy = require('busboy');
 const path = require('path');
 const fs = require('fs');
 const FileReader = require('filereader');
+const base64 = require('js-base64').Base64;
 
 router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
@@ -51,8 +52,7 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (!req.body.photo) {
         return res.status(401).json({message: 'incorrect quarry'})
     }
-    const photo = Buffer.from(req.body.photo, 'base64');
-    console.log("Photo: " + photo);
+    const photo = base64.atob(req.body.photo);
     await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
     return res.status(200).json({message: "200"})
 });
