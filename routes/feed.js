@@ -29,7 +29,7 @@ router.get("/refreshMem", passport.authenticate('jwt', {session: false}), async 
         }
     }
     const data = await db.query('SELECT images.likes, images.dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1',[memId])
-    const obj = {mem: {...data.rows[0], isFavorite}};
+    const obj = {...data.rows[0], isFavorite};
     console.warn(obj);
     if (data.rows[0]) {
         return res.status(200).json(obj)
