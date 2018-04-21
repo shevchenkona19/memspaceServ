@@ -24,8 +24,7 @@ router.post("/like", passport.authenticate('jwt', {session: false}), async (req,
     const refreshedMem = await db.query('SELECT images.likes, images.dislikes FROM images WHERE images.imageid = $1', [imageId]);
     const finalOpinion = await db.query('SELECT likes.opinion FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     res.status(200).json({
-        likes: refreshedMem.rows[0],
-        dislikes: refreshedMem.rows[1],
+        ...refreshedMem.rows[0],
         opinion: finalOpinion.rows[0].opinion
     });
 });
@@ -50,8 +49,7 @@ router.post("/dislike", passport.authenticate('jwt', {session: false}), async (r
     const refreshedMem = await db.query('SELECT images.likes, images.dislikes FROM images WHERE images.imageid = $1', [imageId]);
     const finalOpinion = await db.query('SELECT likes.opinion FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     res.status(200).json({
-        likes: refreshedMem.rows[0],
-        dislikes: refreshedMem.rows[1],
+        ...refreshedMem.rows[0],
         opinion: finalOpinion.rows[0].opinion
     });
 });
@@ -75,8 +73,7 @@ router.delete("/like", passport.authenticate('jwt', {session: false}), async (re
     const refreshedMem = await db.query('SELECT images.likes, images.dislikes FROM images WHERE images.imageid = $1', [imageId]);
     const finalOpinion = await db.query('SELECT likes.opinion FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     res.status(200).json({
-        likes: refreshedMem.rows[0],
-        dislikes: refreshedMem.rows[1],
+        ...refreshedMem.rows[0],
         opinion: finalOpinion.rows[0].opinion
     });
 });
@@ -100,8 +97,7 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
     const refreshedMem = await db.query('SELECT images.likes, images.dislikes FROM images WHERE images.imageid = $1', [imageId]);
     const finalOpinion = await db.query('SELECT likes.opinion FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     res.status(200).json({
-        likes: refreshedMem.rows[0],
-        dislikes: refreshedMem.rows[1],
+        ...refreshedMem.rows[0],
         opinion: finalOpinion.rows[0].opinion
     });
 });
