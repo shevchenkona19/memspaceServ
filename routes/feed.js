@@ -21,11 +21,11 @@ router.get("/refreshMem", passport.authenticate('jwt', {session: false}), async 
     }
     let isFavorite = false;
     const memId = req.query.memId;
-    const allFavorites = await db.query('SELECT users.favorites FROM users WHERE userid = $1', [req.user.userid]);
+    const allFavorites = await db.query('SELECT imageid FROM favorites WHERE userid = $1', [req.user.userid]);
     for (let i = 0; i < allFavorites.rows.length; i++) {
-        if (allFavorites.rows[i] == memId) {
+        if (allFavorites.rows[i].imageid == memId) {
            isFavorite = true;
-           break
+           break;
         }
     }
     const data = await db.query('SELECT images.likes, images.dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1',[memId])
@@ -54,33 +54,11 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
     }
     const count = req.query.count;
     const offset = req.query.offset;
-    const data = await db.query('SELECT categoryname FROM categories');
-    if (!data.rows[0]) {
-        return res.status(400).json({message: "no categories"});
-    }
-    let catsString = '';
-    for (let i = 0; i < data.rows.length; i++) {
-        catsString += `"` + data.rows[i].categoryname + `"`;
-        if (i !== data.rows.length - 1) {
-            catsString += ', ';
-        }
-    }
-    const categories = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
-    if (!data.rows[0]) {
-        return res.status(200).json({memes: {}});
-    }
-    const obj = categories.rows[0];
-    let str = '';
-    for (let prop in obj) {
-        if (obj[prop].toString() === '1') {
-            str += `"` + prop + `"` + " = '" + obj[prop] + "'";
-            str += ' OR ';
-        }
-    }
-    str = str.substring(0, str.length - 4);
-    const memes = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
-        + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 WHERE ${str} `
-        + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset])
+    //Дописать и проверить
+    const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
+        + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
+        + `WHERE (SELECT COUNT(*) FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND imagesCategories.categoryid ) > 0 `
+        + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [req.user.userid, count, offset])
     if (memes.rows[0]) {
         return res.status(200).json({memes: memes.rows});
     } else return res.status(200).json({memes: []});

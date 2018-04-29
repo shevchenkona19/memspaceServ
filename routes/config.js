@@ -91,8 +91,8 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         categories.rows.forEach((category) => {
             do{
                 id = -1;
-                const data = await db.query(`SELECT imageid FROM imagesCategories WHERE categoryid = $1
-                    ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [category.categoryid, limit, offset]);
+                const data = await db.query(`SELECT imageid FROM imagesCategories WHERE categoryid = $1 `
+                    + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [category.categoryid, limit, offset]);
                 if (data.rows && data.rows[0] && data.rows[0].imageid) {
                     id = data.rows[0].imageid;
                 }
