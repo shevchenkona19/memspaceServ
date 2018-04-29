@@ -73,5 +73,11 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
     }
     return res.status(400).json({message: "unregistered"});
 })
+router.get("/test", (req, res) => {
+    let data = await db.query('SELECT categoryid, categoryname FROM categories');
+    console.log(data);
+    console.log(data.rows[0]);
+    return res.status(400).json({message: "unregistered"});
+})
 
 module.exports = router;
