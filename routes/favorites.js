@@ -10,28 +10,26 @@ router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), a
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
-    const id = req.query.id;
-    let favArr = [];
-    const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
-    if (data.rows[0]) {
-        favArr = JSON.parse(data.rows[0].favorites);
-        for (let i = 0; i < favArr.length; i++) {
-            if (favArr[i] === id) return res.status(200).json({message: "already favorite"});
-        }
-        favArr.push(id);
-    } else {
-        favArr.push(id);
-    }
-    await db.query(`UPDATE users SET favorites = '${JSON.stringify(favArr)}' WHERE userid = ${req.user.userid}`);
+    try{
+        await db.query(`INSERT INTO favorites(userid, imageid) VALUES($1, $2)`, [req.user.userid, req.query.id]);
+    } catch (err) {
+        console.log(err.stack);
+        return res.status(500).json({message: "BD error"});
+    }   
     res.status(200).json({message: "200"});
 });
 router.get("/allFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
         return res.status(401).json({message: 'unauthorized'})
     }
-    const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
+    try{
+        const data = await db.query('SELECT imageid FROM favorites WHERE userid = $1', [req.user.userid]);
+    } catch (err) {
+        console.log(err.stack);
+        return res.status(500).json({message: "BD error"});
+    }
     if (data.rows[0]) {
-        return res.json({favorites: JSON.parse(data.rows[0].favorites)});
+        return res.json({favorites: data.rows});
     } else {
         return res.json({favorites: []})
     }
@@ -43,13 +41,12 @@ router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: fal
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
-    const id = req.query.id;
-    const data = await db.query('SELECT favorites FROM users WHERE userid = $1', [req.user.userid]);
-    let favArr = JSON.parse(data.rows[0].favorites);
-    if (favArr.indexOf(id) !== -1) {
-        delete favArr[id];
-    } else res.status(200).json({message: "not a favorite"});
-    await db.query(`UPDATE users SET favorites = '${JSON.stringify(favArr)}' WHERE userid = ${req.user.userid}`);
+    try{
+        await db.query(`DELETE FROM favorites WHERE userid = $1 AND imageid = $2`, [req.user.userid, req.query.id]);
+    } catch (err) {
+        console.log(err.stack);
+        return res.status(500).json({message: "BD error"});
+    }  
     res.status(200).json({message: "200"});
 });
 
