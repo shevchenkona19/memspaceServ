@@ -12,10 +12,6 @@ router.post("/createCategory", passport.authenticate('jwt', {session: false}), a
     }
     const categoryName = req.body.categoryname;
     await db.query('INSERT INTO categories(categoryname) VALUES($1)', [categoryName]);
-    await db.query(`ALTER TABLE users ADD "${categoryName}" BIT, ALTER COLUMN ${categoryName} SET DEFAULT '0'`);
-    await db.query(`UPDATE users SET ${categoryName} = '0'`);
-    await db.query(`ALTER TABLE images ADD "${categoryName}" BIT, ALTER COLUMN ${categoryName} SET DEFAULT '0'`);
-    await db.query(`UPDATE images SET ${categoryName} = '0'`);
     res.status(200).json({message: "200"});
 });
 router.get("/getImages", passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -38,11 +34,9 @@ router.delete("/category", passport.authenticate('jwt', {session: false}), async
         return res.status(400).json({message: "incorrect data"});
     }
     const id = req.query.id;
-    const categories = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [id]);
-    const categoryName = categories.rows[0].categoryname;
     await db.query('DELETE FROM categories WHERE categoryid = $1', [id]);
-    await db.query(`ALTER TABLE users DROP "${categoryName}"`);
-    await db.query(`ALTER TABLE images DROP "${categoryName}"`);
+    await db.query('DELETE FROM imagesCategories WHERE categoryid = $1', [id]);
+    await db.query('DELETE FROM usersCategories WHERE categoryid = $1', [id]);
     res.status(200).json({message: "200"});
 });
 router.get("/newMem", passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -79,9 +73,7 @@ router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, 
 });
 
 let setCategory = async (imageid, categoryid) => {
-    const categoryName = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
-    const category = categoryName.rows[0].categoryname;
-    await db.query(`UPDATE images SET ${category} = '1' WHERE imageid = ${imageid}`, [])
+    await db.query(`INSERT INTO imagesCategories(imageid, categoryid) VALUES($1, $2)`, [imageid, categoryid]);
 }
 
 module.exports = router;

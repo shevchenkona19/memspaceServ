@@ -68,6 +68,8 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         return res.status(200).json({memes: memes.rows});
     } else return res.status(200).json({memes: []});
 });
+//Проверить categoriesFeed и применить для остальных
+//-----------------------------------------------------------------------------------------------------
 router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset || !req.query.categoryname) {
         return res.status(400).json({message: "incorrect query"});
