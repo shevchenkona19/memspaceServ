@@ -59,12 +59,15 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         let toSendArray = [];
         let isUsed = 0;
         categories.rows.forEach((category) => {
-            selCats.rows.forEach((selcategory) => {
-                if(category.categoryid === selcategory.categoryid){
+            for (var i = 0; i < selCats.rows.length; i++) {
+                if(selCats.rows[i].categoryid === category.categoryid){
                     isUsed = 1;
                     break;
                 }
-            });
+            }
+           // selCats.rows.forEach((selcategory) => {
+             //   
+            //});
             toSendArray.push({
                 categoryName: category.categoryname,
                 categoryIsUsed: isUsed,
