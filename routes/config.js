@@ -25,15 +25,14 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
         return res.status(400).json({message: "incorrect data"});
     }
     const Ids = req.body.Ids;
-    try {
+    
         for (var i = 0; i < Ids.length; i++) {
-            await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
-        }
-        res.status(200).json({message: "200"});
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({message: "BD error"});
+            try {
+                await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
+            } catch (err) { }   
     }
+    res.status(200).json({message: "200"});
+    
 });
 router.post("/photo", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
