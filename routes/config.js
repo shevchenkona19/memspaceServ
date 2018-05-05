@@ -27,10 +27,11 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
     const Ids = req.body.Ids;
     try {
         for (var i = 0; i < Ids.length; i++) {
-            await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[0]]);
+            await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
         }
         res.status(200).json({message: "200"});
     } catch (err) {
+        console.log(err.stack);
         return res.status(500).json({message: "BD error"});
     }
 });
