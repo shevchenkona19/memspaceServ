@@ -26,19 +26,8 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
     }
     const Ids = req.body.Ids;
     try {
-        const data = await db.query('SELECT categoryname FROM categories');
-        let catsString = '';
-        for (let i = 0; i < data.rows.length; i++) {
-            catsString = catsString.concat(data.rows[i].categoryname);
-            if (i !== data.rows.length - 1) {
-                catsString = catsString.concat(" = '0', ");
-            } else {
-                catsString = catsString.concat(" = '0'")
-            }
-        }
-        await db.query(`UPDATE users SET ${catsString} WHERE userid = ${req.user.userid}`)
-        for (let i = 0; i < Ids.length; i++) {
-            await setCategory(req.user.userid, Ids[i]);
+        for (var i = 0; i < Ids.length; i++) {
+            await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[0]]);
         }
         res.status(200).json({message: "200"});
     } catch (err) {
@@ -61,31 +50,28 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         return res.status(400).json({message: "unauthorized"});
     }
     try {
-        let data = await db.query('SELECT categoryid, categoryname FROM categories');
-        if (!data) {
+        let selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
+        let categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
+
+        if (!selCats.rows[0]) {
             return res.status(400).json({message: 'No categories'});
         }
-        let catsString = '';
-        const ids = [];
-        for (let i = 0; i < data.rows.length; i++) {
-            catsString = catsString.concat(data.rows[i].categoryname);
-            if (i !== data.rows.length - 1) {
-                catsString = catsString.concat(', ');
-            }
-            ids.push(data.rows[i].categoryid);
-        }
-        data = await db.query(`SELECT ${catsString} FROM users WHERE userid = ${req.user.userid}`);
-        const queryResult = data.rows[0];
-        const toSendArray = [];
-        let j = 0;
-        for (let prop in queryResult) {
-            toSendArray.push({
-                categoryName: prop,
-                categoryIsUsed: queryResult[prop],
-                categoryId: ids[j]
+        let toSendArray = [];
+        let isUsed = 0;
+        categories.rows.forEach((category) => {
+            selCats.rows.forEach((selcategory) => {
+                if(category.categoryid === selcategory.categoryid){
+                    isUsed = 1;
+                    break;
+                }
             });
-            j++;
-        }
+            toSendArray.push({
+                categoryName: category.categoryname,
+                categoryIsUsed: isUsed,
+                categoryId: category.categoryid;
+            });
+            isUsed = 0;
+        });
         return res.status(200).json({categories: toSendArray});
     } catch (err) {
         console.log(err.stack);
@@ -97,31 +83,30 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         return res.status(400).json({message: "unauthorized"});
     }
     try {
-        const categories = await getCategoriesArray();
-        let count = 1;
+        const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
+        let limit = 1;
         let offset = 0;
         let id = -1;
-        const arr = [];
-        for (let j = 0; j < categories.length; j++) {
-            offset = 0;
-            console.log('j=' + j);
-            do {
+        let arr = [];
+        categories.rows.forEach((category) => {
+            do{
                 id = -1;
-                const data = await db.query(`SELECT imageid FROM images WHERE "${categories[j]}" = '1' ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-                console.log(`SELECT imageid FROM images WHERE "${categories[j]}" = 1 ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+                const data = await db.query(`SELECT imageid FROM imagesCategories WHERE categoryid = $1 `
+                    + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [category.categoryid, limit, offset]);
                 if (data.rows && data.rows[0] && data.rows[0].imageid) {
                     id = data.rows[0].imageid;
                 }
                 offset++;
             } while (checkPrev(arr, id));
             console.log('id=' + id);
-            if (id !== -1) arr.push({imageId: id, categoryName: categories[j]});
-        }
+            if (id !== -1) arr.push({imageId: id, categoryName: category.categoryname});
+            offset = 0;
+        })
         res.status(200).json({test: arr});
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({message: "BD error"});
-    }
+    }      
 });
 
 checkPrev = (arr, id) => {
@@ -131,30 +116,5 @@ checkPrev = (arr, id) => {
     }
     return false;
 };
-
-setCategory = async (userid, categoryid) => {
-    try {
-        const data = await db.query('SELECT categoryname FROM categories WHERE categoryid = $1', [categoryid])
-        const categoryname = data.rows[0].categoryname;
-        await db.query(`UPDATE users SET ${categoryname} = '1' WHERE userid = ${userid}`, [])
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({message: "BD error"});
-    }
-};
-
-getCategoriesArray = async () => {
-    try {
-        const data = await db.query('SELECT categoryname FROM categories');
-        const result = [];
-        for (let i = 0; i < data.rows.length; i++) {
-            result[i] = data.rows[i].categoryname;
-        }
-        return result;
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({message: "BD error"});
-    }
-}
 
 module.exports = router;
