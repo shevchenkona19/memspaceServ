@@ -34,16 +34,25 @@ router.delete("/category", passport.authenticate('jwt', {session: false}), async
         return res.status(400).json({message: "incorrect data"});
     }
     const id = req.query.id;
-    await db.query('DELETE FROM categories WHERE categoryid = $1', [id]);
-    await db.query('DELETE FROM imagesCategories WHERE categoryid = $1', [id]);
-    await db.query('DELETE FROM usersCategories WHERE categoryid = $1', [id]);
+    try{
+        await db.query('DELETE FROM categories WHERE categoryid = $1', [id]);
+        await db.query('DELETE FROM imagesCategories WHERE categoryid = $1', [id]);
+        await db.query('DELETE FROM usersCategories WHERE categoryid = $1', [id]);
+    } catch(err){
+        return res.status(500).json({message: "BD error"});
+    }
     res.status(200).json({message: "200"});
 });
 router.get("/newMem", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl < 1) {
         return res.status(401).json({message: 'unauthorized'})
     }
-    const mem = await db.query(`SELECT imageid FROM images WHERE ischecked = '0' ORDER BY imageid LIMIT 1`);
+    const mem;
+    try{
+        mem = await db.query(`SELECT imageid FROM images WHERE ischecked = '0' ORDER BY imageid LIMIT 1`);
+    } catch(err){
+        return res.status(500).json({message: "BD error"});
+    }
     if (mem.rows[0]) {
         res.status(200).json(mem.rows[0]);
     }
@@ -57,7 +66,11 @@ router.post("/discardMem", passport.authenticate('jwt', {session: false}), async
         return res.status(400).json({message: 'incorrect quarry'})
     }
     const id = req.query.id;
-    await db.query(`DELETE FROM images WHERE imageid = ${id}`);
+    try{
+        await db.query(`DELETE FROM images WHERE imageid = ${id}`);
+    } catch(err){
+        return res.status(500).json({message: "BD error"});
+    }
     res.status(200).json({message: "200"});
 });
 router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -67,7 +80,9 @@ router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, 
     const id = req.query.id;
     const Ids = req.body.Ids;
     for (let i = 0; i < Ids.length; i++) {
-        await setCategory(id, Ids[i]);
+        try{
+           await setCategory(id, Ids[i]);
+        } catch(err) { }
     }
     res.status(200).json({message: "200"});
 });
