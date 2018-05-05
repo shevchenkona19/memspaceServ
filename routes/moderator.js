@@ -47,7 +47,7 @@ router.get("/newMem", passport.authenticate('jwt', {session: false}), async (req
     if (req.user.accesslvl < 1) {
         return res.status(401).json({message: 'unauthorized'})
     }
-    const mem;
+    let mem;
     try{
         mem = await db.query(`SELECT imageid FROM images WHERE ischecked = '0' ORDER BY imageid LIMIT 1`);
     } catch(err){
