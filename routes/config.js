@@ -71,7 +71,7 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
             toSendArray.push({
                 categoryName: category.categoryname,
                 categoryIsUsed: isUsed,
-                categoryId: category.categoryid;
+                categoryId: category.categoryid
             });
             isUsed = 0;
         });
