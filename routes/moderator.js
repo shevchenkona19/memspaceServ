@@ -10,8 +10,12 @@ router.post("/createCategory", passport.authenticate('jwt', {session: false}), a
     if (!req.body.categoryName) {
         return res.status(400).json({message: "incorrect query"});
     }
-    const categoryName = req.body.categoryname;
-    await db.query('INSERT INTO categories(categoryname) VALUES($1)', [categoryName]);
+    const categoryName = req.body.categoryName;
+    try{
+        await db.query('INSERT INTO categories(categoryname) VALUES($1)', [categoryName]);
+    } catch(err){
+        return res.status(500).json({message: "BD error"});
+    }
     res.status(200).json({message: "200"});
 });
 router.get("/getImages", passport.authenticate('jwt', {session: false}), async (req, res) => {
