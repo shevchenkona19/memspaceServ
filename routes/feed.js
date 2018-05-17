@@ -86,7 +86,7 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     try{
         memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
         + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE `
-        + `EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND categoryid = ${categoryid} `
+        + `EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND categoryid = ${categoryid}) `
         + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
     } catch(err){
         console.log(err.stack);
@@ -97,7 +97,6 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     } else return res.json({memes: []});
 });
 router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    return res.status(500).json({message: ""});
     if (!req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"});
     }
