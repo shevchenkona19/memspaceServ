@@ -61,14 +61,11 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
     });
     catstr = catstr.substring(0, catstr.length - 4);
     try{
-        console.log(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
-        + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
-        + `WHERE EXISTS (SELECT COUNT(*) FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND ($2) `
-        + `ORDER BY imageid DESC LIMIT $3 OFFSET $4`, [req.user.userid, catstr, count, offset])
         const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
         + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
-        + `WHERE EXISTS (SELECT COUNT(*) FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND ($2) `
+        + `WHERE EXISTS (SELECT COUNT(*) FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND ($2)) `
         + `ORDER BY imageid DESC LIMIT $3 OFFSET $4`, [req.user.userid, catstr, count, offset])
+        
     }
     catch (err){
         console.log(err.stack);
@@ -81,6 +78,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
 //Проверить categoriesFeed и применить для остальных
 //-----------------------------------------------------------------------------------------------------
 router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    return res.status(500).json({message: ""});
     if (!req.query.count || !req.query.offset || !req.query.categoryname) {
         return res.status(400).json({message: "incorrect query"});
     }
@@ -95,6 +93,7 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     } else return res.json({memes: []});
 });
 router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    return res.status(500).json({message: ""});
     if (!req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"});
     }
