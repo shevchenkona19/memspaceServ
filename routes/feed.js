@@ -57,7 +57,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
     let catstr = '';
     let selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
     selCats.rows.forEach((cat) => {
-        catstr += 'imagesCategories.categoryid = ' + cat.categoryid + ' OR ';
+        catstr += `imagesCategories.categoryid = '` + cat.categoryid + `'` + ` OR `;
     });
     catstr = catstr.substring(0, catstr.length - 4);
     try{
