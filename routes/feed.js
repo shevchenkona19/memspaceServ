@@ -67,7 +67,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
         const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
         + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND ($2)) `
+        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE $2) `
         + `ORDER BY imageid DESC LIMIT $3 OFFSET $4`, [req.user.userid, catstr, count, offset])
         
     }
