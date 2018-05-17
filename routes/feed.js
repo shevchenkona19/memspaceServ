@@ -60,15 +60,12 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         catstr += `imagesCategories.categoryid = ` + cat.categoryid + ` OR `;
     });
     catstr = catstr.substring(0, catstr.length - 4);
+    console.log(catstr);
     let memes;
     try{
-        console.log(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
-        + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (${catstr})) `
-        + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
         memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
         + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (imagesCategories.categoryid = 8 OR imagesCategories.categoryid = 9)) `
+        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (${catstr})) `
         + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [req.user.userid, count, offset])
         
     }
