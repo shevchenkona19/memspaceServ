@@ -24,14 +24,14 @@ router.get("/allFavorites", passport.authenticate('jwt', {session: false}), asyn
     }
     try{
         const data = await db.query('SELECT imageid FROM favorites WHERE userid = $1', [req.user.userid]);
+        if (data.rows[0]) {
+            return res.json({favorites: data.rows});
+        } else {
+            return res.json({favorites: []})
+        }
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({message: "BD error"});
-    }
-    if (data.rows[0]) {
-        return res.json({favorites: data.rows});
-    } else {
-        return res.json({favorites: []})
     }
 });
 router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
