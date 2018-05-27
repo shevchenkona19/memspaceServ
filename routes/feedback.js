@@ -126,22 +126,22 @@ router.get("/comments", passport.authenticate('jwt', {session: false}), async (r
     const count = req.query.count;
     const offset = req.query.offset;
     const comments = await db.query('SELECT username, text, date FROM comments INNER JOIN users ON comments.userId = users.userId WHERE imageId = $1 LIMIT $2 OFFSET $3', [imageId, count, offset])
-    res.status(200).json({"comments": comments.rows});
+    res.status(200).json({comments: comments.rows});
 });
 
-var setLike = async (userId, imageId) => {
+const setLike = async (userId, imageId) => {
     await db.query('INSERT INTO likes(userId, imageId, opinion) VALUES($1, $2, $3)', [userId, imageId, 1]);
     await db.query('UPDATE images SET likes = likes+1 WHERE imageId = $1', [imageId]);
 };
-var delLike = async (userId, imageId) => {
+const delLike = async (userId, imageId) => {
     await db.query('DELETE FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     await db.query('UPDATE images SET likes = likes-1 WHERE imageId = $1', [imageId]);
 };
-var setDislike = async (userId, imageId) => {
+const setDislike = async (userId, imageId) => {
     await db.query('INSERT INTO likes(userId, imageId, opinion) VALUES($1, $2, $3)', [userId, imageId, 0]);
     await db.query('UPDATE images SET dislikes = dislikes+1 WHERE imageId = $1', [imageId]);
 };
-var delDislike = async (userId, imageId) => {
+const delDislike = async (userId, imageId) => {
     await db.query('DELETE FROM likes WHERE userId = $1 AND imageId = $2', [userId, imageId]);
     await db.query('UPDATE images SET dislikes = dislikes-1 WHERE imageId = $1', [imageId]);
 };

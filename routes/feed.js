@@ -24,11 +24,11 @@ router.get("/refreshMem", passport.authenticate('jwt', {session: false}), async 
     const allFavorites = await db.query('SELECT imageid FROM favorites WHERE userid = $1', [req.user.userid]);
     for (let i = 0; i < allFavorites.rows.length; i++) {
         if (allFavorites.rows[i].imageid == memId) {
-           isFavorite = true;
-           break;
+            isFavorite = true;
+            break;
         }
     }
-    const data = await db.query('SELECT images.likes, images.dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1',[memId])
+    const data = await db.query('SELECT images.likes, images.dislikes, likes.opinion AS opinion FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid WHERE images.imageid = $1', [memId])
     const obj = {...data.rows[0], isFavorite};
     console.warn(obj);
     if (data.rows[0]) {
@@ -44,9 +44,7 @@ router.get("/mainFeed", passport.authenticate('jwt', {session: false}), async (r
     const data = await db.query('SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
         + 'FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 '
         + 'ORDER BY imageid DESC LIMIT $2 OFFSET $3', [req.user.userid, count, offset]);
-    if (data.rows[0]) {
-        return res.status(200).json({memes: data.rows});
-    } else return res.status(200).json({memes: []})
+    return res.status(200).json({memes: data.rows ? data.rows : []});
 });
 router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset || !req.user.accesslvl === -1) {
@@ -55,25 +53,23 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
     const count = req.query.count;
     const offset = req.query.offset;
     let catstr = '';
-    let selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
-    selCats.rows.forEach((cat) => {
-        catstr += `imagesCategories.categoryid = ` + cat.categoryid + ` OR `;
-    });
-    catstr = catstr.substring(0, catstr.length - 4);
-    let memes;
-    try{
-        memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
-        + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (${catstr})) `
-        + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [req.user.userid, count, offset]);   
+    try {
+        const selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
+        selCats.rows.forEach(cat => catstr += `imagesCategories.categoryid = ` + cat.categoryid + ` OR `);
+        catstr = catstr.substring(0, catstr.length - 4);
+        const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
+            + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
+            + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (${catstr})) `
+            + `ORDER BY imageid DESC LIMIT $2 OFFSET $3`, [req.user.userid, count, offset]);
+        if (memes.rows[0]) {
+            return res.status(200).json({memes: memes.rows});
+        } else return res.status(200).json({memes: []});
     }
-    catch (err){
+    catch (err) {
         console.log(err.stack);
         return res.status(500).json({message: "BD error"});
     }
-    if (memes.rows[0]) {
-        return res.status(200).json({memes: memes.rows});
-    } else return res.status(200).json({memes: []});
+
 });
 router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (!req.query.count || !req.query.offset || !req.query.categoryid) {
@@ -83,12 +79,12 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
     const offset = req.query.offset;
     const categoryid = req.query.categoryid;
     let memes;
-    try{
+    try {
         memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
-        + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE `
-        + `EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND categoryid = ${categoryid}) `
-        + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
-    } catch(err){
+            + `FROM images LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = ${req.user.userid} WHERE `
+            + `EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND categoryid = ${categoryid}) `
+            + `ORDER BY imageid DESC LIMIT ${count} OFFSET ${offset}`);
+    } catch (err) {
         console.log(err.stack);
         return res.status(500).json({message: "BD error"});
     }

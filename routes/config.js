@@ -26,7 +26,7 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
     }
     const Ids = req.body.Ids;
     
-        for (var i = 0; i < Ids.length; i++) {
+        for (let i = 0; i < Ids.length; i++) {
             try {
                 await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
             } catch (err) { }   
@@ -91,7 +91,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
         let offset = 0;
         let id = -1;
         let arr = [];
-        for (var i = 0; i < categories.rows.length; i++) {
+        for (let i = 0; i < categories.rows.length; i++) {
             do{
                 id = -1;
                 const data = await db.query(`SELECT imageid FROM imagesCategories WHERE categoryid = $1 `

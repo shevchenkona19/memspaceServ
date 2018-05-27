@@ -53,8 +53,8 @@ router.post('/register', async (req, res) => {
                 return res.status(500).json({message: "default image error"});
             }
             const passwordToSave = bcrypt.hashSync(password);
-            await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image])
-            const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username])
+            await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image]);
+            const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username]);
             if (!(userid.rows[0] && userid.rows[0].userid)) {
                 return res.status(500).json({message: "BD error"});
             }
@@ -67,17 +67,19 @@ router.post('/register', async (req, res) => {
         return res.status(500).json({message: "BD error"});
     }
 });
+
 router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, res) => {
     if (req.user.accesslvl !== -1) {
         return res.status(200).json({"username": req.user.username});
     }
     return res.status(400).json({message: "unregistered"});
-})
+});
+
 router.get("/test", async (req, res) => {
     let data = await db.query('SELECT categoryid, categoryname FROM categories');
     console.log(data);
     console.log(data.rows[0]);
     return res.status(400).json({message: "unregistered"});
-})
+});
 
 module.exports = router;
