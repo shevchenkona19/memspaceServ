@@ -8,11 +8,15 @@
     "busboy": "^0.2.14",
     "express": "^4.16.2",
     "filereader": "^0.10.3",
+    "imagemin": "^5.3.1",
+    "imagemin-jpegtran": "^5.0.2",
+    "imagemin-pngquant": "^5.1.0",
     "js-base64": "^2.4.3",
     "jsonwebtoken": "^8.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pg": "^7.4.1",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "sharp": "^0.20.3"
   }
 }

@@ -3,6 +3,9 @@ var url = require('url');
 var db = require('../model');
 var request = require('async-request');
 var request1 = require('request');
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
 
 var groups = {
     //'Борщ': 460389,
@@ -59,9 +62,14 @@ var getImages = async (offset) => {
 
                 console.log('attempting to GET %j', path);
                 request1({ url: path, encoding: null }, async (error, response, body) => {
-                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height])
-                    console.log(body);
-                    console.log('image downloaded');
+                    const img = await imagemin.buffer(body, {
+                        plugins: [
+                            imageminJpegtran({progressive: true}),
+                            imageminPngquant({quality: '65-75'})
+                        ]
+                    });
+                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [img, groupName, width, height]);
+                    console.log("image downloaded")
                 });
                 //response = await request(path);
                 //let imagedata = response.body.replace(/\0/g, '');
