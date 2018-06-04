@@ -53,9 +53,6 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         const selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
         const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
 
-        if (!selCats.rows[0]) {
-            return res.status(200).json({categories: []});
-        }
         let isSelectedEmpty = !selCats.rows[0];
         let toSendArray = [];
         let isUsed = 0;
