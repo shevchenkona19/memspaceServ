@@ -57,6 +57,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         const selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
         selCats.rows.forEach(cat => catstr += `imagesCategories.categoryid = ` + cat.categoryid + ` OR `);
         catstr = catstr.substring(0, catstr.length - 4);
+        console.log("catstr: ", catstr);
         const memes = await db.query(`SELECT images.imageid, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
             + `LEFT OUTER JOIN likes ON likes.imageid = images.imageid AND likes.userid = $1 `
             + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageid = imagesCategories.imageid AND (${catstr})) `
