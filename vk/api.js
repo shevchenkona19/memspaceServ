@@ -64,8 +64,8 @@ var getImages = async (offset) => {
                 request1({ url: path, encoding: null }, async (error, response, body) => {
                     const img = await imagemin.buffer(body, {
                         plugins: [
-                            imageminJpegtran({progressive: true}),
-                            imageminPngquant({quality: 1})
+                            imageminJpegtran({quality: 1}),
+                            imageminPngquant({quality: '1-5'})
                         ]
                     });
                     await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [img, groupName, width, height]);
