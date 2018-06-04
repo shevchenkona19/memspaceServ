@@ -54,7 +54,7 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
 
         if (!selCats.rows[0]) {
-            return res.status(400).json({categories: []});
+            return res.status(200).json({categories: []});
         }
         let toSendArray = [];
         let isUsed = 0;
