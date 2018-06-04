@@ -56,9 +56,11 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         if (!selCats.rows[0]) {
             return res.status(200).json({categories: []});
         }
+        let isSelectedEmpty = !selCats.rows[0];
         let toSendArray = [];
         let isUsed = 0;
-        categories.rows.forEach((category) => {
+        categories.rows.forEach((category, next) => {
+            if (isSelectedEmpty) return;
             for (var i = 0; i < selCats.rows.length; i++) {
                 if(selCats.rows[i].categoryid === category.categoryid){
                     isUsed = 1;
