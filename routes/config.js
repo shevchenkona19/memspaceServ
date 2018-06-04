@@ -25,14 +25,14 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
         return res.status(400).json({message: "incorrect data"});
     }
     const Ids = req.body.Ids;
-    
+
         for (let i = 0; i < Ids.length; i++) {
             try {
                 await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
-            } catch (err) { }   
+            } catch (err) { }
     }
     res.status(200).json({message: "200"});
-    
+
 });
 router.post("/photo", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {
@@ -53,19 +53,21 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         const selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
         const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
 
-        let isSelectedEmpty = !selCats.rows[0];
-        let toSendArray = [];
-        let isUsed = 0;
+        const notIsSelectedEmpty = !selCats.rows[0];
+        const toSendArray = [];
         categories.rows.forEach((category, next) => {
-            if (isSelectedEmpty) return;
-            for (var i = 0; i < selCats.rows.length; i++) {
-                if(selCats.rows[i].categoryid === category.categoryid){
-                    isUsed = 1;
-                    break;
+            let isUsed = 0;
+            if (notIsSelectedEmpty) {
+                for (let i = 0; i < selCats.rows.length; i++) {
+                    if (selCats.rows[i].categoryid === category.categoryid) {
+                        isUsed = 1;
+                        break;
+                    }
                 }
             }
+
            // selCats.rows.forEach((selcategory) => {
-             //   
+             //
             //});
             toSendArray.push({
                 categoryName: category.categoryname,
@@ -108,7 +110,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
     } catch (err) {
         console.log(err.stack);
         return res.status(500).json({message: "BD error"});
-    }      
+    }
 });
 
 checkPrev = (arr, id) => {
