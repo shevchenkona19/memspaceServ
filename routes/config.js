@@ -50,11 +50,11 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         return res.status(400).json({message: "unauthorized"});
     }
     try {
-        let selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
-        let categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
+        const selCats = await db.query('SELECT categoryid FROM usersCategories WHERE userid = $1', [req.user.userid]);
+        const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
 
         if (!selCats.rows[0]) {
-            return res.status(400).json({message: 'No categories'});
+            return res.status(400).json({categories: []});
         }
         let toSendArray = [];
         let isUsed = 0;
