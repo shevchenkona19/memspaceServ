@@ -4,7 +4,7 @@ var db = require('../model');
 var request = require('async-request');
 var request1 = require('request');
 const imagemin = require('imagemin');
-const imageminJpegtran = require('imagemin-jpegtran');
+const imageminJpegtran = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 
 var groups = {
@@ -65,7 +65,7 @@ var getImages = async (offset) => {
                     const img = await imagemin.buffer(body, {
                         plugins: [
                             imageminJpegtran({progressive: true}),
-                            imageminPngquant({quality: '15-20'})
+                            imageminPngquant({quality: 1})
                         ]
                     });
                     await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [img, groupName, width, height]);
