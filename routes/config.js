@@ -56,9 +56,6 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
         const categories = await db.query(`SELECT categoryid, categoryname FROM categories`);
 
         const isSelectedEmpty = !!selCats.rows[0];
-        console.log("nasndan", isSelectedEmpty);
-        console.warn("selCats", selCats.rows);
-        console.warn("categories", categories);
         const toSendArray = [];
         categories.rows.forEach(category => {
             let isUsed = false;
