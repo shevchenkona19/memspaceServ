@@ -27,7 +27,7 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
     const Ids = req.body.Ids;
         for (let i = 0; i < Ids.length; i++) {
             try {
-                await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
+                await db.query('INSERT INTO usersCategories(userid, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
             } catch (err) {
                 return res.status(500).json({message: "Internal error"});
             }
