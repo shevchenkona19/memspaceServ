@@ -25,11 +25,12 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
         return res.status(400).json({message: "incorrect data"});
     }
     const Ids = req.body.Ids;
-
         for (let i = 0; i < Ids.length; i++) {
             try {
                 await db.query('INSERT INTO usersCategories(userId, categoryId) VALUES($1, $2)', [req.user.userid, Ids[i]]);
-            } catch (err) { }
+            } catch (err) {
+                return res.status(500).json({message: "Internal error"});
+            }
     }
     res.status(200).json({message: "200"});
 
