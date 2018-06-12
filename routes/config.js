@@ -55,26 +55,21 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
 
         const notIsSelectedEmpty = !selCats.rows[0];
         const toSendArray = [];
-        categories.rows.forEach((category, next) => {
-            let isUsed = 0;
+        categories.rows.forEach((category) => {
+            let isUsed = false;
             if (notIsSelectedEmpty) {
                 for (let i = 0; i < selCats.rows.length; i++) {
                     if (selCats.rows[i].categoryid === category.categoryid) {
-                        isUsed = 1;
+                        isUsed = true;
                         break;
                     }
                 }
             }
-
-           // selCats.rows.forEach((selcategory) => {
-             //
-            //});
             toSendArray.push({
                 categoryName: category.categoryname,
                 categoryIsUsed: isUsed,
                 categoryId: category.categoryid
             });
-            isUsed = 0;
         });
         return res.status(200).json({categories: toSendArray});
     } catch (err) {

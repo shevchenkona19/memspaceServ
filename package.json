@@ -9,7 +9,6 @@
     "express": "^4.16.2",
     "filereader": "^0.10.3",
     "imagemin": "^5.3.1",
-    "imagemin-jpegtran": "^5.0.2",
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-pngquant": "^5.1.0",
     "js-base64": "^2.4.3",
