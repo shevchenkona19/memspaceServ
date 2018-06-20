@@ -62,13 +62,7 @@ var getImages = async (offset) => {
 
                 console.log('attempting to GET %j', path);
                 request1({ url: path, encoding: null }, async (error, response, body) => {
-                    const img = await imagemin.buffer(body, {
-                        plugins: [
-                            imageminJpegtran({quality: 1}),
-                            imageminPngquant({quality: '1-5'})
-                        ]
-                    });
-                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [img, groupName, width, height]);
+                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height]);
                     console.log("image downloaded")
                 });
                 //response = await request(path);
@@ -78,9 +72,8 @@ var getImages = async (offset) => {
         } catch (err) {
             console.log(err.stack); 
             console.log('download failed');
-            continue;
         }
     }
-}
+};
 
 module.exports = getImages;

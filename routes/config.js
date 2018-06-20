@@ -100,7 +100,7 @@ router.get("/test", passport.authenticate('jwt', {session: false}), async (req, 
                 offset++;
             } while (checkPrev(arr, id));
             console.log('id=' + id);
-            if (id !== -1) arr.push({imageId: id, categoryName: category.categoryname});
+            if (id !== -1) arr.push({imageId: id, categoryName: categories.rows[i].categoryname});
             offset = 0;
         }
         res.status(200).json({test: arr});
