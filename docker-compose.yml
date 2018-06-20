@@ -1,0 +1,44 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.6
+    command: -p 7654
+    volumes:
+      - 'database:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_USER=memspace
+      - POSTGRES_PASSWORD=memspace
+      - POSTGRES_DB=memspace-main
+    ports:
+      - '7654:7654'
+
+  web:
+    image: node:8.9.4
+    working_dir: '/app'
+    command: 'node app.js'
+    ports:
+      - "${DOCKER_PORT}:13000"
+    links:
+      - db:db
+    volumes:
+      - './src:/app/src'
+      - './package.json:/app/package.json'
+      - 'node_modules:/app/node_modules'
+    environment:
+      - SERVER_URL=${SERVER_URL}
+      - HOST=localhost
+      - DATABASE_URL=postgres://memspace:memspace@db:7654/memspace-main
+      - PORT=13000
+
+  npm:
+      image: node:8.9.4
+      working_dir: '/app'
+      entrypoint: 'npm'
+      volumes:
+        - './package.json:/app/package.json'
+        - './package-lock.json:/app/package-lock.json'
+        - 'node_modules:/app/node_modules'
+        - './src:/app/src'
+volumes:
+  database:
+  node_modules:

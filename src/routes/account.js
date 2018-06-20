@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
-const db = require('../model');
+const db = require('../model/index');
 const fs = require('fs');
 const bcrypt = require('bcrypt-nodejs');
 const express = require('express');
 const router = express.Router();
-const passport = require('../app').passport;
-const jwtOptions = require('../app').jwtOptions;
+const passport = require('../../app').passport;
+const jwtOptions = require('../../app').jwtOptions;
 
 router.post('/login', async (req, res) => {
     console.warn(req.body);

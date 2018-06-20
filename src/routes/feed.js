@@ -1,7 +1,7 @@
-const db = require('../model');
+const db = require('../model/index');
 const express = require('express');
 const router = express.Router();
-const passport = require('../app').passport;
+const passport = require('../../app').passport;
 //let fs = require('fs');
 
 router.get("/imgs", async (req, res) => {

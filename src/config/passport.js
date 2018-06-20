@@ -1,6 +1,6 @@
 const passportJWT = require("passport-jwt");
 const jwt = require('jsonwebtoken');
-const db = require("../model");
+const db = require("../model/index");
 
 module.exports = function (passport, jwtOptions) {
     const ExtractJwt = passportJWT.ExtractJwt;

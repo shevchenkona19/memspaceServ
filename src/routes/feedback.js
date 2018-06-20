@@ -1,7 +1,7 @@
-const db = require('../model');
+const db = require('../model/index');
 const express = require('express');
 const router = express.Router();
-const passport = require('../app').passport;
+const passport = require('../../app').passport;
 
 router.post("/like", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accesslvl === -1) {

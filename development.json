@@ -1,0 +1,15 @@
+{
+  "username": "memspace",
+  "password": "memspace",
+  "database": "memspace-main",
+  "host": "db",
+  "port": 7654,
+  "dialect": "postgres",
+  "pool": {
+    "max": 3,
+    "min": 0,
+    "idle": 40000,
+    "acquire": 20000,
+    "evict": 20000
+  }
+}

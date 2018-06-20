@@ -1,11 +1,21 @@
 {
   "name": "serverapp",
   "version": "1.0.0",
+  "scripts": {
+    "start": "docker-compose run npm install && npm run dc:migrate",
+    "migration:create": "./node_modules/.bin/sequelize migration:create --name",
+    "dc:migrate": "docker-compose up -d db && docker-compose run web node_modules/.bin/wait-port db:7654 && npm run migration:up && docker-compose stop db",
+    "migration:up": "docker-compose run web node_modules/.bin/sequelize db:migrate --config ./development.json",
+    "dc:uninstall": "docker-compose down -v"
+  },
   "dependencies": {
     "async-request": "^1.2.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "busboy": "^0.2.14",
+    "db-migrate": "^0.11.1",
+    "db-migrate-pg": "^0.4.0",
+    "dbmigrate": "0.0.8",
     "express": "^4.16.2",
     "filereader": "^0.10.3",
     "imagemin": "^5.3.1",
@@ -17,6 +27,9 @@
     "passport-jwt": "^3.0.1",
     "pg": "^7.4.1",
     "request": "^2.83.0",
-    "sharp": "^0.20.3"
+    "sequelize": "^4.37.10",
+    "sequelize-cli": "^4.0.0",
+    "sharp": "^0.20.3",
+    "wait-port": "^0.2.2"
   }
 }

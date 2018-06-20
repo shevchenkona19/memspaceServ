@@ -1,6 +1,6 @@
 var https = require('https');
 var url = require('url');
-var db = require('../model');
+var db = require('../model/index');
 var request = require('async-request');
 var request1 = require('request');
 const imagemin = require('imagemin');

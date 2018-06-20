@@ -7,7 +7,7 @@ const app = express();
 
 //Настройки авторизации
 let jwtOptions = {};
-require('./config/passport')(passport, jwtOptions);
+require('./src/config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
 module.exports.passport = passport;
@@ -17,12 +17,12 @@ module.exports.jwtOptions = jwtOptions;
 app.use(bodyParser({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 
-const config = require('./routes/config');
-const account = require('./routes/account');
-const favorites = require('./routes/favorites');
-const feed = require('./routes/feed');
-const feedback = require('./routes/feedback');
-const moderator = require('./routes/moderator');
+const config = require('./src/routes/config');
+const account = require('./src/routes/account');
+const favorites = require('./src/routes/favorites');
+const feed = require('./src/routes/feed');
+const feedback = require('./src/routes/feedback');
+const moderator = require('./src/routes/moderator');
 
 //routes
 app.use('/config', config);
