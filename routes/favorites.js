@@ -57,7 +57,7 @@ router.get("/isFavourite", passport.authenticate('jwt', {session: false}), async
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const isFavourite = (await db.query("SELECT * FROM favorites WHERE userid = $1 AND imageid = $2", [req.user.userid, req.query.id])).length > 0;
+        const isFavourite = (await db.query("SELECT * FROM favorites WHERE userid = $1 AND imageid = $2", [req.user.userid, req.query.id])).rows.length > 0;
         return res.status(200).json({isFavourite});
     } catch (e) {
         console.log(e.stack);
