@@ -6,6 +6,7 @@ module.exports = {
             userId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
+                autoIncrement: true,
             },
             username: {
                 type: Sequelize.STRING,
@@ -17,7 +18,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
             imageData: {
-                type: Sequelize.BLOB,
+                type: Sequelize.BLOB(),
                 allowNull: true,
             },
             accessLvl: {

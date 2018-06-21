@@ -2,11 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('comments', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey: true
-            },
+        return queryInterface.createTable("favorites", {
             userId: {
                 type: Sequelize.INTEGER,
                 references: {
@@ -20,17 +16,11 @@ module.exports = {
                     model: "images",
                     key: "imageId"
                 }
-            },
-            text: {
-                type: Sequelize.TEXT
-            },
-            date: {
-                type: Sequelize.DATE,
             }
         })
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("comments");
+        return queryInterface.dropTable("favorites")
     }
 };

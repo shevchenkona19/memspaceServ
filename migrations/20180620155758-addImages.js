@@ -6,6 +6,7 @@ module.exports = {
             imageId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
+                autoIncrement: true
             },
             imageData: {
                 type: Sequelize.BLOB,

@@ -5,14 +5,14 @@ module.exports = {
         return queryInterface.createTable('categories', {
             categoryId: {
                 type: Sequelize.INTEGER,
-                primaryKey: true
+                primaryKey: true,
+                autoIncrement: true
             },
             categoryName: {
                 type: Sequelize.STRING,
             }
         })
     },
-
     down: (queryInterface, Sequelize) => {
         return queryInterface.dropTable('categories')
     }

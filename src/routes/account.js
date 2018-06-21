@@ -4,67 +4,44 @@ const fs = require('fs');
 const bcrypt = require('bcrypt-nodejs');
 const express = require('express');
 const router = express.Router();
-const passport = require('../../app').passport;
-const jwtOptions = require('../../app').jwtOptions;
+const passport = require('../app').passport;
+const jwtOptions = require('../app').jwtOptions;
+const controller = require("../controllers/account");
 
 router.post('/login', async (req, res) => {
-    console.warn(req.body);
-    const body = req.body;
-    if (!body.username || !body.password) {
-        return res.status(400).json({message: 'incorrect data'})
-    }
-    const username = body.username;
-    const password = body.password;
     try {
-        const data = await db.query('SELECT userid, password FROM users WHERE username = $1', [username]);
-        if (data.rows[0]) {
-            bcrypt.compare(password, data.rows[0].password, (err) => {
-                if (err) {
-                    return res.status(401).json({message: "passwords do not match"});
-                }
-                const payload = {id: data.rows[0].userid};
-                const token = jwt.sign(payload, jwtOptions.secretOrKey);
-                return res.json({token: token});
+        const result = await controller.login(req.body);
+        if (result.success) {
+            return res.json({
+                token: result.token
             })
         } else {
-            return res.status(401).json({message: "no such user found"});
+            return res.status(500).json({
+                message: result.errorCode
+            })
         }
-    } catch (err) {
-        console.log(err.stack); 
-        return res.status(500).json({message: "BD error"});
+    } catch (e) {
+        res.status(500).json({
+            message: e.message
+        })
     }
 });
 router.post('/register', async (req, res) => {
-    const body = req.body;
-    if (!body.username || !body.password || !body.email) {
-        return res.status(400).json({message: "incorrect data"});
-    }
-    const username = body.username;
-    const password = body.password;
-    const email = body.email;
     try {
-        const data = await db.query('SELECT COUNT(*) as cnt FROM users WHERE username = $1 OR email = $2', [username, email])
-        if (!(data.rows[0] && data.rows[0].cnt == 0)) {
-            return res.status(400).json({message: "username or email is already taken"});
+        const result = await controller.register(req.body);
+        if (result.success) {
+            return res.json({
+                token: result.token
+            })
+        } else {
+            return res.status(500).json({
+                message: result.errorCode
+            })
         }
-        fs.readFile('noimage.png', async (err, image) => {
-            if (err) {
-                console.log(err.stack);
-                return res.status(500).json({message: "default image error"});
-            }
-            const passwordToSave = bcrypt.hashSync(password);
-            await db.query('INSERT INTO users(username, password, email, imagedata) VALUES($1, $2, $3, $4)', [username, passwordToSave, email, image]);
-            const userid = await db.query('SELECT userid FROM users WHERE username = $1', [username]);
-            if (!(userid.rows[0] && userid.rows[0].userid)) {
-                return res.status(500).json({message: "BD error"});
-            }
-            const payload = {id: userid.rows[0].userid};
-            const token = jwt.sign(payload, jwtOptions.secretOrKey);
-            return res.json({token: token});
+    } catch (e) {
+        res.status(500).json({
+            message: e.message
         })
-    } catch (err) {
-        console.log(err.stack);
-        return res.status(500).json({message: "BD error"});
     }
 });
 
