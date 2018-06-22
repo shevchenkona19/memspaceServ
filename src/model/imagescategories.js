@@ -1,5 +1,5 @@
 module.exports = (db, DataTypes) => {
-    const ImagesCategories = db.define('imagescategories',  {
+    const ImagesCategories = db.define('imagescategories', {
         imageId: {
             type: DataTypes.INTEGER,
             references: {
@@ -15,5 +15,14 @@ module.exports = (db, DataTypes) => {
             }
         }
     });
+    ImagesCategories.getTest = async (category, limit, offset) => {
+        return await ImagesCategories.findOne({
+            attributes: ["imageId"],
+            where: {categoryId: category.get("categoryId")},
+            order: db.literal("imageId DESC"),
+            limit,
+            offset
+        })
+    };
     return ImagesCategories;
 };

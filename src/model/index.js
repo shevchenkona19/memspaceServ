@@ -2,6 +2,7 @@ const db = require("./db").sequelize;
 const DataTypes = require("./db").Sequelize.DataTypes;
 let users;
 let images;
+let categories;
 let comments;
 let usersCategories;
 let imagesCategories;
@@ -11,6 +12,7 @@ module.exports = {
     init: () => {
         users = require("./users")(db, DataTypes);
         images = require("./images")(db, DataTypes);
+        categories = require("./categories")(db, DataTypes);
         comments = require("./comments")(db, DataTypes);
         usersCategories = require("./userscategories")(db, DataTypes);
         imagesCategories = require("./imagescategories")(db, DataTypes);
@@ -18,6 +20,7 @@ module.exports = {
     },
     getUsersModel: () => users,
     getImagesModel: () => images,
+    getCategoriesModel: () => categories,
     getCommentsModel: () => comments,
     getUsersCategoriesModel: () => usersCategories,
     getImagesCategoriesModel: () => imagesCategories,
