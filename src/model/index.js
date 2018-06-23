@@ -7,6 +7,7 @@ let comments;
 let usersCategories;
 let imagesCategories;
 let favorites;
+let likes;
 
 module.exports = {
     init: () => {
@@ -17,6 +18,7 @@ module.exports = {
         usersCategories = require("./userscategories")(db, DataTypes);
         imagesCategories = require("./imagescategories")(db, DataTypes);
         favorites = require("./favorites")(db, DataTypes);
+        likes = require("./likes")(db, DataTypes);
     },
     getUsersModel: () => users,
     getImagesModel: () => images,
@@ -24,5 +26,7 @@ module.exports = {
     getCommentsModel: () => comments,
     getUsersCategoriesModel: () => usersCategories,
     getImagesCategoriesModel: () => imagesCategories,
-    getFavoritesModel: () => favorites
+    getFavoritesModel: () => favorites,
+    getLikesModel: () => likes,
+    getDb: () => db,
 };
