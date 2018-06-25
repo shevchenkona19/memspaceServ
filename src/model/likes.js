@@ -1,26 +1,26 @@
 module.exports = (db, DataTypes) => {
   const Likes = db.define("likes", {
       id: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true
       },
       userId: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           references: {
               model: "users",
               key: "userId"
           }
       },
       imageId: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           references: {
               model: "images",
               key: "imageId"
           }
       },
       opinion: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
       }
   });
 

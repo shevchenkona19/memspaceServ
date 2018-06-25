@@ -7,6 +7,7 @@ module.exports = (db, DataTypes) => {
         },
         categoryName: {
             type: DataTypes.STRING,
-        });
+        }
+    });
     return Categories;
 };

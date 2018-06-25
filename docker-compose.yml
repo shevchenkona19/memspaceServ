@@ -1,4 +1,4 @@
-version: '2'
+version: '2.0'
 services:
   db:
     image: postgres:10.3
@@ -15,7 +15,7 @@ services:
   web:
     image: node:10.1.0
     working_dir: '/app'
-    command: 'node ./src/app.js'
+    command: 'npm run dc:start'
     ports:
       - "${DOCKER_PORT}:13000"
     links:

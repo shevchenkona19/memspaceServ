@@ -39,7 +39,13 @@ app.use('/moderator', moderator);
 //getapi(154095846, 8, 1);
 //setInterval(func, process.env.VKDELAY);
 
-app.listen(HOST, PORT, function(){
-    console.log(`Server is waiting for requests on port ${PORT}...`);
+app.get("/testing", (res, req) => {
+    return res.status(200).json({
+        success: true
+    });
+});
+
+app.listen(HOST, PORT, function () {
     db.init();
+    console.log(`MemSpace server is ready`);
 });
