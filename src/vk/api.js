@@ -1,13 +1,13 @@
-var https = require('https');
-var url = require('url');
-var db = require('../model/index');
-var request = require('async-request');
-var request1 = require('request');
+const https = require('https');
+const url = require('url');
+const db = require('../model/index').getDb();
+const request = require('async-request');
+const request1 = require('request');
 const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 
-var groups = {
+const groups = {
     //'Борщ': 460389,
     //'ЁП': 12382740,
     //'Булдыга':154095846,
@@ -41,7 +41,7 @@ var groups = {
     // 131348832,//Файнi меми про Укр.лiт
 };
 //Vkapi
-var getImages = async (offset) => {
+const getImages = async (offset) => {
     let path, response;
     for (let groupName in groups) {
         let groupId = groups[groupName];
@@ -62,7 +62,7 @@ var getImages = async (offset) => {
 
                 console.log('attempting to GET %j', path);
                 request1({ url: path, encoding: null }, async (error, response, body) => {
-                    await db.query('INSERT INTO images(imagedata, source, width, height) VALUES($1, $2, $3, $4)', [body, groupName, width, height]);
+                    await db.query(`INSERT INTO images(imagedata, source, width, height) VALUES(${body}, ${groupName}, ${width}, ${height})`);
                     console.log("image downloaded")
                 });
                 //response = await request(path);

@@ -24,5 +24,9 @@ module.exports = (db, DataTypes) => {
       }
   });
 
+  Likes.getOpinionByIds = async (userId, imageId) => {
+      return await Likes.findOne({where: {userId, imageId}, attributes: ["opinion"]});
+  };
+
   return Likes;
 };

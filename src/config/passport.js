@@ -1,6 +1,6 @@
 const passportJWT = require("passport-jwt");
 const jwt = require('jsonwebtoken');
-const db = require("../model/index");
+const Users = require("../model/index").getUsersModel();
 
 module.exports = function (passport, jwtOptions) {
     const ExtractJwt = passportJWT.ExtractJwt;
@@ -10,14 +10,9 @@ module.exports = function (passport, jwtOptions) {
     jwtOptions.secretOrKey = process.env.SECRETORKEY || "tasmanianDevil";
 
     const strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
-        try {
-            var data = await db.query('SELECT * FROM users WHERE userid = $1', [jwt_payload.id]);
-        }
-        catch(err) {
-            console.log(err.stack);
-        }
-        if (data.rows[0]) {
-            next(null, data.rows[0]);
+        const user = await Users.findById(jwt_payload.id);
+        if (user) {
+            next(null, user);
         } else {
             next(null, false);
         }

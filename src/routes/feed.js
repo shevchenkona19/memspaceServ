@@ -1,10 +1,8 @@
-const db = require('../model/index');
 const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
 const Controller = require("../controllers/feed");
 const ErrorCodes = require("../constants/errorCodes");
-//let fs = require('fs');
 
 router.get("/imgs", async (req, res) => {
     if (!req.query.id) {
