@@ -1,4 +1,4 @@
-module.exports = (db, DataTypes) => {
+module.exports = function(db, DataTypes) {
     const Users = db.define("users", {
         userId: {
             type: DataTypes.INTEGER,
@@ -26,7 +26,7 @@ module.exports = (db, DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: "[]"
         }
-    });
+    }, {timestamps: false});
 
     return Users;
 };

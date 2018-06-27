@@ -1,32 +1,41 @@
-const db = require("./db").sequelize;
-const DataTypes = require("./db").Sequelize.DataTypes;
-let users;
-let images;
-let categories;
-let comments;
-let usersCategories;
-let imagesCategories;
-let favorites;
-let likes;
+const sequelize = require("./db").sequelize;
+const Sequelize = require("./db").Sequelize;
+const fs = require("fs");
+const path = require("path");
+
+let db = {};
+
+fs.readdirSync(__dirname)
+    .filter(file => {
+        return file !== "index.js" && file !== "db.js";
+    })
+    .forEach(file => {
+        const model = sequelize.import(path.join(__dirname, file));
+        db[model.name] = model;
+    });
+
+Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
+});
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+db.sequelize.models.imagescategories.removeAttribute("id");
+db.sequelize.models.userscategories.removeAttribute("id");
+db.sequelize.models.favorites.removeAttribute("id");
+
+
 
 module.exports = {
-    init: () => {
-        users = require("./users")(db, DataTypes);
-        images = require("./images")(db, DataTypes);
-        categories = require("./categories")(db, DataTypes);
-        comments = require("./comments")(db, DataTypes);
-        usersCategories = require("./userscategories")(db, DataTypes);
-        imagesCategories = require("./imagescategories")(db, DataTypes);
-        favorites = require("./favorites")(db, DataTypes);
-        likes = require("./likes")(db, DataTypes);
-    },
-    getUsersModel: () => users,
-    getImagesModel: () => images,
-    getCategoriesModel: () => categories,
-    getCommentsModel: () => comments,
-    getUsersCategoriesModel: () => usersCategories,
-    getImagesCategoriesModel: () => imagesCategories,
-    getFavoritesModel: () => favorites,
-    getLikesModel: () => likes,
+    getUsersModel: () => db.sequelize.models.users,
+    getImagesModel: () => db.sequelize.models.images,
+    getCategoriesModel: () => db.sequelize.models.categories,
+    getCommentsModel: () => db.sequelize.models.comments,
+    getUsersCategoriesModel: () => db.sequelize.models.userscategories,
+    getImagesCategoriesModel: () => db.sequelize.models.imagescategories,
+    getFavoritesModel: () => db.sequelize.models.favorites,
+    getLikesModel: () => db.sequelize.models.likes,
     getDb: () => db,
 };

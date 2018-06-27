@@ -4,11 +4,13 @@ const Categories = require("../model/index").getCategoriesModel();
 const ImagesCategories = require("../model/index").getImagesCategoriesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const Images = require("../model/index").getImagesModel();
+const sequelize = require("../model/index").getDb().sequelize;
 
 async function createCategory(categoryName) {
-    await Categories.build({
+    const category = Categories.build({
         categoryName
-    }).save();
+    });
+    await category.save();
     return {
         success: true,
         message: SuccessCodes.SUCCESS
@@ -29,11 +31,14 @@ async function getNewMem() {
     const mem = await Images.findOne({
         where: {isChecked: '0'},
         attributes: ["imageId"],
-        order: "imageId",
+        order: sequelize.col("imageId"),
         limit: 1
     });
-    if (!mem) {
-        throw new Error(ErrorCodes.INTERNAL_ERROR);
+    if (mem === null) {
+        return {
+            success: false,
+            message: ErrorCodes.MEMES_ENDED
+        }
     }
     await mem.update({
         isChecked: '1'

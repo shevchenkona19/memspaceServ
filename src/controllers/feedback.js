@@ -2,6 +2,7 @@ const Likes = require("../model/index").getLikesModel();
 const Images = require("../model/index").getImagesModel();
 const Comments = require("../model/index").getCommentsModel();
 const Users = require("../model/index").getUsersModel();
+const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
 
@@ -9,7 +10,8 @@ const getFinalMem = async (userId, imageId) => {
     const refreshedMem = await Images.findById(imageId, {attributes: ["likes", "dislikes"]});
     const finalOpinion = await Likes.findOne({where: {userId, imageId}, attributes: ["opinion"]});
     return {
-        ...refreshedMem,
+        likes: refreshedMem.likes,
+        dislikes: refreshedMem.dislikes,
         opinion: finalOpinion.opinion
     };
 };
@@ -98,7 +100,7 @@ async function postComment(userId, imageId, text) {
         userId,
         imageId,
         text,
-        date: Date.now().toLocaleString()
+        date: Date.now()
     }).save();
     return {
         success: true,
@@ -107,23 +109,11 @@ async function postComment(userId, imageId, text) {
 }
 
 async function getComments(userId, imageId, count, offset) {
-    const comments = await Comments.findAll({
-        attributes: [
-            "username",
-            "text",
-            "date"
-        ],
-        where: {imageId},
-        include: {
-            model: Users,
-            where: {userId}
-        },
-        limit: count,
-        offset
-    });
+    const comments = await db.query(`SELECT username, text, date FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} LIMIT ${count} OFFSET ${offset}`);
     return {
         success: true,
-        comments
+        comments: comments[0] || [],
+        count: comments[0].length || 0
     }
 }
 

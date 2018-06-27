@@ -1,4 +1,4 @@
-module.exports = (db, DataTypes) => {
+module.exports = function(db, DataTypes) {
     const Favorites = db.define('favorites', {
         userId: {
             type: DataTypes.INTEGER,
@@ -14,7 +14,7 @@ module.exports = (db, DataTypes) => {
                 key: "imageId"
             }
         }
-    });
+    }, {timestamps: false});
 
     return Favorites;
 };

@@ -21,11 +21,11 @@ router.get("/categories", passport.authenticate('jwt', {session: false}), async 
 });
 
 router.post("/selectedCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
     try {
-        await Controller.saveCategories(req.body, req.user.userid);
+        await Controller.saveCategories(req.body, req.user.userId);
         res.json({
             message: SuccessCodes.SUCCESS
         })
@@ -38,23 +38,23 @@ router.post("/selectedCategories", passport.authenticate('jwt', {session: false}
 });
 
 router.post("/photo", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
     if (!req.body.photo) {
         return res.status(401).json({message: 'incorrect quarry'})
     }
     const photo = base64.atob(req.body.photo);
-    //await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userid]);
+    //await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userId]);
     return res.status(200).json({message: "200"})
 });
 
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
     try {
-        const result = await Controller.getPersonalCategories(req.user.userid);
+        const result = await Controller.getPersonalCategories(req.user.userId);
         if (result.success) {
             res.json({
                 categories: result.categories
@@ -69,7 +69,7 @@ router.get("/personalCategories", passport.authenticate('jwt', {session: false})
 });
 
 router.get("/test", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(400).json({message: "unauthorized"});
     }
     try {

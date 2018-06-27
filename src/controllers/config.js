@@ -16,6 +16,10 @@ async function saveCategories(body, userId) {
     const usersCategories = ids.map(categoryId => {
         return {userId, categoryId}
     });
+    await UsersCategories.destroy({
+        where: {userId},
+        truncate: true
+    });
     await UsersCategories.bulkCreate(usersCategories);
     return {
         success: true
@@ -64,13 +68,15 @@ async function getTest() {
         do {
             id = -1;
             const image = await ImagesCategories.getTest(categories[i], limit, offset);
-            id = image.get("imageId");
-            offset++;
+            if (image !== null) {
+                id = image.imageId;
+                offset++;
+            }
         } while (checkPrev(arr, id));
         if (id !== -1) {
             arr.push({
                 imageId: id,
-                categoryName: categories[i].get("categoryName")
+                categoryName: categories[i].categoryName
             });
             offset = 0;
         }
@@ -87,8 +93,8 @@ checkPrev = (arr, id) => {
 };
 
 module.exports = {
-  getCategories,
-  saveCategories,
-  getPersonalCategories,
-  getTest
+    getCategories,
+    saveCategories,
+    getPersonalCategories,
+    getTest
 };

@@ -2,6 +2,7 @@ const ModelLocator = require("../model/index");
 const ErrorCodes = require("../constants/errorCodes");
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const fs = require("fs");
 const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
 
@@ -34,15 +35,65 @@ async function register(body) {
     const password = body.password;
     const email = body.email;
 
-    const isEmailUnique = !!(await Users.findOne({where: {email}}));
-
-    if (!isEmailUnique) {
+    const isEmailUnique = (await Users.findOne({where: {email}}));
+    if (isEmailUnique !== null) {
         throw new Error(ErrorCodes.EMAIL_NOT_UNIQUE)
     }
     let image;
     try {
-        image = fs.readFileSync("noimage.png");
+        image = fs.readFileSync(__dirname + "/data/noimage.png");
     } catch (e) {
+        console.log(e.stack);
+        return {
+            success: false,
+            errorCode: ErrorCodes.INTERNAL_ERROR
+        };
+    }
+    if (!image) {
+        throw new Error(ErrorCodes.INTERNAL_ERROR);
+    }
+    let user;
+    try {
+        const passwordToSave = await new Promise((resolve, reject) => {
+            bcrypt.hash(password, undefined, undefined, function (err, hash) {
+                if (err) reject(err);
+                resolve(hash)
+            });
+        });
+        user = Users.build({username, password: passwordToSave, email, imageData: image});
+        await user.save();
+    } catch (e) {
+        console.error(e);
+        return {
+            success: false,
+            errorCode: ErrorCodes.INTERNAL_ERROR
+        }
+    }
+    const token = jwt.sign({
+        id: user.userId
+    }, jwtOptions.secretOrKey);
+
+    return {
+        success: true,
+        token
+    };
+}
+
+async function registerModer(body) {
+    const username = body.username;
+    const password = body.password;
+    const email = body.email;
+
+    const isEmailUnique = (await Users.findOne({where: {email}}));
+
+    if (isEmailUnique !== null) {
+        throw new Error(ErrorCodes.EMAIL_NOT_UNIQUE)
+    }
+    let image;
+    try {
+        image = fs.readFileSync(__dirname + "/data/noimage.png");
+    } catch (e) {
+        console.error(e);
         return {
             success: false,
             errorCode: ErrorCodes.INTERNAL_ERROR
@@ -54,7 +105,7 @@ async function register(body) {
     let user;
     try {
         const passwordToSave = bcrypt.hashSync(password);
-        user = Users.build({username, password: passwordToSave, email, image});
+        user = Users.build({username, password: passwordToSave, email, image, accessLvl: 3});
         await user.save();
     } catch (e) {
         console.log(e.message);
@@ -75,5 +126,6 @@ async function register(body) {
 
 module.exports = {
     login,
-    register
+    register,
+    registerModer
 };

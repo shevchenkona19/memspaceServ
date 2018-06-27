@@ -1,8 +1,9 @@
-module.exports = (db, DataTypes) => {
+module.exports = function (db, DataTypes) {
     const Comments = db.define("comments", {
         id: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true,
         },
         userId: {
             type: DataTypes.INTEGER,
@@ -24,7 +25,8 @@ module.exports = (db, DataTypes) => {
         date: {
             type: DataTypes.DATE,
         }
+    }, {
+        timestamps: false
     });
-
     return Comments;
-}
+};

@@ -5,7 +5,7 @@ const ErrorCodes = require("../constants/errorCodes");
 const Controller = require("../controllers/moderator");
 
 router.post("/createCategory", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl < 2) {
+    if (req.user.accessLvl < 2) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.body.categoryName) {
@@ -34,7 +34,7 @@ router.get("/getImages", async (req, res) => {
     return res.status(200).json({message: "200"});
 });
 router.delete("/category", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl < 2) {
+    if (req.user.accessLvl < 2) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.query.id) {
@@ -54,7 +54,7 @@ router.delete("/category", passport.authenticate('jwt', {session: false}), async
     }
 });
 router.get("/newMem", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl < 1) {
+    if (req.user.accessLvl < 1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     try {
@@ -70,7 +70,7 @@ router.get("/newMem", passport.authenticate('jwt', {session: false}), async (req
     }
 });
 router.post("/discardMem", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl < 1) {
+    if (req.user.accessLvl < 1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.query.id) {

@@ -2,20 +2,9 @@ const Images = require("../model/index").getImagesModel();
 const Favorites = require("../model/index").getFavoritesModel();
 const Likes = require("../model/index").getLikesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
-const db = require("../model/index").getDb();
+const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
-
-async function getImage(id) {
-    const imageData = (await Images.findOne({where: {imageId: id}})).get("imageData");
-    if (!imageData) {
-        throw new Error(ErrorCodes.NO_SUCH_IMAGE)
-    }
-    return {
-        success: true,
-        imageData
-    }
-}
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -77,7 +66,7 @@ async function getMainFeed(userId, count, offset) {
     });
     return {
         success: true,
-        memes: feed
+        memes: feed === null ? [] : feed
     }
 }
 
@@ -89,48 +78,59 @@ async function getCategoriesFeed(userId, count, offset) {
         ]
     });
     let catStr = "";
-    selCategories.forEach(cat => catStr.concat(`imagesCategories.categoryid = ` + cat.get("categoryId") + ` OR `));
+    selCategories.forEach(cat => catStr = catStr.concat(`imagesCategories.\"categoryId\" = ` + cat.categoryId + ` OR `));
     catStr = catStr.substring(0, catStr.length - 4);
-    const memes = await db.query(`SELECT images.imageId, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion FROM images `
-        + `LEFT OUTER JOIN likes ON likes.imageId = images.imageId AND likes.userId = ${userId} `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.imageId = imagesCategories.imageId AND (${catStr})) `
-        + `ORDER BY imageId DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion FROM images `
+        + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
+        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
+        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
-        memes
+        memes: memes === null ? [] : memes
     }
 }
 
 async function getCategoryFeed(userId, categoryId, count, offset) {
-    const memes = await db.query(`SELECT images.imageId, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
-        + `FROM images LEFT OUTER JOIN likes ON likes.imageId = images.imageId AND likes.userId = ${userId} WHERE `
-        + `EXISTS (SELECT * FROM imagesCategories WHERE images.imageId = imagesCategories.imageId AND categoryId = ${categoryId}) `
-        + `ORDER BY imageId DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE `
+        + `EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
+        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
-        memes
+        memes: memes === null ? [] : memes
     }
 }
 
 async function getHotFeed(userId, count, offset) {
     const filter = process.env.HOTFILTER || 100;
-    const memes = await db.query(`SELECT images.imageId, images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
-        + 'FROM images LEFT OUTER JOIN likes ON likes.imageId = images.imageId AND likes.userId = ${userId} WHERE likes >= ${filter} '
-        + 'ORDER BY imageId DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE likes >= ${filter} `
+        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
-        memes
+        memes: memes === null ? [] : memes
+    }
+}
+
+async function getImage(id) {
+    const imageData = (await Images.findOne({where: {imageId: id}})).get("imageData");
+    if (!imageData) {
+        throw new Error(ErrorCodes.NO_SUCH_IMAGE)
+    }
+    return {
+        success: true,
+        imageData
     }
 }
 
 async function getUserPhoto(username) {
-    const image = await Users.findOne({attributes: ["imageData"], where: {username}});
-    if (!image) {
+    const imageData = (await Users.findOne({where: {username}})).imageData;
+    if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
     return {
         success: true,
-        image: image.get("imageDataa")
+        imageData
     }
 }
 

@@ -1,4 +1,4 @@
-module.exports = (db, DataTypes) => {
+module.exports = function(db, DataTypes) {
     const UsersCategories = db.define("userscategories", {
         userId: {
             type: DataTypes.INTEGER,
@@ -14,7 +14,7 @@ module.exports = (db, DataTypes) => {
                 key: "categoryId"
             }
         }
-    });
+    }, {timestamps: false});
 
     return UsersCategories;
 };

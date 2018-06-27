@@ -18,7 +18,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
             imageData: {
-                type: Sequelize.BLOB(),
+                type: Sequelize.BLOB,
                 allowNull: true,
             },
             accessLvl: {

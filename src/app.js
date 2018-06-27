@@ -1,7 +1,8 @@
 const passport = require("passport");
+const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
-const db = require("./model/index");
+require("./model/index");
 const PORT = process.env.PORT || 8888;
 const HOST = process.env.SERVER_URL || 'localhost';
 
@@ -39,13 +40,9 @@ app.use('/moderator', moderator);
 //getapi(154095846, 8, 1);
 //setInterval(func, process.env.VKDELAY);
 
-app.get("/testing", (res, req) => {
-    return res.status(200).json({
-        success: true
-    });
-});
 
-app.listen(HOST, PORT, function () {
-    db.init();
+const server = http.createServer(app,);
+
+server.listen(PORT, function () {
     console.log(`MemSpace server is ready`);
 });

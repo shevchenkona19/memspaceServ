@@ -1,4 +1,4 @@
-module.exports = (db, DataTypes) => {
+module.exports = function (db, DataTypes) {
     const Categories = db.define("categories", {
         categoryId: {
             type: DataTypes.INTEGER,
@@ -8,6 +8,6 @@ module.exports = (db, DataTypes) => {
         categoryName: {
             type: DataTypes.STRING,
         }
-    });
+    }, {timestamps: false});
     return Categories;
 };

@@ -5,14 +5,14 @@ const Controller = require("../controllers/favorites");
 const ErrorCodes = require("../constants/errorCodes");
 
 router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const result = await Controller.addToFavorites(req.user.userid, req.query.id);
+        const result = await Controller.addToFavorites(req.user.userId, req.query.id);
         if (result.success) {
             return res.json({message: result.message});
         } else {
@@ -26,7 +26,7 @@ router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), a
     }
 });
 router.get("/allFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     try {
@@ -46,14 +46,14 @@ router.get("/allFavorites", passport.authenticate('jwt', {session: false}), asyn
     }
 });
 router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const result = await Controller.removeFromFavorites(req.user.userid, req.query.id);
+        const result = await Controller.removeFromFavorites(req.user.userId, req.query.id);
         if (result.success) {
             return res.json({
                 message: result.message
@@ -69,14 +69,14 @@ router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: fal
     }
 });
 router.get("/isFavourite", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accesslvl === -1) {
+    if (req.user.accessLvl === -1) {
         return res.status(401).json({message: 'unauthorized'})
     }
     if (!req.query.id) {
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const result = await Controller.isFavorite(req.user.userid, req.query.id);
+        const result = await Controller.isFavorite(req.user.userId, req.query.id);
         if (result.success) {
             return res.json({
                 isFavourite: result.isFavorite
