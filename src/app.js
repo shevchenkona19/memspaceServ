@@ -41,7 +41,7 @@ app.use('/moderator', moderator);
 //setInterval(func, process.env.VKDELAY);
 
 
-const server = http.createServer(app,);
+const server = http.createServer(app);
 
 server.listen(PORT, function () {
     console.log(`MemSpace server is ready`);

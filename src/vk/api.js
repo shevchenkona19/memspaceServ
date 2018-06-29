@@ -48,6 +48,7 @@ const getImages = async (offset) => {
         let groupId = groups[groupName];
         path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
 
+
         try {
             console.log('attempting to GET %j', path);
             response = await request(path);
