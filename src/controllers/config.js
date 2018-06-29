@@ -27,26 +27,27 @@ async function saveCategories(body, userId) {
 }
 
 async function getPersonalCategories(userId) {
-    const selCategories = await UsersCategories.findAll({where: {userId}});
+    let selCategories = await UsersCategories.findAll({where: {userId}});
     const allCategories = await Categories.findAll();
-
-    if (selCategories.length === 0) return {success: true, categories: []};
+    if (selCategories === null) selCategories = [];
 
     const categories = [];
 
     allCategories.forEach(category => {
         let isUsed = false;
-        for (let i = 0; i < selCategories.length; i++) {
-            if (category.get("categoryId") === selCategories[i].get("categoryId")) {
-                isUsed = true;
-                selCategories.splice(i, 1);
-                break;
+        if (selCategories.length > 0) {
+            for (let i = 0; i < selCategories.length; i++) {
+                if (category.categoryId === selCategories[i].categoryId) {
+                    isUsed = true;
+                    selCategories.splice(i, 1);
+                    break;
+                }
             }
         }
         categories.push({
-            categoryName: category.get("categoryName"),
+            categoryName: category.categoryName,
             categoryIsUsed: isUsed,
-            categoryId: category.get("categoryId")
+            categoryId: category.categoryId
         })
     });
 
