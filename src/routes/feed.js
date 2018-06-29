@@ -51,7 +51,7 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         if (result.success) {
             return res.json({memes: result.memes});
         } else {
-            return res.json({message: result.message});
+            return res.json({message: result.message, memes: []});
         }
     } catch (e) {
         console.log(e.stack);
