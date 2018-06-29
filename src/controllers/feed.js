@@ -79,6 +79,12 @@ async function getCategoriesFeed(userId, count, offset) {
     });
     let catStr = "";
     selCategories.forEach(cat => catStr = catStr.concat(`imagesCategories.\"categoryId\" = ` + cat.categoryId + ` OR `));
+    if (catStr === "") {
+        return {
+            success: false,
+            errorCode: ErrorCodes.NO_CATEGORIES
+        };
+    }
     catStr = catStr.substring(0, catStr.length - 4);
     const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion FROM images `
         + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `

@@ -43,6 +43,6 @@ app.use('/moderator', moderator);
 
 const server = http.createServer(app);
 
-server.listen(PORT, function () {
+server.listen(PORT, () => {
     console.log(`MemSpace server is ready`);
 });
