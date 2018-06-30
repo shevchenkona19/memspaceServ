@@ -1,12 +1,6 @@
-const https = require('https');
-const url = require('url');
-const db = require('../model/index').getDb();
 const Images = require("../model/index").getImagesModel();
 const request = require('async-request');
 const request1 = require('request');
-const imagemin = require('imagemin');
-const imageminJpegtran = require('imagemin-mozjpeg');
-const imageminPngquant = require('imagemin-pngquant');
 
 const groups = {
     'Борщ': 460389,
@@ -46,7 +40,6 @@ const getImages = async (offset) => {
     for (let groupName in groups) {
         let groupId = groups[groupName];
         path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
-
 
         try {
             console.log('attempting to GET %j', path);
