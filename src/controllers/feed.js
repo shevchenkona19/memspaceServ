@@ -134,9 +134,10 @@ async function getUserPhoto(username) {
     if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
+    const image = new Buffer(imageData, "base64").toString("binary");
     return {
         success: true,
-        imageData: imageData.imageData
+        imageData: image
     }
 }
 

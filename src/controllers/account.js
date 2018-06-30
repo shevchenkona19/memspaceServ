@@ -92,7 +92,7 @@ async function register(body) {
                 resolve(hash)
             });
         });
-        image = new Buffer(image, "base64");
+        image = new Buffer(image, "binary").toString("base64");
         user = Users.build({username, password: passwordToSave, email, imageData: image});
         await user.save();
     } catch (e) {
