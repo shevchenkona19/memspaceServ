@@ -11,15 +11,24 @@ async function login(body) {
     const username = body.username;
     const password = body.password;
     if (!username || !password) {
-        throw new Error(ErrorCodes.INCORRECT_DATA);
+        return {
+            success: false,
+            errorCode: ErrorCodes.INCORRECT_DATA
+        }
     }
     const user = await Users.findOne({where: {username, password}});
     if (user === null) {
-        throw new Error(ErrorCodes.NOT_REGISTERED)
+        return {
+            success: false,
+            errorCode: ErrorCodes.NOT_REGISTERED
+        };
     }
     const match = bcrypt.compareSync(password, user.get("password"));
     if (!match) {
-        throw new Error(ErrorCodes.PASSWORDS_DONT_MATCH);
+        return {
+            success: false,
+            errorCode: ErrorCodes.PASSWORDS_DONT_MATCH
+        }
     }
     const payload = {
         id: user.get("userId")
