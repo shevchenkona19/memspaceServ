@@ -37,6 +37,7 @@ app.use('/moderator', moderator);
 app.use(express.static(__dirname + "/public"));
 
 const imageFolder = __dirname + "/public";
+console.log(imageFolder);
 //require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);
