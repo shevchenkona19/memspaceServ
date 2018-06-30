@@ -130,11 +130,12 @@ async function getImage(id) {
 }
 
 async function getUserPhoto(username) {
-    const imageData = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
+    /*const imageData = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
     if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
-    const image = new Buffer(imageData.imageData, "base64").toString("binary");
+    const image = new Buffer(imageData.imageData, "base64").toString("binary");*/
+    const image = fs.readFileSync(__dirname + "/data/noimage.png");
     return {
         success: true,
         imageData: image
