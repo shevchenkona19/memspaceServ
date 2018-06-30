@@ -34,7 +34,7 @@ app.use('/favorites', favorites);
 app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
-app.use(express.static(__dirname, "public"));
+app.use(express.static(__dirname + "/public"));
 
 const imageFolder = __dirname + "/public";
 //require('./routes')(app, passport, jwtOptions);
