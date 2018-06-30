@@ -129,7 +129,7 @@ router.get("/userPhoto", async (req, res) => {
         const result = await Controller.getUserPhoto(targetUsername);
         if (result.success) {
             res.contentType('image/*');
-            return res.end(result.image, 'binary');
+            return res.end(result.imageData, 'binary');
         } else {
             return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
         }
