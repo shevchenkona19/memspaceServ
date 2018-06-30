@@ -34,7 +34,9 @@ app.use('/favorites', favorites);
 app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
+app.use(express.static(__dirname, "public"));
 
+const imageFolder = __dirname + "/public";
 //require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);
@@ -45,3 +47,5 @@ const server = http.createServer(app);
 server.listen(PORT, () => {
     console.log(`MemSpace server is ready`);
 });
+
+module.exports = imageFolder;
