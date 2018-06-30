@@ -37,12 +37,25 @@ async function register(body) {
     const email = body.email;
 
     if (!EmailValidator.isEmail(email)) {
-        throw new Error(ErrorCodes.EMAIL_NOT_VALID)
+        return {
+            success: false,
+            errorCode: ErrorCodes.EMAIL_NOT_VALID
+        };
     }
 
     const isEmailUnique = (await Users.findOne({where: {email}}));
     if (isEmailUnique !== null) {
-        throw new Error(ErrorCodes.EMAIL_NOT_UNIQUE)
+        return {
+            success: false,
+            errorCode: ErrorCodes.EMAIL_NOT_UNIQUE
+        };
+    }
+    const isUsernameUnique = await Users.findOne({where: {username}});
+    if (isUsernameUnique !== null) {
+        return {
+            success: false,
+            errorCode: ErrorCodes.USERNAME_NOT_VALID
+        }
     }
     let image;
     try {
