@@ -38,8 +38,7 @@ app.use('/moderator', moderator);
 //require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);
-//setInterval(func, process.env.VKDELAY);
-
+setInterval(getapi, process.env.VKDELAY || 3600000, 1);
 
 const server = http.createServer(app);
 
