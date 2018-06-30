@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const fs = require("fs");
 const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
+const EmailValidator = require("../utils/validation/mailValidator");
 
 async function login(body) {
     const username = body.username;
@@ -34,6 +35,10 @@ async function register(body) {
     const username = body.username;
     const password = body.password;
     const email = body.email;
+
+    if (!EmailValidator.isEmail(email)) {
+        throw new Error(ErrorCodes.EMAIL_NOT_VALID)
+    }
 
     const isEmailUnique = (await Users.findOne({where: {email}}));
     if (isEmailUnique !== null) {

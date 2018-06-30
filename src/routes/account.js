@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
                 token: result.token
             })
         } else {
-            return res.status(500).json({
+            return res.json({
                 message: result.errorCode
             })
         }
