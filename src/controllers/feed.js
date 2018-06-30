@@ -130,13 +130,13 @@ async function getImage(id) {
 }
 
 async function getUserPhoto(username) {
-    const imageData = (await Users.findOne({where: {username}})).imageData;
+    const imageData = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
     if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
     return {
         success: true,
-        imageData
+        imageData: imageData.imageData
     }
 }
 
