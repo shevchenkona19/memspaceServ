@@ -4,6 +4,7 @@ const Likes = require("../model/index").getLikesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
+const fs = require("fs");
 const ErrorCodes = require("../constants/errorCodes");
 
 async function refreshMem(memId, userId) {
