@@ -68,7 +68,12 @@ async function register(body) {
     }
     let image;
     try {
-        image = fs.readFileSync(__dirname + "/data/noimage.png");
+        image = await new Promise((resolve, reject) => {
+            fs.readFile(__dirname + "/data/noimage.png", (err, image) => {
+                if (err) reject(err);
+                resolve(image);
+            })
+        })
     } catch (e) {
         console.log(e.stack);
         return {
