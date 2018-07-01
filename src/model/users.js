@@ -15,7 +15,7 @@ module.exports = function(db, DataTypes) {
             type: DataTypes.STRING
         },
         imageData: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         accessLvl: {
