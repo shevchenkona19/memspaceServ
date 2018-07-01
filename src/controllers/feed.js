@@ -124,10 +124,9 @@ async function getImage(id) {
     if (!filename) {
         throw new Error(ErrorCodes.NO_SUCH_IMAGE)
     }
-    const image = fs.readFileSync(filename.imageData);
     return {
         success: true,
-        image
+        image: filename.imageData
     }
 }
 
@@ -136,10 +135,9 @@ async function getUserPhoto(username) {
     if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
-    const image = fs.readFileSync(imageData.imageData);
     return {
         success: true,
-        imageData: image
+        imageData: imageData.imageData
     }
 }
 

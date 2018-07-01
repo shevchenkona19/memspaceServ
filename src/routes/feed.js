@@ -110,13 +110,13 @@ router.get("/imgs", async (req, res) => {
         const result = await Controller.getImage(req.query.id);
         if (result.success) {
             res.contentType('image/*');
-            return res.end(result.image, 'binary');
+            return res.sendFile(result.image);
         } else {
-            return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
+            return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR});
         }
     } catch (e) {
         console.log(e.stack);
-        return res.status(400).json({message: e.message});
+        return res.status(500).json({message: e.message});
     }
 });
 
@@ -129,7 +129,7 @@ router.get("/userPhoto", async (req, res) => {
         const result = await Controller.getUserPhoto(targetUsername);
         if (result.success) {
             res.contentType('image/*');
-            return res.end(result.imageData, 'binary');
+            return res.sendFile(result.imageData, 'binary');
         } else {
             return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
         }

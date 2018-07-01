@@ -3,7 +3,6 @@ const db = require('../model/index').getDb();
 const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
-const jwtOptions = require('../app').jwtOptions;
 const Controller = require("../controllers/account");
 
 router.post('/login', async (req, res) => {
