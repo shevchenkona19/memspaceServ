@@ -91,7 +91,9 @@ async function getTest() {
 }
 
 async function postPhoto(userId, filename, image) {
-    fs.writeFileSync(filename, image);
+    const imageToSave = image.replace(/^data:image\/png;base64,/, "");
+
+    fs.writeFileSync(filename, image, "base64");
     await Users.update({
         imageData: filename
     }, {where: {userId}});
