@@ -47,7 +47,7 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     }
     const photo = req.body.photo;
     const mime = req.body.mime;
-    const filename = images + "/users/" + req.user.userId + req.user.username + "." + mime;
+    const filename = images + "/users/" + req.user.userId + req.user.username + mime;
     try {
         const result = await Controller.postPhoto(req.user.userId, filename, photo);
         if (result.success) {

@@ -91,7 +91,6 @@ async function getTest() {
 }
 
 async function postPhoto(userId, filename, image) {
-    console.log("---------------------postphoto: ", filename);
     fs.writeFileSync(filename, image);
     await Users.update({
         imageData: filename

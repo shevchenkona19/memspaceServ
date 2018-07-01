@@ -3,10 +3,12 @@ const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
 require("./model/index");
+const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
 const HOST = process.env.SERVER_URL || 'localhost';
 
 const app = express();
+app.use(helmet());
 
 //Настройки авторизации
 let jwtOptions = {};

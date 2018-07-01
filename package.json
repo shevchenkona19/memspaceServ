@@ -1,7 +1,7 @@
 {
   "name": "serverapp",
   "version": "1.0.0",
-  "main":"src/app.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "docker-compose up db web",
     "dc:install": "docker-compose run npm install && npm run dc:migrate",
@@ -20,6 +20,7 @@
     "dbmigrate": "0.0.8",
     "express": "^4.16.2",
     "filereader": "^0.10.3",
+    "helmet": "^3.12.1",
     "imagemin": "^5.3.1",
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-pngquant": "^5.1.0",
