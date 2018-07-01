@@ -47,6 +47,7 @@ const getImages = async (offset) => {
             console.log('attempting to GET %j', path);
             response = await request(path);
             let body = JSON.parse(response.body);
+            console.warn(body.response.items[0].attachments[0].photo);
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
