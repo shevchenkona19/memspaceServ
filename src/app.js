@@ -13,8 +13,13 @@ let jwtOptions = {};
 require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
-module.exports.passport = passport;
-module.exports.jwtOptions = jwtOptions;
+const imagePath = __dirname + "/public";
+
+module.exports = {
+    imageFolder: imagePath,
+    passport,
+    jwtOptions
+};
 
 //Настройки bodyParser`a
 app.use(bodyParser({limit: '100mb'}));
@@ -44,5 +49,3 @@ const server = http.createServer(app);
 server.listen(PORT, () => {
     console.log(`MemSpace server is ready`);
 });
-
-module.exports.imageFolder =  __dirname + "/public";
