@@ -120,13 +120,14 @@ async function getHotFeed(userId, count, offset) {
 }
 
 async function getImage(id) {
-    const imageData = (await Images.findOne({where: {imageId: id}})).get("imageData");
-    if (!imageData) {
+    const filename = (await Images.findOne({where: {imageId: id}})).get("imageData");
+    if (!filename) {
         throw new Error(ErrorCodes.NO_SUCH_IMAGE)
     }
+    const image = fs.readFileSync(filename);
     return {
         success: true,
-        imageData
+        image
     }
 }
 
