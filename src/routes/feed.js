@@ -110,7 +110,7 @@ router.get("/imgs", async (req, res) => {
         const result = await Controller.getImage(req.query.id);
         if (result.success) {
             res.contentType('image/*');
-            return res.end(result.imageData, 'binary');
+            return res.end(result.image, 'binary');
         } else {
             return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
         }
