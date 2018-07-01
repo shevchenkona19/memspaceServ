@@ -1,6 +1,8 @@
 const Images = require("../model/index").getImagesModel();
 const request = require('async-request');
 const request1 = require('request');
+const fs = require("fs");
+const images = require("../app").imageFolder;
 
 const groups = {
     'Борщ': 460389,
@@ -48,16 +50,28 @@ const getImages = async (offset) => {
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604) {
+                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604 &&  body.response.items[0].attachments[0].photo.pid) {
 
                 const height = body.response.items[0].attachments[0].photo.height;
                 const width = body.response.items[0].attachments[0].photo.width;
+                const id =  body.response.items[0].attachments[0].photo.pid;
+                const ownerId =  body.response.items[0].attachments[0].photo.owner_id;
                 path = body.response.items[0].attachments[0].photo.photo_604;
 
                 console.log('attempting to GET %j', path);
                 request1({url: path, encoding: null}, async (error, response, body) => {
+                    if (!fs.existsSync(images + "/memes")) {
+                        await new Promise(((resolve, reject) => {
+                            fs.mkdir(images + "/memes", err => {
+                                if (err) reject(err);
+                                resolve();
+                            });
+                        }))
+                    }
+                    const filename = images + "/memes/"  + id + ownerId + ".jpg";
+                    fs.writeFileSync(filename, body);
                     Images.build({
-                        imageData: body,
+                        imageData: filename,
                         source: groupName,
                         width,
                         height

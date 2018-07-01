@@ -44,3 +44,5 @@ const server = http.createServer(app);
 server.listen(PORT, () => {
     console.log(`MemSpace server is ready`);
 });
+
+module.exports = {imageFolder: __dirname + "/public"};
