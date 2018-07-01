@@ -45,4 +45,4 @@ server.listen(PORT, () => {
     console.log(`MemSpace server is ready`);
 });
 
-module.exports = {imageFolder: __dirname + "/public"};
+module.exports.imageFolder =  __dirname + "/public";
