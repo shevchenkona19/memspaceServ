@@ -86,7 +86,8 @@ async function getCategoriesFeed(userId, count, offset) {
         };
     }
     catStr = catStr.substring(0, catStr.length - 4);
-    const memes = db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion FROM images `
+    const memes = db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion, `
+        + `(SELECT COUNT(*) FROM comments WHERE images.imageId = comments.imageId) AS comments_count FROM images `
         + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
@@ -97,7 +98,8 @@ async function getCategoriesFeed(userId, count, offset) {
 }
 
 async function getCategoryFeed(userId, categoryId, count, offset) {
-    const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion `
+    const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, `
+        + `(SELECT COUNT(*) FROM comments WHERE images.imageId = comments.imageId) AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE `
         + `EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
@@ -109,7 +111,8 @@ async function getCategoryFeed(userId, categoryId, count, offset) {
 
 async function getHotFeed(userId, count, offset) {
     const filter = process.env.HOTFILTER || 100;
-    const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion '
+    const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
+        + `(SELECT COUNT(*) FROM comments WHERE images.imageId = comments.imageId) AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE likes >= ${filter} `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
