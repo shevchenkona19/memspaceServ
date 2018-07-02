@@ -78,10 +78,7 @@ const getImages = async (offset) => {
                     }).save()
                         .then(() => console.log("image downloaded"))
                         .catch(e => console.error(e));
-                    // await db.query(`INSERT INTO images(imagedata, source, width, height) VALUES(${body}, ${groupName}, ${width}, ${height})`);
                 });
-                //response = await request(path);
-                //let imagedata = response.body.replace(/\0/g, '');
 
             } else console.log('not full response')
         } catch (err) {

@@ -2,7 +2,6 @@ const ModelLocator = require("../model/index");
 const ErrorCodes = require("../constants/errorCodes");
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
-const fs = require("fs");
 const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
 const EmailValidator = require("../utils/validation/mailValidator");

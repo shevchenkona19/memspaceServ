@@ -5,7 +5,6 @@ const images = require("../app").imageFolder;
 const Controller = require("../controllers/config");
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
-const fs = require("fs");
 
 router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {

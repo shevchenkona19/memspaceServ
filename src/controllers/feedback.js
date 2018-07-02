@@ -1,7 +1,6 @@
 const Likes = require("../model/index").getLikesModel();
 const Images = require("../model/index").getImagesModel();
 const Comments = require("../model/index").getCommentsModel();
-const Users = require("../model/index").getUsersModel();
 const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
