@@ -91,8 +91,9 @@ async function getTest() {
 }
 
 async function postPhoto(userId, filename, image) {
-    const imageToSave = image.replace(/^data:image\/png;base64,/, "");
-
+    const user = await Users.findOne({where: {userId}, attributes:["imageData"]});
+    const prevImage = user.imageData;
+    fs.unlinkSync(prevImage);
     fs.writeFileSync(filename, image, "base64");
     await Users.update({
         imageData: filename
