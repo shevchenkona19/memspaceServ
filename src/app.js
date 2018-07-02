@@ -3,18 +3,25 @@ const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
 require("./model/index");
+const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
 const HOST = process.env.SERVER_URL || 'localhost';
 
 const app = express();
+app.use(helmet());
 
 //Настройки авторизации
 let jwtOptions = {};
 require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
-module.exports.passport = passport;
-module.exports.jwtOptions = jwtOptions;
+const imagePath = __dirname + "/public";
+
+module.exports = {
+    imageFolder: imagePath,
+    passport,
+    jwtOptions
+};
 
 //Настройки bodyParser`a
 app.use(bodyParser({limit: '100mb'}));
@@ -34,7 +41,6 @@ app.use('/favorites', favorites);
 app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
-
 //require('./routes')(app, passport, jwtOptions);
 
 //getapi(154095846, 8, 1);

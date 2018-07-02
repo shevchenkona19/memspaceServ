@@ -4,6 +4,7 @@ const Likes = require("../model/index").getLikesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
+const fs = require("fs");
 const ErrorCodes = require("../constants/errorCodes");
 
 async function refreshMem(memId, userId) {
@@ -122,24 +123,24 @@ async function getHotFeed(userId, count, offset) {
 }
 
 async function getImage(id) {
-    const imageData = (await Images.findOne({where: {imageId: id}})).get("imageData");
-    if (!imageData) {
+    const filename = await Images.findOne({where: {imageId: id}});
+    if (!filename) {
         throw new Error(ErrorCodes.NO_SUCH_IMAGE)
     }
     return {
         success: true,
-        imageData
+        image: filename.imageData
     }
 }
 
 async function getUserPhoto(username) {
-    const imageData = (await Users.findOne({where: {username}})).imageData;
+    const imageData = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
     if (!imageData) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
     return {
         success: true,
-        imageData
+        imageData: imageData.imageData
     }
 }
 

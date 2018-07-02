@@ -6,7 +6,7 @@ module.exports = function (db, DataTypes) {
             autoIncrement: true
         },
         imageData: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
         },
         likes: {
             type: DataTypes.INTEGER,

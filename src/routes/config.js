@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
-const base64 = require('js-base64').Base64;
+const images = require("../app").imageFolder;
 const Controller = require("../controllers/config");
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
+const fs = require("fs");
 
 router.get("/categories", passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
@@ -44,9 +45,20 @@ router.post("/photo", passport.authenticate('jwt', {session: false}), async (req
     if (!req.body.photo) {
         return res.status(401).json({message: 'incorrect quarry'})
     }
-    const photo = base64.atob(req.body.photo);
-    //await db.query('UPDATE users SET imagedata = $1 WHERE userid = $2', [photo, req.user.userId]);
-    return res.status(200).json({message: "200"})
+    const photo = req.body.photo;
+    const mime = req.body.mime;
+    const filename = images + "/users/" + req.user.userId + req.user.username + mime;
+    try {
+        const result = await Controller.postPhoto(req.user.userId, filename, photo);
+        if (result.success) {
+            return res.json({message: SuccessCodes.SUCCESS})
+        } else {
+            return res.json({message: ErrorCodes.INTERNAL_ERROR})
+        }
+    } catch (e) {
+        console.log(e.stack);
+        return res.json({message: ErrorCodes.INTERNAL_ERROR})
+    }
 });
 
 router.get("/personalCategories", passport.authenticate('jwt', {session: false}), async (req, res) => {

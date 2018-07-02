@@ -6,6 +6,7 @@ const fs = require("fs");
 const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
 const EmailValidator = require("../utils/validation/mailValidator");
+const images = require("../app").imageFolder;
 
 async function login(body) {
     const username = body.username;
@@ -66,19 +67,7 @@ async function register(body) {
             errorCode: ErrorCodes.USERNAME_NOT_VALID
         }
     }
-    let image;
-    try {
-        image = fs.readFileSync(__dirname + "/data/noimage.png");
-    } catch (e) {
-        console.log(e.stack);
-        return {
-            success: false,
-            errorCode: ErrorCodes.INTERNAL_ERROR
-        };
-    }
-    if (!image) {
-        throw new Error(ErrorCodes.INTERNAL_ERROR);
-    }
+    const userImage = images + "/users/noimage.png";
     let user;
     try {
         const passwordToSave = await new Promise((resolve, reject) => {
@@ -87,7 +76,7 @@ async function register(body) {
                 resolve(hash)
             });
         });
-        user = Users.build({username, password: passwordToSave, email, imageData: image});
+        user = Users.build({username, password: passwordToSave, email, imageData: userImage});
         await user.save();
     } catch (e) {
         console.error(e);
@@ -116,23 +105,11 @@ async function registerModer(body) {
     if (isEmailUnique !== null) {
         throw new Error(ErrorCodes.EMAIL_NOT_UNIQUE)
     }
-    let image;
-    try {
-        image = fs.readFileSync(__dirname + "/data/noimage.png");
-    } catch (e) {
-        console.error(e);
-        return {
-            success: false,
-            errorCode: ErrorCodes.INTERNAL_ERROR
-        };
-    }
-    if (!image) {
-        throw new Error(ErrorCodes.INTERNAL_ERROR);
-    }
+    let image = images + "/users/noimage.png";
     let user;
     try {
         const passwordToSave = bcrypt.hashSync(password);
-        user = Users.build({username, password: passwordToSave, email, image, accessLvl: 3});
+        user = Users.build({username, password: passwordToSave, email, imageData: image, accessLvl: 3});
         await user.save();
     } catch (e) {
         console.log(e.message);

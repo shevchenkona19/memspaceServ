@@ -9,7 +9,7 @@ module.exports = {
                 autoIncrement: true
             },
             imageData: {
-                type: Sequelize.BLOB,
+                type: Sequelize.STRING,
             },
             likes: {
                 type: Sequelize.INTEGER,

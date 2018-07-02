@@ -3,6 +3,8 @@ const ErrorCodes = require("../constants/errorCodes");
 const Categories = ModelLocator.getCategoriesModel();
 const UsersCategories = ModelLocator.getUsersCategoriesModel();
 const ImagesCategories = ModelLocator.getImagesCategoriesModel();
+const Users = ModelLocator.getUsersModel();
+const fs = require("fs");
 
 async function getCategories() {
     return await Categories.findAll();
@@ -88,6 +90,18 @@ async function getTest() {
     }
 }
 
+async function postPhoto(userId, filename, image) {
+    const imageToSave = image.replace(/^data:image\/png;base64,/, "");
+
+    fs.writeFileSync(filename, image, "base64");
+    await Users.update({
+        imageData: filename
+    }, {where: {userId}});
+    return {
+        success: true
+    }
+}
+
 checkPrev = (arr, id) => {
     if (id === -1) return false;
     return arr.some(item => item.imageId === id)
@@ -97,5 +111,6 @@ module.exports = {
     getCategories,
     saveCategories,
     getPersonalCategories,
-    getTest
+    getTest,
+    postPhoto
 };
