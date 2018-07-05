@@ -4,8 +4,10 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="">
+    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="added email validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/moderator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/moderator.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,61 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="account.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/account.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="870">
-              <caret line="58" column="37" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mailValidator.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/utils/validation/mailValidator.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file leaf-file-name="feed.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controllers/feed.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1245">
-              <caret line="83" column="26" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="feedback.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/feedback.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1680">
-              <caret line="112" selection-start-line="112" selection-end-line="112" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="moderator.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/moderator.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="account.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/account.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1110">
-              <caret line="74" column="30" lean-forward="true" selection-start-line="74" selection-start-column="30" selection-end-line="74" selection-end-column="30" />
+            <state relative-caret-position="1050">
+              <caret line="70" column="24" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -81,26 +33,76 @@
       <file leaf-file-name="feed.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/feed.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="53" column="54" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
+            <state relative-caret-position="1965">
+              <caret line="131" column="57" selection-start-line="131" selection-start-column="57" selection-end-line="131" selection-end-column="57" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="errorCodes.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/constants/errorCodes.js">
+      <file leaf-file-name="account.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/account.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="favorites.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/favorites.js">
+        <entry file="file://$PROJECT_DIR$/src/routes/favorites.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
+            <state relative-caret-position="750">
+              <caret line="50" column="44" selection-start-line="50" selection-start-column="44" selection-end-line="50" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/controllers/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="597">
+              <caret line="88" column="17" selection-start-line="88" selection-start-column="17" selection-end-line="88" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="moderator.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/controllers/moderator.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="627">
+              <caret line="72" column="58" lean-forward="true" selection-start-line="72" selection-start-column="58" selection-end-line="72" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20180620155758-addImages.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/migrations/20180620155758-addImages.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="39" lean-forward="true" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20180620161914-addComments.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/migrations/20180620161914-addComments.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="23" column="19" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -135,11 +137,14 @@
       <find>test</find>
       <find>SERVER_URL</find>
       <find>categories</find>
+      <find>'</find>
+      <find>fs.</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
       <replace>DataTypes</replace>
       <replace>Id</replace>
+      <replace>`</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -165,10 +170,8 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/src/constants/successCodes.js" />
         <option value="$PROJECT_DIR$/src/controllers/favorites.js" />
-        <option value="$PROJECT_DIR$/src/routes/config.js" />
         <option value="$PROJECT_DIR$/src/routes/favorites.js" />
         <option value="$PROJECT_DIR$/src/config/passport.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/model/db.js" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/migrations/20180620161739-addCategories.js" />
@@ -176,34 +179,36 @@
         <option value="$PROJECT_DIR$/migrations/20180621174416-addImagesCategories.js" />
         <option value="$PROJECT_DIR$/migrations/20180621174620-addFavorites.js" />
         <option value="$PROJECT_DIR$/migrations/20180623105029-addLikes.js" />
-        <option value="$PROJECT_DIR$/migrations/20180620155758-addImages.js" />
-        <option value="$PROJECT_DIR$/src/routes/account.js" />
         <option value="$PROJECT_DIR$/src/model/categories.js" />
         <option value="$PROJECT_DIR$/src/model/favorites.js" />
-        <option value="$PROJECT_DIR$/src/model/users.js" />
         <option value="$PROJECT_DIR$/src/model/userscategories.js" />
         <option value="$PROJECT_DIR$/src/routes/moderator.js" />
-        <option value="$PROJECT_DIR$/src/controllers/moderator.js" />
         <option value="$PROJECT_DIR$/src/model/imagescategories.js" />
-        <option value="$PROJECT_DIR$/src/model/images.js" />
         <option value="$PROJECT_DIR$/src/model/index.js" />
         <option value="$PROJECT_DIR$/src/model/likes.js" />
         <option value="$PROJECT_DIR$/src/model/comments.js" />
         <option value="$PROJECT_DIR$/migrations/20180627133207-changeComments.js" />
         <option value="$PROJECT_DIR$/migrations/20180620161914-addComments.js" />
         <option value="$PROJECT_DIR$/src/routes/feedback.js" />
-        <option value="$PROJECT_DIR$/src/controllers/feedback.js" />
-        <option value="$PROJECT_DIR$/migrations/20180620154500-init.js" />
-        <option value="$PROJECT_DIR$/src/controllers/account.js" />
-        <option value="$PROJECT_DIR$/src/vk/api.js" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/skeleton.env" />
-        <option value="$PROJECT_DIR$/src/app.js" />
         <option value="$PROJECT_DIR$/docker-compose.yml" />
-        <option value="$PROJECT_DIR$/src/controllers/feed.js" />
         <option value="$PROJECT_DIR$/src/constants/errorCodes.js" />
+        <option value="$PROJECT_DIR$/migrations/20180620155758-addImages.js" />
+        <option value="$PROJECT_DIR$/src/model/images.js" />
+        <option value="$PROJECT_DIR$/migrations/20180620154500-init.js" />
+        <option value="$PROJECT_DIR$/src/routes/account.js" />
         <option value="$PROJECT_DIR$/src/routes/feed.js" />
+        <option value="$PROJECT_DIR$/src/model/users.js" />
+        <option value="$PROJECT_DIR$/src/routes/config.js" />
+        <option value="$PROJECT_DIR$/src/controllers/account.js" />
+        <option value="$PROJECT_DIR$/src/controllers/feedback.js" />
+        <option value="$PROJECT_DIR$/src/vk/api.js" />
+        <option value="$PROJECT_DIR$/src/app.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/controllers/feed.js" />
         <option value="$PROJECT_DIR$/src/controllers/config.js" />
+        <option value="$PROJECT_DIR$/src/controllers/moderator.js" />
       </list>
     </option>
   </component>
@@ -225,8 +230,8 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="412" />
-    <option name="y" value="103" />
+    <option name="x" value="215" />
+    <option name="y" value="30" />
     <option name="width" value="1370" />
     <option name="height" value="1009" />
   </component>
@@ -235,17 +240,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <expand>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="testmemspace" type="cbb8eebc:String" user="testmemspace" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -267,7 +261,32 @@
               <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
               <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="users" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
@@ -279,20 +298,18 @@
               <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
               <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-              <item name="validation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="memspaceServ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="memspaceServ" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="vk" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="testmemspace" type="cbb8eebc:String" user="testmemspace" />
             </path>
           </expand>
           <select />
@@ -315,6 +332,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/public/users" />
+      <recent name="$PROJECT_DIR$/src/public" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/controllers/data" />
@@ -368,245 +387,15 @@
       <workItem from="1530263734721" duration="5256000" />
       <workItem from="1530282154671" duration="1375000" />
       <workItem from="1530303653267" duration="3852000" />
-      <workItem from="1530346840038" duration="365000" />
-    </task>
-    <task id="LOCAL-00009" summary="Tryfix photo">
-      <created>1524150604256</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1524150604256</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Tryfix photo">
-      <created>1524151587915</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1524151587915</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Tryfix photo">
-      <created>1524153532577</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1524153532577</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Tryfix photo">
-      <created>1524153709443</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1524153709443</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Tryfix photo">
-      <created>1524154064513</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1524154064514</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Tryfix photo">
-      <created>1524154380207</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1524154380207</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Tryfix photo">
-      <created>1524154577103</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1524154577104</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Tryfix photo">
-      <created>1524154816018</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1524154816018</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Tryfix photo">
-      <created>1524154968293</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1524154968293</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Fix the photo already!!">
-      <created>1524215350562</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1524215350562</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Photo fixed??">
-      <created>1524215490851</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1524215490851</updated>
-    </task>
-    <task id="LOCAL-00020" summary="fuck this photo">
-      <created>1524215729828</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1524215729828</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Tryfix photo">
-      <created>1524219170878</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1524219170878</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Tryfix photo">
-      <created>1524222489693</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1524222489693</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Tryfix photo">
-      <created>1524222744269</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1524222744269</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Fixed comments">
-      <created>1524225951064</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1524225951064</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Changed from body to quarry">
-      <created>1524226105332</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1524226105332</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Created new request refreshMem">
-      <created>1524227609687</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1524227609688</updated>
-    </task>
-    <task id="LOCAL-00027" summary="Created new request refreshMem">
-      <created>1524230781963</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1524230781963</updated>
-    </task>
-    <task id="LOCAL-00028" summary="RefreshMem fixes">
-      <created>1524230899694</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1524230899694</updated>
-    </task>
-    <task id="LOCAL-00029" summary="RefreshMem fixes">
-      <created>1524233831320</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1524233831320</updated>
-    </task>
-    <task id="LOCAL-00030" summary="fixed bugs for feed and added .idea to gitignore">
-      <created>1527452706381</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1527452706383</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Lil ref">
-      <created>1527453671224</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1527453671224</updated>
-    </task>
-    <task id="LOCAL-00032" summary="changed getImages route">
-      <created>1528126029467</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1528126029467</updated>
-    </task>
-    <task id="LOCAL-00033" summary="changed vk logic">
-      <created>1528126570743</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1528126570743</updated>
-    </task>
-    <task id="LOCAL-00034" summary="added log">
-      <created>1528128661451</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1528128661451</updated>
-    </task>
-    <task id="LOCAL-00035" summary="fix empty array">
-      <created>1528128807453</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1528128807453</updated>
-    </task>
-    <task id="LOCAL-00036" summary="fix empty array">
-      <created>1528128857644</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1528128857644</updated>
-    </task>
-    <task id="LOCAL-00037" summary="fix empty array">
-      <created>1528130919902</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1528130919902</updated>
-    </task>
-    <task id="LOCAL-00038" summary="fix empty array">
-      <created>1528131257928</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1528131257928</updated>
-    </task>
-    <task id="LOCAL-00039" summary="fix empty array">
-      <created>1528131273089</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1528131273089</updated>
-    </task>
-    <task id="LOCAL-00040" summary="fix empty array">
-      <created>1528131688511</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1528131688511</updated>
-    </task>
-    <task id="LOCAL-00041" summary="fix empty array">
-      <created>1528131920685</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1528131920686</updated>
-    </task>
-    <task id="LOCAL-00042" summary="fix image compr">
-      <created>1528132160078</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1528132160078</updated>
+      <workItem from="1530346840038" duration="4246000" />
+      <workItem from="1530365046648" duration="4446000" />
+      <workItem from="1530429570330" duration="7877000" />
+      <workItem from="1530519845432" duration="899000" />
+      <workItem from="1530523337532" duration="502000" />
+      <workItem from="1530524202844" duration="910000" />
+      <workItem from="1530535138166" duration="476000" />
+      <workItem from="1530609080600" duration="11000" />
+      <workItem from="1530801062018" duration="254000" />
     </task>
     <task id="LOCAL-00043" summary="fix image compr">
       <created>1528132210107</created>
@@ -713,11 +502,249 @@
       <option name="project" value="LOCAL" />
       <updated>1530307554487</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="added email validation">
+      <created>1530347224579</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1530347224580</updated>
+    </task>
+    <task id="LOCAL-00059" summary="added new error codes">
+      <created>1530348876863</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1530348876863</updated>
+    </task>
+    <task id="LOCAL-00060" summary="changed login error behavior">
+      <created>1530350952459</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1530350952459</updated>
+    </task>
+    <task id="LOCAL-00061" summary="added email validation">
+      <created>1530365796676</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1530365796677</updated>
+    </task>
+    <task id="LOCAL-00062" summary="trying to fix image">
+      <created>1530366594755</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1530366594755</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Changing getting image">
+      <created>1530366803479</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1530366803479</updated>
+    </task>
+    <task id="LOCAL-00064" summary="implementing base64">
+      <created>1530367110230</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367110230</updated>
+    </task>
+    <task id="LOCAL-00065" summary="fixed argument type">
+      <created>1530367221650</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367221650</updated>
+    </task>
+    <task id="LOCAL-00066" summary="implementing reading from storage">
+      <created>1530367339664</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367339664</updated>
+    </task>
+    <task id="LOCAL-00067" summary="added missing imports">
+      <created>1530367395883</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367395883</updated>
+    </task>
+    <task id="LOCAL-00068" summary="fixed error with images">
+      <created>1530367532557</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367532557</updated>
+    </task>
+    <task id="LOCAL-00069" summary="finally user photo">
+      <created>1530367599149</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367599149</updated>
+    </task>
+    <task id="LOCAL-00070" summary="tryfix user photo">
+      <created>1530367785439</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1530367785439</updated>
+    </task>
+    <task id="LOCAL-00071" summary="new folder struct">
+      <created>1530368503950</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1530368503950</updated>
+    </task>
+    <task id="LOCAL-00072" summary="abs path">
+      <created>1530368689306</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1530368689306</updated>
+    </task>
+    <task id="LOCAL-00073" summary="few improvements">
+      <created>1530368873349</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1530368873350</updated>
+    </task>
+    <task id="LOCAL-00074" summary="downgrade">
+      <created>1530369065169</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1530369065169</updated>
+    </task>
+    <task id="LOCAL-00075" summary="new file storage">
+      <created>1530430567359</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1530430567360</updated>
+    </task>
+    <task id="LOCAL-00076" summary="new imprv">
+      <created>1530430798665</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1530430798665</updated>
+    </task>
+    <task id="LOCAL-00077" summary="new imprvm">
+      <created>1530430919953</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1530430919953</updated>
+    </task>
+    <task id="LOCAL-00078" summary="changed false path">
+      <created>1530431024182</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1530431024182</updated>
+    </task>
+    <task id="LOCAL-00079" summary="changed exports style">
+      <created>1530431193464</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1530431193464</updated>
+    </task>
+    <task id="LOCAL-00080" summary="new mechanics">
+      <created>1530431658761</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1530431658762</updated>
+    </task>
+    <task id="LOCAL-00081" summary="new photo sys">
+      <created>1530432094703</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1530432094703</updated>
+    </task>
+    <task id="LOCAL-00082" summary="fixing images">
+      <created>1530432646955</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1530432646957</updated>
+    </task>
+    <task id="LOCAL-00083" summary="new photo system + post photo route">
+      <created>1530434029137</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1530434029138</updated>
+    </task>
+    <task id="LOCAL-00084" summary="added email validation">
+      <created>1530434575291</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1530434575291</updated>
+    </task>
+    <task id="LOCAL-00085" summary="fixed blob instead of string">
+      <created>1530435793421</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1530435793421</updated>
+    </task>
+    <task id="LOCAL-00086" summary="added helmet">
+      <created>1530436302050</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1530436302050</updated>
+    </task>
+    <task id="LOCAL-00087" summary="new photo saving">
+      <created>1530437102434</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1530437102434</updated>
+    </task>
+    <task id="LOCAL-00088" summary="reformat dependencies">
+      <created>1530523416847</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1530523416848</updated>
+    </task>
+    <task id="LOCAL-00089" summary="added main feed with comments">
+      <created>1530523807482</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1530523807482</updated>
+    </task>
+    <task id="LOCAL-00090" summary="fixed promise">
+      <created>1530524225219</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1530524225219</updated>
+    </task>
+    <task id="LOCAL-00091" summary="removing old user image">
+      <created>1530535404262</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1530535404263</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135190000" />
+    <option name="totallyTimeSpent" value="154446000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1920" height="1050" extended-state="6" />
@@ -727,10 +754,11 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" weight="0.44056708" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32461873" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32135075" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3293348" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.51472193" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.5141612" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -741,7 +769,6 @@
       <window_info anchor="bottom" id="Messages" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -779,36 +806,36 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Fixed comments" />
-    <MESSAGE value="Changed from body to quarry" />
-    <MESSAGE value="Created new request refreshMem" />
-    <MESSAGE value="RefreshMem fixes" />
-    <MESSAGE value="fixed bugs for feed and added .idea to gitignore" />
-    <MESSAGE value="Lil ref" />
-    <MESSAGE value="changed getImages route" />
-    <MESSAGE value="changed vk logic" />
-    <MESSAGE value="added log" />
-    <MESSAGE value="fix empty array" />
-    <MESSAGE value="fix image compr" />
-    <MESSAGE value="added new route" />
-    <MESSAGE value="fixing new route" />
-    <MESSAGE value="fixing test" />
-    <MESSAGE value="implementing new orm" />
-    <MESSAGE value="feed controller" />
-    <MESSAGE value="final controllers" />
-    <MESSAGE value="docker improvements" />
-    <MESSAGE value="fixes with real app" />
-    <MESSAGE value="preparation for new server" />
-    <MESSAGE value="upgrade of readme with instructions" />
-    <MESSAGE value="few improvements to reflect empty categories" />
-    <MESSAGE value="minor improvement for empty cats" />
-    <MESSAGE value="fixed wrong object value name" />
-    <MESSAGE value="changed personal categories behavior" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed personal categories behavior" />
+    <MESSAGE value="added missing imports" />
+    <MESSAGE value="fixed error with images" />
+    <MESSAGE value="finally user photo" />
+    <MESSAGE value="tryfix user photo" />
+    <MESSAGE value="new folder struct" />
+    <MESSAGE value="abs path" />
+    <MESSAGE value="few improvements" />
+    <MESSAGE value="downgrade" />
+    <MESSAGE value="new file storage" />
+    <MESSAGE value="new imprv" />
+    <MESSAGE value="new imprvm" />
+    <MESSAGE value="changed false path" />
+    <MESSAGE value="changed exports style" />
+    <MESSAGE value="new mechanics" />
+    <MESSAGE value="new photo sys" />
+    <MESSAGE value="fixing images" />
+    <MESSAGE value="new photo system + post photo route" />
+    <MESSAGE value="added email validation" />
+    <MESSAGE value="fixed blob instead of string" />
+    <MESSAGE value="added helmet" />
+    <MESSAGE value="new photo saving" />
+    <MESSAGE value="reformat dependencies" />
+    <MESSAGE value="added main feed with comments" />
+    <MESSAGE value="fixed promise" />
+    <MESSAGE value="removing old user image" />
+    <option name="LAST_COMMIT_MESSAGE" value="removing old user image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -846,13 +873,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/passport.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package-lock.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -867,13 +887,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/moderator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="15" column="47" lean-forward="true" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -905,18 +918,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1015">
-          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/favorites.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1105" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/favorites.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -935,13 +936,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="42" selection-start-column="42" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/userscategories.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -967,64 +961,8 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/migrations/20180627133207-changeComments.js" />
-    <entry file="file://$PROJECT_DIR$/migrations/20180620161914-addComments.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/feedback.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="128" column="14" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/images.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/migrations/20180620155758-addImages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/migrations/20180620154500-init.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="40" selection-start-column="40" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.dockerignore">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vk/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.bat">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1051,20 +989,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docker-compose.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -1079,71 +1003,172 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/validation/mailValidator.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/constants/errorCodes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        <state relative-caret-position="180">
+          <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/feed.js">
+    <entry file="file://$PROJECT_DIR$/src/model/images.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="53" column="54" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
+        <state relative-caret-position="120">
+          <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="79" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/20180620154500-init.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/moderator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/feedback.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1920">
+          <caret line="128" column="14" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/userscategories.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="35" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/account.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="58" column="37" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/favorites.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/feed.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="83" column="26" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="26" />
+          <caret line="27" column="9" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/feedback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1680">
-          <caret line="112" selection-start-line="112" selection-end-line="112" />
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/moderator.js">
+    <entry file="file://$PROJECT_DIR$/src/config/passport.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="30">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vk/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/20180620161914-addComments.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/feed.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="70" column="24" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/feed.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1965">
+          <caret line="131" column="57" selection-start-line="131" selection-start-column="57" selection-end-line="131" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/account.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1110">
-          <caret line="74" column="30" lean-forward="true" selection-start-line="74" selection-start-column="30" selection-end-line="74" selection-end-column="30" />
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/favorites.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="44" selection-start-line="50" selection-start-column="44" selection-end-line="50" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
+        <state relative-caret-position="597">
+          <caret line="88" column="17" selection-start-line="88" selection-start-column="17" selection-end-line="88" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/validation/mailValidator.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/migrations/20180620155758-addImages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="39" lean-forward="true" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/moderator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="72" column="58" lean-forward="true" selection-start-line="72" selection-start-column="58" selection-end-line="72" selection-end-column="58" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

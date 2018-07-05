@@ -111,5 +111,20 @@ router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, 
         return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR});
     }
 });
+router.post("/clearMemes", passport.authenticate("jwt", {session: false}), async (req, res) => {
+    try {
+        const result = await Controller.clearMemes();
+        if (result.success) {
+            return res.json({message: result.message});
+        } else {
+            return res.status(500).json({
+                message: ErrorCodes.INTERNAL_ERROR
+            });
+        }
+    } catch (e) {
+        console.log(e.stack);
+        return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR});
+    }
+});
 
 module.exports = router;

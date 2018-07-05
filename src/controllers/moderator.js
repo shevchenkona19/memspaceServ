@@ -5,6 +5,7 @@ const ImagesCategories = require("../model/index").getImagesCategoriesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const Images = require("../model/index").getImagesModel();
 const sequelize = require("../model/index").getDb().sequelize;
+const fs = require("fs");
 
 async function createCategory(categoryName) {
     const category = Categories.build({
@@ -50,6 +51,8 @@ async function getNewMem() {
 }
 
 async function discardMem(imageId) {
+    const mem = await Images.findOne({where: {imageId}});
+    fs.unlinkSync(mem.imageData);
     await Images.destroy({where: {imageId}});
     return {success: true, message: SuccessCodes.SUCCESS}
 }
@@ -65,10 +68,16 @@ async function postMem(imageId, categoryIds) {
     }
 }
 
+async function clearMemes() {
+    await Images.destroy({where: {isChecked: '0'}, truncate: true});
+    return {success: true, message: SuccessCodes.SUCCESS};
+}
+
 module.exports = {
     postMem,
     discardMem,
     getNewMem,
     deleteCategory,
-    createCategory
+    createCategory,
+    clearMemes
 };
