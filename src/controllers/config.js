@@ -91,9 +91,10 @@ async function getTest() {
 }
 
 async function postPhoto(userId, filename, image) {
-    const user = await Users.findOne({where: {userId}, attributes:["imageData"]});
+    const user = await Users.findOne({where: {userId}, attributes: ["imageData"]});
     const prevImage = user.imageData;
-    fs.unlinkSync(prevImage);
+    if (!prevImage.includes("noimage.png"))
+        fs.unlinkSync(prevImage);
     fs.writeFileSync(filename, image, "base64");
     await Users.update({
         imageData: filename
