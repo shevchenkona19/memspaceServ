@@ -34,6 +34,11 @@ module.exports = function (db, DataTypes) {
         width: {
             type: DataTypes.INTEGER,
             defaultValue: 0
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
         }
     }, {
         timestamps: false

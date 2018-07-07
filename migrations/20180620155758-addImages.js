@@ -37,6 +37,11 @@ module.exports = {
             width: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0
+            },
+            createdAt: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.NOW
             }
         })
     },

@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
 const HOST = process.env.SERVER_URL || 'localhost';
 
+
 const app = express();
 app.use(helmet());
 
@@ -44,6 +45,7 @@ app.use('/moderator', moderator);
 
 //getapi(154095846, 8, 1);
 setInterval(require('./vk/api'), process.env.VKDELAY || 3600000, 1);
+setInterval(require("./controllers/cleaner").clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
 
 const server = http.createServer(app);
 
