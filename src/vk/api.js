@@ -69,7 +69,17 @@ const getImages = async (offset) => {
                         }))
                     }
                     const filename = images + "/memes/"  + id + ownerId + ".jpg";
+                    console.log(" ");
+                    console.log(" ");
+                    console.log("FILENAME: " + filename);
+                    console.log(" ");
+                    console.log(" ");
                     fs.writeFileSync(filename, body);
+                    console.log("");
+                    console.log("");
+                    console.log("FILE EXISTS: " + (fs.existsSync(filename)));
+                    console.log("");
+                    console.log("");
                     Images.build({
                         imageData: filename,
                         source: groupName,

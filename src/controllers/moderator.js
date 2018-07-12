@@ -52,6 +52,9 @@ async function getNewMem() {
 
 async function discardMem(imageId) {
     const mem = await Images.findOne({where: {imageId}});
+    if (mem === null) {
+        return {success: true, message: SuccessCodes.SUCCESS}
+    }
     if (fs.existsSync(mem.imageData)) {
         fs.unlinkSync(mem.imageData);
     }
