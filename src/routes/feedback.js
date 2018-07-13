@@ -136,4 +136,55 @@ router.get("/comments", passport.authenticate('jwt', {session: false}), async (r
     }
 });
 
+router.post("/messageForDev", passport.authenticate("jwt", {session: false}), async (req, res) => {
+    const title = req.body.title;
+    const message = req.body.message;
+    if (!title || !message) {
+        return res.body({success: false, message: ErrorCodes.INCORRECT_BODY});
+    }
+    try {
+        const result = await Controller.writeMessageForDev(req.user.userId, title, message);
+        if (result.success) {
+            return res.json({
+                success: true,
+            })
+        } else {
+            return res.json({
+                success: false,
+                message: ErrorCodes.INTERNAL_ERROR
+            })
+        }
+    } catch (e) {
+        console.error(e.stack);
+        return res.json({
+            success: false,
+            message: e.message
+        })
+    }
+});
+
+router.get("/allFeedbackDev", async (req, res) => {
+   try {
+       const result = await Controller.getAllDevMessages();
+       if (result.success) {
+           return res.json({
+               success: true,
+               feedback: result.allFeedback
+           })
+       } else {
+           return res.json({
+               success: false,
+               message: ErrorCodes.INTERNAL_ERROR
+           })
+       }
+   } catch (e) {
+       console.error(e.stack);
+       return res.json({
+           success: false,
+           message: e.message
+       })
+   }
+});
+
+
 module.exports = router;

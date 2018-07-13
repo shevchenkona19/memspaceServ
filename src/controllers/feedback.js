@@ -1,6 +1,7 @@
 const Likes = require("../model/index").getLikesModel();
 const Images = require("../model/index").getImagesModel();
 const Comments = require("../model/index").getCommentsModel();
+const UserFeedback = require("../model/index").getUserFeedback();
 const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
@@ -116,11 +117,29 @@ async function getComments(userId, imageId, count, offset) {
     }
 }
 
+async function writeMessageForDev(userId, title, message) {
+    const feedback = UserFeedback.build({userId, title, message});
+    await feedback.save();
+    return {
+        success: true
+    }
+}
+
+async function getAllDevMessages() {
+    const allFeedback = await UserFeedback.findAll();
+    return {
+        success: true,
+        allFeedback
+    }
+}
+
 module.exports = {
     postLike,
     deleteLike,
     postDislike,
     deleteDislike,
     postComment,
-    getComments
+    getComments,
+    writeMessageForDev,
+    getAllDevMessages
 };
