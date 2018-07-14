@@ -1,5 +1,5 @@
 module.exports = function (db, DataTypes) {
-    const UserFeedback = db.define("userFeedback", {
+    const UserFeedback = db.define("userfeedback", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,

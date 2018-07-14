@@ -37,6 +37,6 @@ module.exports = {
     getImagesCategoriesModel: () => db.sequelize.models.imagescategories,
     getFavoritesModel: () => db.sequelize.models.favorites,
     getLikesModel: () => db.sequelize.models.likes,
-    getUserFeedback: () => db.sequelize.models.userFeedback,
+    getUserFeedback: () => db.sequelize.models.userfeedback,
     getDb: () => db,
 };
