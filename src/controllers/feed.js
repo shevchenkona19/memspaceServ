@@ -105,7 +105,7 @@ async function getHotFeed(userId, count, offset) {
 
 async function getImage(id) {
     const filename = await Images.findOne({where: {imageId: id}});
-    if (!filename) {
+    if (filename === null) {
         throw new Error(ErrorCodes.NO_SUCH_IMAGE)
     }
     return {
