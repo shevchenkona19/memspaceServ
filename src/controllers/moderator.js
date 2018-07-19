@@ -32,7 +32,9 @@ async function getNewMem() {
     const mem = await Images.findOne({
         where: {isChecked: '0'},
         attributes: ["imageId"],
-        order: sequelize.col("imageId"),
+        order: [
+            "imageId", "ASC"
+        ],
         limit: 1
     });
     if (mem === null) {
