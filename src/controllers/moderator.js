@@ -33,7 +33,7 @@ async function getNewMem() {
         where: {isChecked: '0'},
         attributes: ["imageId"],
         order: [
-            "imageId", "ASC"
+            ["imageId", "ASC"]
         ],
         limit: 1
     });
