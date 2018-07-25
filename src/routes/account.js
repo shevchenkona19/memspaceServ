@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const db = require('../model/index').getDb();
 const express = require('express');
 const router = express.Router();

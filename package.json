@@ -4,7 +4,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "docker-compose up db web",
-    "dc:install": "docker-compose run npm install && npm run dc:migrate && npm run dc:seed",
+    "dc:install": "docker-compose run npm install && npm run dc:migrate",
     "migration:create": "./node_modules/.bin/sequelize migration:create --name",
     "seed:create": "./node_modules/.bin/sequelize seed:generate --name",
     "seed:up":"docker-compose run web ./node_modules/.bin/sequelize db:seed:all --config ./development.json",

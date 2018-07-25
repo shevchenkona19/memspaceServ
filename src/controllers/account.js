@@ -45,6 +45,8 @@ async function register(body) {
     const password = body.password;
     const email = body.email;
 
+    console.warn("Registering: ",username,password,email);
+
     if (!EmailValidator.isEmail(email)) {
         return {
             success: false,
