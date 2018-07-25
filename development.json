@@ -3,7 +3,7 @@
   "password": "memspace",
   "database": "memspace-main",
   "host": "db",
-  "port": 7654,
+  "port": 5432,
   "dialect": "postgres",
   "pool": {
     "max": 3,
