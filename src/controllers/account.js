@@ -1,6 +1,6 @@
 const ModelLocator = require("../model/index");
 const ErrorCodes = require("../constants/errorCodes");
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
@@ -23,7 +23,7 @@ async function login(body) {
             errorCode: ErrorCodes.NOT_REGISTERED
         };
     }
-    const match = bcrypt.compareSync(password, user.get("password"));
+    const match = await bcrypt.compare(password, user.password);
     if (!match) {
         return {
             success: false,
@@ -45,7 +45,6 @@ async function register(body) {
     const password = body.password;
     const email = body.email;
 
-    console.warn("Registering: ",username,password,email);
 
     if (!EmailValidator.isEmail(email)) {
         return {
@@ -71,11 +70,7 @@ async function register(body) {
     const userImage = images + "/users/noimage.png";
     let user;
     try {
-        const passwordToSave = await new Promise((resolve, reject) => {
-            bcrypt.hash(password, undefined, undefined, function (err, hash) {
-                if (err) reject(err);
-                resolve(hash)
-            });
+        const passwordToSave = await bcrypt.hash(password);
         });
         user = Users.build({username, password: passwordToSave, email, imageData: userImage});
         await user.save();
@@ -109,7 +104,7 @@ async function registerModer(body) {
     let image = images + "/users/noimage.png";
     let user;
     try {
-        const passwordToSave = bcrypt.hashSync(password);
+        const passwordToSave = await bcrypt.hash(password);
         user = Users.build({username, password: passwordToSave, email, imageData: image, accessLvl: 3});
         await user.save();
     } catch (e) {

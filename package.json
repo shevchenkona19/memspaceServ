@@ -7,7 +7,7 @@
     "dc:install": "docker-compose run npm install && npm run dc:migrate",
     "migration:create": "./node_modules/.bin/sequelize migration:create --name",
     "seed:create": "./node_modules/.bin/sequelize seed:generate --name",
-    "seed:up":"docker-compose run web ./node_modules/.bin/sequelize db:seed:all --config ./development.json",
+    "seed:up": "docker-compose run web ./node_modules/.bin/sequelize db:seed:all --config ./development.json",
     "dc:seed": "docker-compose up -d db && docker-compose run web node_modules/.bin/wait-port db:7654 && npm run seed:up && docker-compose stop db",
     "dc:migrate": "docker-compose up -d db && docker-compose run web node_modules/.bin/wait-port db:7654 && npm run migration:up && docker-compose stop db",
     "migration:up": "docker-compose run web node_modules/.bin/sequelize db:migrate --config ./development.json",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "async-request": "^1.2.0",
+    "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
