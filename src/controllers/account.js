@@ -71,7 +71,6 @@ async function register(body) {
     let user;
     try {
         const passwordToSave = await bcrypt.hash(password);
-        });
         user = Users.build({username, password: passwordToSave, email, imageData: userImage});
         await user.save();
     } catch (e) {
