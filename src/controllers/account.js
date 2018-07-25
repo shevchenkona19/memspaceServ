@@ -6,6 +6,7 @@ const jwtOptions = require("../app").jwtOptions;
 const Users = ModelLocator.getUsersModel();
 const EmailValidator = require("../utils/validation/mailValidator");
 const images = require("../app").imageFolder;
+const saltRounds = 10;
 
 async function login(body) {
     const username = body.username;
@@ -70,7 +71,7 @@ async function register(body) {
     const userImage = images + "/users/noimage.png";
     let user;
     try {
-        const passwordToSave = await bcrypt.hash(password);
+        const passwordToSave = await bcrypt.hash(password, saltRounds);
         user = Users.build({username, password: passwordToSave, email, imageData: userImage});
         await user.save();
     } catch (e) {
@@ -103,7 +104,7 @@ async function registerModer(body) {
     let image = images + "/users/noimage.png";
     let user;
     try {
-        const passwordToSave = await bcrypt.hash(password);
+        const passwordToSave = await bcrypt.hash(password, saltRounds);
         user = Users.build({username, password: passwordToSave, email, imageData: image, accessLvl: 3});
         await user.save();
     } catch (e) {
