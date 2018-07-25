@@ -17,7 +17,7 @@ async function login(body) {
             errorCode: ErrorCodes.INCORRECT_DATA
         }
     }
-    const user = await Users.findOne({where: {username, password}});
+    const user = await Users.findOne({where: {username}});
     if (user === null) {
         return {
             success: false,
