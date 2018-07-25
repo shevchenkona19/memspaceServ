@@ -42,7 +42,7 @@ async function refreshMem(memId, userId) {
 
 async function getMainFeed(userId, count, offset) {
     const feed = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
-        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"comments.imageId\") AS comments_count `
+        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
 
