@@ -1,5 +1,4 @@
 const passportJWT = require("passport-jwt");
-const jwt = require('jsonwebtoken');
 const Users = require("../model/index").getUsersModel();
 
 module.exports = function (passport, jwtOptions) {
