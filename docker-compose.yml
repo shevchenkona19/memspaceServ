@@ -25,6 +25,7 @@ services:
       - './package.json:/app/package.json'
       - './development.json:/app/development.json'
       - './migrations:/app/migrations'
+      - './seeders:/app/seeders'
       - 'node_modules:/app/node_modules'
     environment:
       - SERVER_URL=${SERVER_URL}
