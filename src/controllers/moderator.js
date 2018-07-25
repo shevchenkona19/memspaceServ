@@ -4,7 +4,6 @@ const Categories = require("../model/index").getCategoriesModel();
 const ImagesCategories = require("../model/index").getImagesCategoriesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const Images = require("../model/index").getImagesModel();
-const sequelize = require("../model/index").getDb().sequelize;
 const fs = require("fs");
 
 async function createCategory(categoryName) {
@@ -33,7 +32,7 @@ async function getNewMem() {
         where: {isChecked: '0'},
         attributes: ["imageId"],
         order: [
-            ["imageId", "ASC"]
+            ["imageId", "DESC"]
         ],
         limit: 1
     });
