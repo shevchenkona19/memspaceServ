@@ -34,7 +34,10 @@ const groups = {
     'English Memes': 145954878,
     'Dank English Memes': 139419686,
     'Чоткий Паца': 50059483, 
-    'Файнi меми про Укр.лiт': 131348832
+    'Файнi меми про Укр.лiт': 131348832,
+    'ilita': 73319310,
+    'FTP': 65596623,
+    'Torch': 61967245
 };
 //Vkapi
 const getImages = async (offset) => {
