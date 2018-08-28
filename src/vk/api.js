@@ -3,6 +3,7 @@ const request = require('async-request');
 const request1 = require('request');
 const fs = require("fs");
 const images = require("../app").imageFolder;
+const Op = require("sequelize").Op;
 
 const groups = {
     'Борщ': 460389,
@@ -13,27 +14,27 @@ const groups = {
     'MDK': 57846937,
     'MXK': 41437811,
     'Корпорация зла': 29246653,
-    'Наука и техника': 31976785, 
+    'Наука и техника': 31976785,
     'iFace': 30277672, //iFace
     'Интеллектуальный юмор': 28950133,
-    'Убойные приколы': 34491673, 
-    'Сука.': 41594691, 
-    'Орлёнок': 36775802, 
-    'Без кота и жизнь не та': 32015300, 
+    'Убойные приколы': 34491673,
+    'Сука.': 41594691,
+    'Орлёнок': 36775802,
+    'Без кота и жизнь не та': 32015300,
     'Улыбнуло:D': 39822792,
-    'FUN': 20744542, 
+    'FUN': 20744542,
     'Чёрный юмор': 40800148,
     'КБ': 67580761,
     'Злой Негр': 60203425,
-    'Смейся до слёз:D': 26419239, 
+    'Смейся до слёз:D': 26419239,
     'Лентач': 29534144,
-    'Институт Благородных Девиц': 44781847, 
+    'Институт Благородных Девиц': 44781847,
     'C H O P - C H O P': 39444069,
-    'O h , y e s': 90937359, 
-    '9GAG': 32041317, 
+    'O h , y e s': 90937359,
+    '9GAG': 32041317,
     'English Memes': 145954878,
     'Dank English Memes': 139419686,
-    'Чоткий Паца': 50059483, 
+    'Чоткий Паца': 50059483,
     'Файнi меми про Укр.лiт': 131348832,
     'ilita': 73319310,
     'FTP': 65596623,
@@ -53,12 +54,12 @@ const getImages = async (offset) => {
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604 &&  body.response.items[0].attachments[0].photo.id) {
+                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604 && body.response.items[0].attachments[0].photo.id) {
 
                 const height = body.response.items[0].attachments[0].photo.height;
                 const width = body.response.items[0].attachments[0].photo.width;
-                const id =  body.response.items[0].attachments[0].photo.id;
-                const ownerId =  body.response.items[0].attachments[0].photo.owner_id;
+                const id = body.response.items[0].attachments[0].photo.id;
+                const ownerId = body.response.items[0].attachments[0].photo.owner_id;
                 path = body.response.items[0].attachments[0].photo.photo_604;
 
                 console.log('attempting to GET %j', path);
@@ -71,7 +72,7 @@ const getImages = async (offset) => {
                             });
                         }))
                     }
-                    const filename = images + "/memes/"  + id + ownerId + ".jpg";
+                    const filename = images + "/memes/" + id + ownerId + ".jpg";
                     fs.writeFileSync(filename, body);
                     Images.build({
                         imageData: filename,
@@ -89,6 +90,14 @@ const getImages = async (offset) => {
             console.log('download failed');
         }
     }
+    await Images.destroy({
+        where: {
+            isChecked: 0,
+            createdAt: {
+                [Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+            }
+        }
+    })
 };
 
 module.exports = getImages;
