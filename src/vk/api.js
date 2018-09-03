@@ -94,7 +94,7 @@ const getImages = async (offset) => {
         where: {
             isChecked: 0,
             createdAt: {
-                [Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                [Op.lt]: new Date(new Date() - 60000 * 60)
             }
         }
     })
