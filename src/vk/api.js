@@ -43,11 +43,11 @@ const groups = {
 };
 //Vkapi
 const getImages = async (offset) => {
+    await deleteImages();
     let path, response;
     for (let groupName in groups) {
         let groupId = groups[groupName];
         path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
-
         try {
             console.log('attempting to GET %j', path);
             response = await request(path);
@@ -91,6 +91,9 @@ const getImages = async (offset) => {
             console.log('download failed');
         }
     }
+};
+
+const deleteImages = async () => {
     const images = await Images.findAll({
         where: {
             isChecked: 0,
@@ -100,15 +103,17 @@ const getImages = async (offset) => {
         },
         attributes: ["imageData"]
     });
-    FileRemover.deleteFiles(images.map(image => image.imageData));
-    await Images.destroy({
-        where: {
-            isChecked: 0,
-            createdAt: {
-                [Op.lt]: new Date(new Date() - 60000 * 60)
+    if (images) {
+        FileRemover.deleteFiles(images.map(image => image.imageData));
+        await Images.destroy({
+            where: {
+                isChecked: 0,
+                createdAt: {
+                    [Op.lt]: new Date(new Date() - 60000 * 60)
+                }
             }
-        }
-    });
+        });
+    }
 };
 
 module.exports = getImages;
