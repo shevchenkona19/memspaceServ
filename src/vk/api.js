@@ -4,6 +4,7 @@ const request1 = require('request');
 const fs = require("fs");
 const images = require("../app").imageFolder;
 const Op = require("sequelize").Op;
+const FileRemover = require("../utils/files/FileRemover");
 
 const groups = {
     'Борщ': 460389,
@@ -90,6 +91,16 @@ const getImages = async (offset) => {
             console.log('download failed');
         }
     }
+    const images = await Images.findAll({
+        where: {
+            isChecked: 0,
+            createdAt: {
+                [Op.lt]: new Date(new Date() - 60000 * 60)
+            }
+        },
+        attributes: ["imageData"]
+    });
+    FileRemover.deleteFiles(images.map(image => image.imageData));
     await Images.destroy({
         where: {
             isChecked: 0,
@@ -97,7 +108,7 @@ const getImages = async (offset) => {
                 [Op.lt]: new Date(new Date() - 60000 * 60)
             }
         }
-    })
+    });
 };
 
 module.exports = getImages;
