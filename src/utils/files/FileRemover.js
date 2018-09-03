@@ -1,7 +1,9 @@
 const fs = require("fs");
 
-export const deleteFiles = fileList => {
+const deleteFiles = fileList => {
     fileList.forEach(file => {
         fs.unlinkSync(file);
     });
 };
+
+module.exports = {deleteFiles};
