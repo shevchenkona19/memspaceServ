@@ -74,15 +74,17 @@ const getImages = async (offset) => {
                         }))
                     }
                     const filename = images + "/memes/" + id + ownerId + ".jpg";
-                    fs.writeFileSync(filename, body);
-                    Images.build({
-                        imageData: filename,
-                        source: groupName,
-                        width,
-                        height
-                    }).save()
-                        .then(() => console.log("image downloaded"))
-                        .catch(e => console.error(e));
+                    if (!fs.existsSync(filename)) {
+                        fs.writeFileSync(filename, body);
+                        Images.build({
+                            imageData: filename,
+                            source: groupName,
+                            width,
+                            height
+                        }).save()
+                            .then(() => console.log("image downloaded"))
+                            .catch(e => console.error(e));
+                    }
                 });
 
             } else console.log('not full response')
