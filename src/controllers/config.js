@@ -20,7 +20,7 @@ async function saveCategories(body, userId) {
     });
     await UsersCategories.destroy({
         where: {userId},
-        truncate: true
+        truncate: false
     });
     await UsersCategories.bulkCreate(usersCategories);
     return {
