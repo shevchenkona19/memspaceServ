@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('../app').passport;
 const ErrorCodes = require("../constants/errorCodes");
 const Controller = require("../controllers/moderator");
+const imageDownloader = require("../vk/api");
 
 router.post("/createCategory", passport.authenticate('jwt', {session: false}), async (req, res) => {
     if (req.user.accessLvl < 2) {
@@ -30,7 +31,7 @@ router.get("/getImages", async (req, res) => {
     }
     let offset = req.query.offset;
 
-    await require('../vk/api')(offset);
+    await imageDownloader(offset);
     return res.status(200).json({message: "200"});
 });
 router.delete("/category", passport.authenticate('jwt', {session: false}), async (req, res) => {
