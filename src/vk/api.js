@@ -118,4 +118,4 @@ const deleteImages = async () => {
     }
 };
 
-module.exports = getImages;
+module.exports = {getImages};

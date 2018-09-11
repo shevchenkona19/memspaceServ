@@ -5,8 +5,8 @@ const bodyParser = require("body-parser");
 require("./model/index");
 const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
-const HOST = process.env.SERVER_URL || 'localhost';
-
+const imageDownloader = require("./vk/api");
+const cleaner = require("./controllers/cleaner");
 
 const app = express();
 app.use(helmet());
@@ -43,9 +43,8 @@ app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
 
-//getapi(154095846, 8, 1);
-setInterval(require('./vk/api'), process.env.VKDELAY || 3600000, 1);
-setInterval(require("./controllers/cleaner").clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
+setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
+setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
 
 const server = http.createServer(app);
 

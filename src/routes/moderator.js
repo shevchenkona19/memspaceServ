@@ -31,7 +31,7 @@ router.get("/getImages", async (req, res) => {
     }
     let offset = req.query.offset;
 
-    await imageDownloader(offset);
+    await imageDownloader.getImages(offset);
     return res.status(200).json({message: "200"});
 });
 router.delete("/category", passport.authenticate('jwt', {session: false}), async (req, res) => {
