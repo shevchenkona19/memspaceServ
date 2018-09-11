@@ -100,7 +100,7 @@ const deleteImages = async () => {
         where: {
             isChecked: 0,
             createdAt: {
-                [Op.lt]: new Date(new Date() - 60000 * 60)
+                [Op.lt]: new Date(new Date() - 60000 * 60 * 4)
             }
         },
         attributes: ["imageData"]
