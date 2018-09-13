@@ -112,7 +112,7 @@ router.post("/mem", passport.authenticate('jwt', {session: false}), async (req, 
         return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR});
     }
 });
-router.post("/clearMemes", passport.authenticate("jwt", {session: false}), async (req, res) => {
+router.post("/clearMemes", async (req, res) => {
     try {
         const result = await Controller.clearMemes();
         if (result.success) {
