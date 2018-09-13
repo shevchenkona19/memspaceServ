@@ -1,3 +1,3 @@
 module.exports = {
-      imageFolder: __dirname + "../public"
+      imageFolder: __dirname + "/../public"
 };
