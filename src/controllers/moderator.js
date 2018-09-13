@@ -75,7 +75,7 @@ async function postMem(imageId, categoryIds) {
 }
 
 async function clearMemes() {
-    await Images.destroy({where: {isChecked: '0'}, truncate: true});
+    await Images.destroy({where: {isChecked: '0'}, truncate: false});
     return {success: true, message: SuccessCodes.SUCCESS};
 }
 
