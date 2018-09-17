@@ -92,11 +92,11 @@ async function getCategoryFeed(userId, categoryId, count, offset) {
 }
 
 async function getHotFeed(userId, count, offset) {
-    const filter = process.env.HOTFILTER || 100;
+    const filter = process.env.HOTFILTER || 10;
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE likes >= ${filter} `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"likes\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
         memes: memes === null ? [] : memes
