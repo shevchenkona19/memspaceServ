@@ -111,7 +111,7 @@ async function getHotFeed(userId, count, offset) {
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" < ${moment().substract(3, "days").toDate()} likes >= ${avg} `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"likes\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
         memes: memes === null ? [] : memes

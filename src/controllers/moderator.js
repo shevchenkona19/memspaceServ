@@ -5,6 +5,7 @@ const ImagesCategories = require("../model/index").getImagesCategoriesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
 const Images = require("../model/index").getImagesModel();
 const fs = require("fs");
+const FileRemover = require("../utils/files/FileRemover");
 
 async function createCategory(categoryName) {
     const category = Categories.build({
@@ -75,8 +76,18 @@ async function postMem(imageId, categoryIds) {
 }
 
 async function clearMemes() {
-    await Images.destroy({where: {isChecked: '0'}, truncate: true});
+    const images = await Images.findAll({
+        where: {
+            isChecked: 0,
+        },
+        attributes: ["imageData"]
+    });
+    if (images) {
+        FileRemover.deleteFiles(images.map(image => image.imageData));
+        await Images.destroy({where: {isChecked: '0'}, truncate: false});
+    }
     return {success: true, message: SuccessCodes.SUCCESS};
+
 }
 
 module.exports = {

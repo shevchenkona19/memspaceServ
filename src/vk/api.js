@@ -2,7 +2,7 @@ const Images = require("../model/index").getImagesModel();
 const request = require('async-request');
 const request1 = require('request');
 const fs = require("fs");
-const images = require("../app").imageFolder;
+const images = require("../public/paths").imageFolder;
 const Op = require("sequelize").Op;
 const FileRemover = require("../utils/files/FileRemover");
 
