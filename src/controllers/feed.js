@@ -107,7 +107,7 @@ async function getHotFeed(userId, count, offset) {
         avg += image.likes;
         avg -= image.dislikes;
     });
-    avg = avg / images.length;
+    avg = Math.ceil(avg / images.length);
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" < Convert(datetime, '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3)}') likes >= ${avg} `
