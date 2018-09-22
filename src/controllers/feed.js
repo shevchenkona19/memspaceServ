@@ -98,19 +98,19 @@ async function getHotFeed(userId, count, offset) {
     const images = await Images.findAll({
         where: {
             createdAt: {
-                [Sequelize.lt]: moment().substract(3, "days").toDate()
+                [Sequelize.lt]: new Date(new Date() - 1000 * 60 * 60 * 24 * 3)
             }
         }
     });
     let avg = 0;
     images.forEach(image => {
-       avg += image.likes;
-       avg -= image.dislikes;
+        avg += image.likes;
+        avg -= image.dislikes;
     });
     avg = avg / images.length;
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
-        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" < ${moment().substract(3, "days").toDate()} likes >= ${avg} `
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" < ${new Date(new Date() - 1000 * 60 * 60 * 24 * 3)} likes >= ${avg} `
         + `ORDER BY \"likes\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
