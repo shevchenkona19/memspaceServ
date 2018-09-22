@@ -2,9 +2,12 @@ const Images = require("../model/index").getImagesModel();
 const Favorites = require("../model/index").getFavoritesModel();
 const Likes = require("../model/index").getLikesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
+const Sequelize = require("sequelize").Op;
 const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
+const moment = require("moment");
+
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -92,10 +95,22 @@ async function getCategoryFeed(userId, categoryId, count, offset) {
 }
 
 async function getHotFeed(userId, count, offset) {
-    const filter = process.env.HOTFILTER || 100;
+    const images = await Images.findAll({
+        where: {
+            createdAt: {
+                [Sequelize.lt]: moment().substract(3, "days").toDate()
+            }
+        }
+    });
+    let avg = 0;
+    images.forEach(image => {
+       avg += image.likes;
+       avg -= image.dislikes;
+    });
+    avg = avg / images.length;
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
-        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE likes >= ${filter} `
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" < ${moment().substract(3, "days").toDate()} likes >= ${avg} `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
