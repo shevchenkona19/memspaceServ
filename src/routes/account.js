@@ -69,7 +69,8 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
 });
 
 router.get("/policy", (req, res) => {
-   return res.send(policyPath);
+    res.contentType("text/html");
+   return res.sendFile(policyPath);
 });
 
 router.get("/test", async (req, res) => {
