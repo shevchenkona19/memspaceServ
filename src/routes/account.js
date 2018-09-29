@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
 const Controller = require("../controllers/account");
+const policyPath = require("../app").policy;
 
 router.post('/login', async (req, res) => {
     try {
@@ -65,6 +66,10 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
         return res.status(200).json({"username": req.user.username});
     }
     return res.status(400).json({message: "unregistered"});
+});
+
+router.get("/policy", (req, res) => {
+   return res.send(policyPath);
 });
 
 router.get("/test", async (req, res) => {
