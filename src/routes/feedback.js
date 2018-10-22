@@ -12,11 +12,14 @@ router.post("/like", passport.authenticate('jwt', {session: false}), async (req,
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
-    const userId = req.user.userId;
     try {
-        const result = await Controller.postLike(userId, imageId);
+        const result = await Controller.postLike(req.user, imageId);
         if (result.success) {
-            return res.json(result.mem)
+            return res.json({
+                ...result.mem,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            })
         } else {
             return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR})
         }
@@ -33,11 +36,14 @@ router.post("/dislike", passport.authenticate('jwt', {session: false}), async (r
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
-    const userId = req.user.userId;
     try {
-        const result = await Controller.postDislike(userId, imageId);
+        const result = await Controller.postDislike(req.user, imageId);
         if (result.success) {
-            return res.json(result.mem)
+            return res.json({
+                ...result.mem,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            })
         } else {
             return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR})
         }
@@ -96,12 +102,15 @@ router.post("/comment", passport.authenticate('jwt', {session: false}), async (r
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
-    const userId = req.user.userId;
     const text = req.body.text;
     try {
-        const result = await Controller.postComment(userId, imageId, text);
+        const result = await Controller.postComment(req.user, imageId, text);
         if (result.success) {
-            return res.json({message: result.message})
+            return res.json({
+                message: result.message,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            })
         } else {
             return res.status(500).json({message: ErrorCodes.INTERNAL_ERROR})
         }
@@ -164,26 +173,26 @@ router.post("/messageForDev", passport.authenticate("jwt", {session: false}), as
 });
 
 router.get("/allFeedbackDev", async (req, res) => {
-   try {
-       const result = await Controller.getAllDevMessages();
-       if (result.success) {
-           return res.json({
-               success: true,
-               feedback: result.allFeedback
-           })
-       } else {
-           return res.json({
-               success: false,
-               message: ErrorCodes.INTERNAL_ERROR
-           })
-       }
-   } catch (e) {
-       console.error(e.stack);
-       return res.json({
-           success: false,
-           message: e.message
-       })
-   }
+    try {
+        const result = await Controller.getAllDevMessages();
+        if (result.success) {
+            return res.json({
+                success: true,
+                feedback: result.allFeedback
+            })
+        } else {
+            return res.json({
+                success: false,
+                message: ErrorCodes.INTERNAL_ERROR
+            })
+        }
+    } catch (e) {
+        console.error(e.stack);
+        return res.json({
+            success: false,
+            message: e.message
+        })
+    }
 });
 
 

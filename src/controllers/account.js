@@ -7,6 +7,7 @@ const Users = ModelLocator.getUsersModel();
 const EmailValidator = require("../utils/validation/mailValidator");
 const images = require("../app").imageFolder;
 const saltRounds = 10;
+const Achievements = require("../constants/achievementLevels");
 
 async function login(body) {
     const username = body.username;
@@ -124,7 +125,49 @@ async function registerModer(body) {
     };
 }
 
+async function getUserAchievementsById(id) {
+    const user = await Users.findById(id);
+    if (user === null) {
+        throw new Error(ErrorCodes.NO_SUCH_USER)
+    }
+    return {
+        likes: {
+            lvl: user.likeAchievementLvl,
+            count: user.likesCount,
+            nextPrice: Achievements.likes[user.likeAchievementLvl].price,
+            isFinalLevel: Achievements.likes.max === Achievements.likes[user.likeAchievementLvl].lvl
+        },
+        dislikes: {
+            lvl: user.dislikesAchievementLvl,
+            count: user.dislikesCount,
+            nextPrice: Achievements.dislikes[user.dislikesAchievementLvl].price,
+            isFinalLevel: Achievements.dislikes.max === Achievements.dislikes[user.dislikesAchievementLvl].lvl
+        },
+        comments: {
+            lvl: user.commentsAchievementLvl,
+            count: user.commentsCount,
+            nextPrice: Achievements.comments[user.commentsAchievementLvl].price,
+            isFinalLevel: Achievements.comments.max === Achievements.comments[user.commentsAchievementLvl].lvl
+        },
+        favourites: {
+            lvl: user.favouritesAchievementLvl,
+            count: user.favouritesCount,
+            nextPrice: Achievements.favourites[user.favouritesAchievementLvl].price,
+            isFinalLevel: Achievements.favourites.max === Achievements.favourites[user.favouritesAchievementLvl].lvl
+        },
+        views: {
+            lvl: user.viewsAchievementLvl,
+            count: user.viewsCount,
+            nextPrice: Achievements.views[user.viewsAchievementLvl].price,
+            isFinalLevel: Achievements.views.max === Achievements.views[user.viewsAchievementLvl].lvl
+        },
+        firstHundred: user.firstHundred,
+        firstThousand: user.firstThousand
+    };
+}
+
 module.exports = {
+    getUserAchievementsById,
     login,
     register,
     registerModer

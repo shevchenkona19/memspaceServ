@@ -1,14 +1,39 @@
 const Favorites = require("../model/index").getFavoritesModel();
+const Users = require("../model/index").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
+const favouritesLvls = require("../constants/achievementLevels").favourites;
 
-async function addToFavorites(userId, imageId) {
+async function addToFavorites(imageId, user) {
+    const userId = user.userId;
     try {
         const favorite = await Favorites.build({userId, imageId});
         await favorite.save();
+        const allFavs = await Favorites.findAll({where: {userId}});
+        let isAchievementUpdate = false;
+        if (allFavs < favouritesLvls[favouritesLvls.max].price) {
+            const currentLvl = user.favouritesAchievementLvl;
+            if (allFavs < favouritesLvls[currentLvl].price) {
+                user.favouritesCount = allFavs;
+                await user.save();
+            } else {
+                user.favouritesCount = allFavs;
+                if (currentLvl + 1 <= favouritesLvls.max) {
+                    user.favouritesAchievementLvl = favouritesLvls[currentLvl + 1].lvl;
+                    isAchievementUpdate = true;
+                }
+                await user.save();
+            }
+        }
         return {
             success: true,
-            message: SuccessCodes.SUCCESS
+            message: SuccessCodes.SUCCESS,
+            achievementUpdate: isAchievementUpdate,
+            achievement: isAchievementUpdate ? {
+                newLvl: user.favouritesAchievementLvl,
+                nextPrice: favouritesLvls[user.favouritesAchievementLvl].price,
+                currentValue: user.favouritesCount
+            } : {}
         }
     } catch (e) {
         console.error(e.stack);
@@ -31,8 +56,11 @@ async function getAllFavorites(userId) {
     }
 }
 
-async function removeFromFavorites(userId, imageId) {
-    await Favorites.destroy({where:{userId, imageId}});
+async function removeFromFavorites(user, imageId) {
+    const userId = user.userId;
+    await Favorites.destroy({where: {userId, imageId}});
+    user.favouritesCount = await Favorites.findAll({where: {userId}});
+    await user.save();
     return {
         success: true,
         message: SuccessCodes.SUCCESS
@@ -40,7 +68,7 @@ async function removeFromFavorites(userId, imageId) {
 }
 
 async function isFavorite(userId, imageId) {
-    const favorite = await Favorites.findOne({where:{userId, imageId}});
+    const favorite = await Favorites.findOne({where: {userId, imageId}});
     return {
         success: true,
         isFavorite: !!favorite
