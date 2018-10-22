@@ -2,9 +2,12 @@ const Images = require("../model/index").getImagesModel();
 const Favorites = require("../model/index").getFavoritesModel();
 const Likes = require("../model/index").getLikesModel();
 const UsersCategories = require("../model/index").getUsersCategoriesModel();
+const Sequelize = require("sequelize").Op;
 const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
+const viewLvls = require("../constants/achievementLevels").views;
+
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -45,14 +48,14 @@ async function getMainFeed(userId, count, offset) {
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
-
     return {
         success: true,
         memes: feed === null ? [] : feed
     }
 }
 
-async function getCategoriesFeed(userId, count, offset) {
+async function getCategoriesFeed(user, count, offset) {
+    const userId = user.userId;
     const selCategories = await UsersCategories.findAll({
         where: {userId},
         attributes: [
@@ -75,31 +78,51 @@ async function getCategoriesFeed(userId, count, offset) {
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
-        memes: memes === null ? [] : memes
+        memes: memes === null ? [] : memes,
+        ...achievement
     }
 }
 
-async function getCategoryFeed(userId, categoryId, count, offset) {
+async function getCategoryFeed(user, categoryId, count, offset) {
+    const userId = user.userId;
     const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, `
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE `
         + `EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
-        memes: memes === null ? [] : memes
+        memes: memes === null ? [] : memes,
+        ...achievement
     }
 }
 
-async function getHotFeed(userId, count, offset) {
-    const filter = process.env.HOTFILTER || 100;
+async function getHotFeed(user, count, offset) {
+    const userId = user.userId;
+    const images = await Images.findAll({
+        where: {
+            createdAt: {
+                [Sequelize.gt]: new Date(new Date() - 1000 * 60 * 60 * 24 * 3)
+            }
+        }
+    });
+    let avg = 0;
+    images.forEach(image => {
+        avg += image.likes;
+        avg += image.comments;
+        avg -= image.dislikes;
+    });
+    avg = Math.ceil(avg / images.length);
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
-        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE likes >= ${filter} `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" > '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3).toDateString()}' AND likes >= ${avg} `
+        + `ORDER BY \"likes\" DESC, images.\"imageId\" LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
-        memes: memes === null ? [] : memes
+        memes: memes === null ? [] : memes,
+        ...achievement
     }
 }
 
@@ -115,13 +138,40 @@ async function getImage(id) {
 }
 
 async function getUserPhoto(username) {
-    const imageData = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
-    if (!imageData) {
+    const image = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
+    if (!image) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
     return {
         success: true,
-        imageData: imageData.imageData
+        imageData: image.imageData
+    }
+}
+
+async function resolveViewAchievement(user, count) {
+    const allViews = user.viewsCount + count;
+    let isAchievementUpdate = false;
+    if (allViews < viewLvls[viewLvls.max].price) {
+        const currentLvl = user.viewsAchievementLvl;
+        if (allViews < viewLvls[currentLvl].price) {
+            user.viewsCount = allViews;
+            await user.save();
+        } else {
+            user.viewsCount = allViews;
+            if (currentLvl + 1 <= viewLvls.max) {
+                user.viewsAchievementLvl = viewLvls[currentLvl + 1].lvl;
+                isAchievementUpdate = true;
+            }
+            await user.save();
+        }
+    }
+    return {
+        achievementUpdate: isAchievementUpdate,
+        achievement: isAchievementUpdate ? {
+            newLvl: user.viewsAchievementLvl,
+            nextPrice: viewLvls[user.viewsAchievementLvl].price,
+            currentValue: user.viewsCount
+        } : {}
     }
 }
 

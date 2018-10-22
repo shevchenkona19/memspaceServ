@@ -17,9 +17,11 @@ require('./config/passport')(passport, jwtOptions);
 app.use(passport.initialize());
 
 const imagePath = __dirname + "/public";
+const policyPath = __dirname + "/public/policy/index.html";
 
 module.exports = {
     imageFolder: imagePath,
+    policy: policyPath,
     passport,
     jwtOptions
 };

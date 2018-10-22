@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../app').passport;
 const Controller = require("../controllers/account");
+const policyPath = require("../app").policy;
 
 router.post('/login', async (req, res) => {
     try {
@@ -65,6 +66,26 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, 
         return res.status(200).json({"username": req.user.username});
     }
     return res.status(400).json({message: "unregistered"});
+});
+
+router.get("/policy", (req, res) => {
+    res.contentType("text/html");
+    return res.sendFile(policyPath);
+});
+
+router.get("/achievements", async (req, res) => {
+    if (!req.query.id) {
+        return res.status(401).json({message: "incorrect data"});
+    }
+    try {
+        const achievements = await Controller.getUserAchievementsById(req.query.id);
+        return res.json(achievements);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({
+            message: e.message
+        })
+    }
 });
 
 router.get("/test", async (req, res) => {

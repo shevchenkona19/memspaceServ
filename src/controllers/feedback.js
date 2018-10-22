@@ -5,6 +5,9 @@ const UserFeedback = require("../model/index").getUserFeedback();
 const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
+const likeLvls = require("../constants/achievementLevels").likes;
+const dislikeLvls = require("../constants/achievementLevels").dislikes;
+const commentsLvls = require("../constants/achievementLevels").comments;
 
 const getFinalMem = async (userId, imageId) => {
     const refreshedMem = await Images.findById(imageId, {attributes: ["likes", "dislikes"]});
@@ -33,7 +36,89 @@ const delDislike = async (userId, imageId) => {
     await (await Images.findById(imageId)).decrement('dislikes', {by: 1});
 };
 
-async function postLike(userId, imageId) {
+async function resolveLikesAchievement(user) {
+    const allLikes = (await Likes.findAll({where :{userId: user.userId, opinion: 1}})).length;
+    let isAchievementUpdate = false;
+    if (allLikes < likeLvls[likeLvls.max].price) {
+        const currentLvl = user.likeAchievementLvl;
+        if (allLikes < likeLvls[currentLvl].price) {
+            user.likesCount = allLikes;
+            await user.save();
+        } else {
+            user.likesCount = allLikes;
+            if (currentLvl + 1 <= likeLvls.max) {
+                user.likeAchievementLvl = likeLvls[currentLvl + 1].lvl;
+                isAchievementUpdate = true;
+            }
+            await user.save();
+        }
+    }
+    return {
+        achievementUpdate: isAchievementUpdate,
+        achievement: isAchievementUpdate ? {
+            newLvl: user.likeAchievementLvl,
+            nextPrice: likeLvls[user.viewsAchievementLvl].price,
+            currentValue: user.likesCount
+        } : {}
+    }
+}
+
+async function resolveDislikesAchievement(user) {
+    const allDislikes = (await Likes.findAll({where :{userId: user.userId, opinion: -1}})).length;
+    let isAchievementUpdate = false;
+    if (allDislikes < dislikeLvls[dislikeLvls.max].price) {
+        const currentLvl = user.dislikesAchievementLvl;
+        if (allDislikes < dislikeLvls[currentLvl].price) {
+            user.dislikesCount = allDislikes;
+            await user.save();
+        } else {
+            user.dislikesCount = allDislikes;
+            if (currentLvl + 1 <= dislikeLvls.max) {
+                user.dislikesAchievementLvl = dislikeLvls[currentLvl + 1].lvl;
+                isAchievementUpdate = true;
+            }
+            await user.save();
+        }
+    }
+    return {
+        achievementUpdate: isAchievementUpdate,
+        achievement: isAchievementUpdate ? {
+            newLvl: user.dislikesAchievementLvl,
+            nextPrice: dislikeLvls[user.viewsAchievementLvl].price,
+            currentValue: user.dislikesCount
+        } : {}
+    }
+}
+
+async function resolveCommentsAchievement(user) {
+    const allComments = (await Comments.findAll({where :{userId: user.userId}})).length;
+    let isAchievementUpdate = false;
+    if (allComments < commentsLvls[commentsLvls.max].price) {
+        const currentLvl = user.commentsAchievementLvl;
+        if (allComments < commentsLvls[currentLvl].price) {
+            user.commentsCount = allComments;
+            await user.save();
+        } else {
+            user.commentsCount = allComments;
+            if (currentLvl + 1 <= commentsLvls.max) {
+                user.commentsAchievementLvl = commentsLvls[currentLvl + 1].lvl;
+                isAchievementUpdate = true;
+            }
+            await user.save();
+        }
+    }
+    return {
+        achievementUpdate: isAchievementUpdate,
+        achievement: isAchievementUpdate ? {
+            newLvl: user.commentsAchievementLvl,
+            nextPrice: commentsLvls[user.viewsAchievementLvl].price,
+            currentValue: user.commentsCount
+        } : {}
+    }
+}
+
+async function postLike(user, imageId) {
+    const userId = user.userId;
     const likes = await Likes.getOpinionByIds(userId, imageId);
     if (likes) {
         if (likes.opinion === 0) {
@@ -43,13 +128,16 @@ async function postLike(userId, imageId) {
     } else {
         await setLike(userId, imageId);
     }
+    const achievement = await resolveLikesAchievement(user);
     return {
         success: true,
-        mem: await getFinalMem(userId, imageId)
+        mem: await getFinalMem(userId, imageId),
+        ...achievement
     };
 }
 
-async function postDislike(userId, imageId) {
+async function postDislike(user, imageId) {
+    const userId = user.userId;
     const likes = await Likes.getOpinionByIds(userId, imageId);
     if (likes) {
         if (likes.opinion === 1) {
@@ -59,9 +147,11 @@ async function postDislike(userId, imageId) {
     } else {
         await setDislike(userId, imageId);
     }
+    const achievement = await resolveDislikesAchievement(user);
     return {
         success: true,
-        mem: await getFinalMem(userId, imageId)
+        mem: await getFinalMem(userId, imageId),
+        ...achievement
     };
 }
 
@@ -95,16 +185,19 @@ async function deleteDislike(userId, imageId) {
     }
 }
 
-async function postComment(userId, imageId, text) {
+async function postComment(user, imageId, text) {
+    const userId = user.userId;
     await Comments.build({
         userId,
         imageId,
         text,
         date: Date.now()
     }).save();
+    const achievement = await resolveCommentsAchievement(user);
     return {
         success: true,
-        message: SuccessCodes.SUCCESS
+        message: SuccessCodes.SUCCESS,
+        ...achievement
     }
 }
 

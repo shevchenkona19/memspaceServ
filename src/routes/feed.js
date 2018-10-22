@@ -47,9 +47,13 @@ router.get("/categoriesFeed", passport.authenticate('jwt', {session: false}), as
         return res.status(400).json({message: "incorrect query"})
     }
     try {
-        const result = await Controller.getCategoriesFeed(req.user.userId, count, offset);
+        const result = await Controller.getCategoriesFeed(req.user, count, offset);
         if (result.success) {
-            return res.json({memes: result.memes});
+            return res.json({
+                memes: result.memes,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            });
         } else {
             return res.json({message: result.errorCode, memes: []});
         }
@@ -68,9 +72,13 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), asyn
         return res.status(400).json({message: "incorrect query"});
     }
     try {
-        const result = await Controller.getCategoryFeed(req.user.userId, categoryId, count, offset);
+        const result = await Controller.getCategoryFeed(req.user, categoryId, count, offset);
         if (result.success) {
-            return res.json({memes: result.memes});
+            return res.json({
+                memes: result.memes,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            });
         } else {
             return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
         }
@@ -88,9 +96,13 @@ router.get("/hotFeed", passport.authenticate('jwt', {session: false}), async (re
         return res.status(400).json({message: "incorrect query"});
     }
     try {
-        const result = await Controller.getHotFeed(req.user.userId, count, offset);
+        const result = await Controller.getHotFeed(req.user, count, offset);
         if (result.success) {
-            return res.json({memes: result.memes});
+            return res.json({
+                memes: result.memes,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            });
         } else {
             return res.status(400).json({message: ErrorCodes.INTERNAL_ERROR});
         }

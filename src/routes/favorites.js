@@ -12,9 +12,13 @@ router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), a
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const result = await Controller.addToFavorites(req.user.userId, req.query.id);
+        const result = await Controller.addToFavorites(req.query.id, req.user);
         if (result.success) {
-            return res.json({message: result.message});
+            return res.json({
+                message: result.message,
+                achievementUpdate: result.achievementUpdate,
+                achievement: result.achievement
+            });
         } else {
             return res.status(500).json({
                 message: result.errorCode
@@ -53,7 +57,7 @@ router.delete("/removeFromFavorites", passport.authenticate('jwt', {session: fal
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const result = await Controller.removeFromFavorites(req.user.userId, req.query.id);
+        const result = await Controller.removeFromFavorites(req.user, req.query.id);
         if (result.success) {
             return res.json({
                 message: result.message
