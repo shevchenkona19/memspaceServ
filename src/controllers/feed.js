@@ -76,6 +76,7 @@ async function getCategoriesFeed(user, count, offset) {
         + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+    const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
         memes: memes === null ? [] : memes,
@@ -149,28 +150,28 @@ async function getUserPhoto(username) {
 }
 
 async function resolveViewAchievement(user, count) {
-    const allViews = user.viewsCount + count;
+    const allViews = user.viewsCount + parseInt(count);
     let isAchievementUpdate = false;
-    if (allViews < viewLvls[viewLvls.max].price) {
-        const currentLvl = user.viewsAchievementLvl;
-        if (allViews < viewLvls[currentLvl].price) {
-            user.viewsCount = allViews;
-            await user.save();
-        } else {
-            user.viewsCount = allViews;
-            if (currentLvl + 1 <= viewLvls.max) {
-                user.viewsAchievementLvl = viewLvls[currentLvl + 1].lvl;
-                isAchievementUpdate = true;
-            }
-            await user.save();
+    const currentLvl = user.viewsAchievementLvl;
+    if (allViews < viewLvls[currentLvl].price) {
+        user.viewsCount = allViews;
+        await user.save();
+    } else {
+        user.viewsCount = allViews;
+        if (currentLvl + 1 <= viewLvls.max) {
+            user.viewsAchievementLvl = viewLvls[currentLvl + 1].lvl;
+            isAchievementUpdate = true;
         }
+        await user.save();
     }
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.viewsAchievementLvl,
             nextPrice: viewLvls[user.viewsAchievementLvl].price,
-            currentValue: user.viewsCount
+            currentValue: user.viewsCount,
+            name: "views",
+            achievementName: viewLvls[user.viewsAchievementLvl].name
         } : {}
     }
 }

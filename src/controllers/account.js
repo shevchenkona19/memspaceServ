@@ -38,7 +38,8 @@ async function login(body) {
     const token = jwt.sign(payload, jwtOptions.secretOrKey);
     return {
         success: true,
-        token
+        token,
+        userId: user.userId
     };
 }
 
@@ -88,7 +89,8 @@ async function register(body) {
 
     return {
         success: true,
-        token
+        token,
+        userId: user.userId,
     };
 }
 
@@ -130,43 +132,61 @@ async function getUserAchievementsById(id) {
     if (user === null) {
         throw new Error(ErrorCodes.NO_SUCH_USER)
     }
+
     return {
         likes: {
             lvl: user.likeAchievementLvl,
             count: user.likesCount,
             nextPrice: Achievements.likes[user.likeAchievementLvl].price,
-            isFinalLevel: Achievements.likes.max === Achievements.likes[user.likeAchievementLvl].lvl
+            isFinalLevel: Achievements.likes.max === Achievements.likes[user.likeAchievementLvl].lvl,
+            name: "likes",
+            achievementName: Achievements.likes[user.likeAchievementLvl].name
         },
         dislikes: {
             lvl: user.dislikesAchievementLvl,
             count: user.dislikesCount,
             nextPrice: Achievements.dislikes[user.dislikesAchievementLvl].price,
-            isFinalLevel: Achievements.dislikes.max === Achievements.dislikes[user.dislikesAchievementLvl].lvl
+            isFinalLevel: Achievements.dislikes.max === Achievements.dislikes[user.dislikesAchievementLvl].lvl,
+            name: "dislikes",
+            achievementName: Achievements.dislikes[user.dislikesAchievementLvl].name
         },
         comments: {
             lvl: user.commentsAchievementLvl,
             count: user.commentsCount,
             nextPrice: Achievements.comments[user.commentsAchievementLvl].price,
-            isFinalLevel: Achievements.comments.max === Achievements.comments[user.commentsAchievementLvl].lvl
+            isFinalLevel: Achievements.comments.max === Achievements.comments[user.commentsAchievementLvl].lvl,
+            name: "comments",
+            achievementName: Achievements.comments[user.commentsAchievementLvl].name
         },
         favourites: {
             lvl: user.favouritesAchievementLvl,
             count: user.favouritesCount,
             nextPrice: Achievements.favourites[user.favouritesAchievementLvl].price,
-            isFinalLevel: Achievements.favourites.max === Achievements.favourites[user.favouritesAchievementLvl].lvl
+            isFinalLevel: Achievements.favourites.max === Achievements.favourites[user.favouritesAchievementLvl].lvl,
+            name: "favourites",
+            achievementName: Achievements.favourites[user.favouritesAchievementLvl].name
         },
         views: {
             lvl: user.viewsAchievementLvl,
             count: user.viewsCount,
             nextPrice: Achievements.views[user.viewsAchievementLvl].price,
-            isFinalLevel: Achievements.views.max === Achievements.views[user.viewsAchievementLvl].lvl
+            isFinalLevel: Achievements.views.max === Achievements.views[user.viewsAchievementLvl].lvl,
+            name: "views",
+            achievementName: Achievements.views[user.viewsAchievementLvl].name
         },
         firstHundred: user.firstHundred,
         firstThousand: user.firstThousand
     };
+
+
+}
+
+async function getUsername(id) {
+    return {username: (await Users.findById(id)).username, success: true}
 }
 
 module.exports = {
+    getUsername,
     getUserAchievementsById,
     login,
     register,

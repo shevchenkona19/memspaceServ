@@ -37,82 +37,82 @@ const delDislike = async (userId, imageId) => {
 };
 
 async function resolveLikesAchievement(user) {
-    const allLikes = (await Likes.findAll({where :{userId: user.userId, opinion: 1}})).length;
+    const allLikes = (await Likes.findAll({where: {userId: user.userId, opinion: 1}})).length;
     let isAchievementUpdate = false;
-    if (allLikes < likeLvls[likeLvls.max].price) {
-        const currentLvl = user.likeAchievementLvl;
-        if (allLikes < likeLvls[currentLvl].price) {
-            user.likesCount = allLikes;
-            await user.save();
-        } else {
-            user.likesCount = allLikes;
-            if (currentLvl + 1 <= likeLvls.max) {
-                user.likeAchievementLvl = likeLvls[currentLvl + 1].lvl;
-                isAchievementUpdate = true;
-            }
-            await user.save();
+    const currentLvl = user.likeAchievementLvl;
+    if (allLikes < likeLvls[currentLvl].price) {
+        user.likesCount = allLikes;
+        await user.save();
+    } else {
+        user.likesCount = allLikes;
+        if (currentLvl + 1 <= likeLvls.max) {
+            user.likeAchievementLvl = likeLvls[currentLvl + 1].lvl;
+            isAchievementUpdate = true;
         }
+        await user.save();
     }
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.likeAchievementLvl,
-            nextPrice: likeLvls[user.viewsAchievementLvl].price,
-            currentValue: user.likesCount
+            nextPrice: likeLvls[user.likeAchievementLvl].price,
+            currentValue: user.likesCount,
+            name: "likes",
+            achievementName: likeLvls[user.likeAchievementLvl].name
         } : {}
     }
 }
 
 async function resolveDislikesAchievement(user) {
-    const allDislikes = (await Likes.findAll({where :{userId: user.userId, opinion: -1}})).length;
+    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
     let isAchievementUpdate = false;
-    if (allDislikes < dislikeLvls[dislikeLvls.max].price) {
-        const currentLvl = user.dislikesAchievementLvl;
-        if (allDislikes < dislikeLvls[currentLvl].price) {
-            user.dislikesCount = allDislikes;
-            await user.save();
-        } else {
-            user.dislikesCount = allDislikes;
-            if (currentLvl + 1 <= dislikeLvls.max) {
-                user.dislikesAchievementLvl = dislikeLvls[currentLvl + 1].lvl;
-                isAchievementUpdate = true;
-            }
-            await user.save();
+    const currentLvl = user.dislikesAchievementLvl;
+    if (allDislikes < dislikeLvls[currentLvl].price) {
+        user.dislikesCount = allDislikes;
+        await user.save();
+    } else {
+        user.dislikesCount = allDislikes;
+        if (currentLvl + 1 <= dislikeLvls.max) {
+            user.dislikesAchievementLvl = dislikeLvls[currentLvl + 1].lvl;
+            isAchievementUpdate = true;
         }
+        await user.save();
     }
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.dislikesAchievementLvl,
-            nextPrice: dislikeLvls[user.viewsAchievementLvl].price,
-            currentValue: user.dislikesCount
+            nextPrice: dislikeLvls[user.dislikesAchievementLvl].price,
+            currentValue: user.dislikesCount,
+            name: "dislikes",
+            achievementName: dislikeLvls[user.dislikesAchievementLvl].name
         } : {}
     }
 }
 
 async function resolveCommentsAchievement(user) {
-    const allComments = (await Comments.findAll({where :{userId: user.userId}})).length;
+    const allComments = (await Comments.findAll({where: {userId: user.userId}})).length;
     let isAchievementUpdate = false;
-    if (allComments < commentsLvls[commentsLvls.max].price) {
-        const currentLvl = user.commentsAchievementLvl;
-        if (allComments < commentsLvls[currentLvl].price) {
-            user.commentsCount = allComments;
-            await user.save();
-        } else {
-            user.commentsCount = allComments;
-            if (currentLvl + 1 <= commentsLvls.max) {
-                user.commentsAchievementLvl = commentsLvls[currentLvl + 1].lvl;
-                isAchievementUpdate = true;
-            }
-            await user.save();
+    const currentLvl = user.commentsAchievementLvl;
+    if (allComments < commentsLvls[currentLvl].price) {
+        user.commentsCount = allComments;
+        await user.save();
+    } else {
+        user.commentsCount = allComments;
+        if (currentLvl + 1 <= commentsLvls.max) {
+            user.commentsAchievementLvl = commentsLvls[currentLvl + 1].lvl;
+            isAchievementUpdate = true;
         }
+        await user.save();
     }
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.commentsAchievementLvl,
-            nextPrice: commentsLvls[user.viewsAchievementLvl].price,
-            currentValue: user.commentsCount
+            nextPrice: commentsLvls[user.commentsAchievementLvl].price,
+            currentValue: user.commentsCount,
+            name: "comments",
+            achievementName: commentsLvls[user.commentsAchievementLvl].name
         } : {}
     }
 }
@@ -164,6 +164,7 @@ async function deleteLike(userId, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR)
     }
+    await resolveLikesAchievement(user);
     return {
         success: true,
         mem: await getFinalMem(userId, imageId)
@@ -179,6 +180,7 @@ async function deleteDislike(userId, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR);
     }
+    await resolveDislikesAchievement(user);
     return {
         success: true,
         mem: await getFinalMem(userId, imageId)
@@ -202,7 +204,7 @@ async function postComment(user, imageId, text) {
 }
 
 async function getComments(userId, imageId, count, offset) {
-    const comments = await db.query(`SELECT username, text, date FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} LIMIT ${count} OFFSET ${offset}`);
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", username, text, date FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} LIMIT ${count} OFFSET ${offset}`);
     return {
         success: true,
         comments: comments[0] || [],

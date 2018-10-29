@@ -29,43 +29,43 @@ module.exports = function (db, DataTypes) {
             defaultValue: "[]"
         },
         likeAchievementLvl: {
-            type: Sequelize.SMALLINT,
-            defaultValue: achievementLvls.likes["0"].price
+            type: DataTypes.SMALLINT,
+            defaultValue: achievementLvls.likes["0"].lvl
         },
         likesCount: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         dislikesAchievementLvl: {
-            type: Sequelize.SMALLINT,
-            defaultValue: achievementLvls.dislikes["0"].price
+            type: DataTypes.SMALLINT,
+            defaultValue: achievementLvls.dislikes["0"].lvl
         },
         dislikesCount: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         commentsAchievementLvl: {
-            type: Sequelize.SMALLINT,
-            defaultValue: achievementLvls.comments["0"].price
+            type: DataTypes.SMALLINT,
+            defaultValue: achievementLvls.comments["0"].lvl
         },
         commentsCount: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         favouritesAchievementLvl: {
-            type: Sequelize.SMALLINT,
-            defaultValue: achievementLvls.favourites["0"].price
+            type: DataTypes.SMALLINT,
+            defaultValue: achievementLvls.favourites["0"].lvl
         },
         favouritesCount: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         viewsAchievementLvl: {
-            type: Sequelize.SMALLINT,
-            defaultValue: achievementLvls.views["0"].price
+            type: DataTypes.SMALLINT,
+            defaultValue: achievementLvls.views["0"].lvl
         },
         viewsCount: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultValue: 0
         },
         firstHundred: {

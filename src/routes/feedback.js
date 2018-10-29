@@ -60,9 +60,8 @@ router.delete("/like", passport.authenticate('jwt', {session: false}), async (re
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
-    const userId = req.user.userId;
     try {
-        const result = await Controller.deleteLike(userId, imageId);
+        const result = await Controller.deleteLike(req.user, imageId);
         if (result.success) {
             return res.json(result.mem)
         } else {
@@ -81,9 +80,8 @@ router.delete("/dislike", passport.authenticate('jwt', {session: false}), async 
         return res.status(400).json({message: "incorrect query"});
     }
     const imageId = req.query.id;
-    const userId = req.user.userId;
     try {
-        const result = await Controller.deleteDislike(userId, imageId);
+        const result = await Controller.deleteDislike(req.user, imageId);
         if (result.success) {
             return res.json(result.mem)
         } else {

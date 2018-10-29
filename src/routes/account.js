@@ -10,7 +10,8 @@ router.post('/login', async (req, res) => {
         const result = await Controller.login(req.body);
         if (result.success) {
             return res.json({
-                token: result.token
+                token: result.token,
+                id: result.userId
             })
         } else {
             return res.json({
@@ -29,6 +30,7 @@ router.post('/register', async (req, res) => {
         const result = await Controller.register(req.body);
         if (result.success) {
             return res.json({
+                id: result.userId,
                 token: result.token
             })
         } else {
@@ -61,11 +63,25 @@ router.post('/registerModer', async (req, res) => {
     }
 });
 
-router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, res) => {
-    if (req.user.accessLvl !== -1) {
-        return res.status(200).json({"username": req.user.username});
+router.get("/username", async (req, res) => {
+    try {
+        const result = await Controller.getUsername(req.query.userId);
+        if (result.success) {
+            return res.json({
+                username: result.username
+            })
+        } else {
+            return res.status(500).json({
+                message: result.errorCode
+            })
+        }
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({
+            message: e
+        })
+
     }
-    return res.status(400).json({message: "unregistered"});
 });
 
 router.get("/policy", (req, res) => {
@@ -74,11 +90,11 @@ router.get("/policy", (req, res) => {
 });
 
 router.get("/achievements", async (req, res) => {
-    if (!req.query.id) {
+    if (!req.query.userId) {
         return res.status(401).json({message: "incorrect data"});
     }
     try {
-        const achievements = await Controller.getUserAchievementsById(req.query.id);
+        const achievements = await Controller.getUserAchievementsById(req.query.userId);
         return res.json(achievements);
     } catch (e) {
         console.error(e);

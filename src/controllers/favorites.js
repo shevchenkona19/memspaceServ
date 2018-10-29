@@ -9,30 +9,30 @@ async function addToFavorites(imageId, user) {
     try {
         const favorite = await Favorites.build({userId, imageId});
         await favorite.save();
-        const allFavs = await Favorites.findAll({where: {userId}});
+        const allFavs = (await Favorites.findAll({where: {userId}})).length;
         let isAchievementUpdate = false;
-        if (allFavs < favouritesLvls[favouritesLvls.max].price) {
-            const currentLvl = user.favouritesAchievementLvl;
-            if (allFavs < favouritesLvls[currentLvl].price) {
-                user.favouritesCount = allFavs;
-                await user.save();
-            } else {
-                user.favouritesCount = allFavs;
-                if (currentLvl + 1 <= favouritesLvls.max) {
-                    user.favouritesAchievementLvl = favouritesLvls[currentLvl + 1].lvl;
-                    isAchievementUpdate = true;
-                }
-                await user.save();
+        const currentLvl = user.favouritesAchievementLvl;
+        if (allFavs < favouritesLvls[currentLvl].price) {
+            user.favouritesCount = allFavs;
+            await user.save();
+        } else {
+            user.favouritesCount = allFavs;
+            if (currentLvl + 1 <= favouritesLvls.max) {
+                user.favouritesAchievementLvl = favouritesLvls[currentLvl + 1].lvl;
+                isAchievementUpdate = true;
             }
+            await user.save();
         }
         return {
             success: true,
             message: SuccessCodes.SUCCESS,
             achievementUpdate: isAchievementUpdate,
             achievement: isAchievementUpdate ? {
+                name: "favourites",
                 newLvl: user.favouritesAchievementLvl,
                 nextPrice: favouritesLvls[user.favouritesAchievementLvl].price,
-                currentValue: user.favouritesCount
+                currentValue: user.favouritesCount,
+                achievementName: favouritesLvls[user.favouritesAchievementLvl].name
             } : {}
         }
     } catch (e) {
@@ -59,7 +59,7 @@ async function getAllFavorites(userId) {
 async function removeFromFavorites(user, imageId) {
     const userId = user.userId;
     await Favorites.destroy({where: {userId, imageId}});
-    user.favouritesCount = await Favorites.findAll({where: {userId}});
+    user.favouritesCount = (await Favorites.findAll({where: {userId}})).length;
     await user.save();
     return {
         success: true,
