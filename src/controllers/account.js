@@ -140,7 +140,8 @@ async function getUserAchievementsById(id) {
             nextPrice: Achievements.likes[user.likeAchievementLvl].price,
             isFinalLevel: Achievements.likes.max === Achievements.likes[user.likeAchievementLvl].lvl,
             name: "likes",
-            achievementName: Achievements.likes[user.likeAchievementLvl].name
+            achievementName: Achievements.likes[user.likeAchievementLvl].name,
+            allNames: Achievements.likes.allNames
         },
         dislikes: {
             lvl: user.dislikesAchievementLvl,
@@ -148,7 +149,8 @@ async function getUserAchievementsById(id) {
             nextPrice: Achievements.dislikes[user.dislikesAchievementLvl].price,
             isFinalLevel: Achievements.dislikes.max === Achievements.dislikes[user.dislikesAchievementLvl].lvl,
             name: "dislikes",
-            achievementName: Achievements.dislikes[user.dislikesAchievementLvl].name
+            achievementName: Achievements.dislikes[user.dislikesAchievementLvl].name,
+            allNames: Achievements.dislikes.allNames
         },
         comments: {
             lvl: user.commentsAchievementLvl,
@@ -156,7 +158,8 @@ async function getUserAchievementsById(id) {
             nextPrice: Achievements.comments[user.commentsAchievementLvl].price,
             isFinalLevel: Achievements.comments.max === Achievements.comments[user.commentsAchievementLvl].lvl,
             name: "comments",
-            achievementName: Achievements.comments[user.commentsAchievementLvl].name
+            achievementName: Achievements.comments[user.commentsAchievementLvl].name,
+            allNames: Achievements.comments.allNames
         },
         favourites: {
             lvl: user.favouritesAchievementLvl,
@@ -164,7 +167,8 @@ async function getUserAchievementsById(id) {
             nextPrice: Achievements.favourites[user.favouritesAchievementLvl].price,
             isFinalLevel: Achievements.favourites.max === Achievements.favourites[user.favouritesAchievementLvl].lvl,
             name: "favourites",
-            achievementName: Achievements.favourites[user.favouritesAchievementLvl].name
+            achievementName: Achievements.favourites[user.favouritesAchievementLvl].name,
+            allNames: Achievements.favourites.allNames
         },
         views: {
             lvl: user.viewsAchievementLvl,
@@ -172,7 +176,8 @@ async function getUserAchievementsById(id) {
             nextPrice: Achievements.views[user.viewsAchievementLvl].price,
             isFinalLevel: Achievements.views.max === Achievements.views[user.viewsAchievementLvl].lvl,
             name: "views",
-            achievementName: Achievements.views[user.viewsAchievementLvl].name
+            achievementName: Achievements.views[user.viewsAchievementLvl].name,
+            allNames: Achievements.views.allNames
         },
         firstHundred: user.firstHundred,
         firstThousand: user.firstThousand
