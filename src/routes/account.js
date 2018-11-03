@@ -63,25 +63,11 @@ router.post('/registerModer', async (req, res) => {
     }
 });
 
-router.get("/username", async (req, res) => {
-    try {
-        const result = await Controller.getUsername(req.query.userId);
-        if (result.success) {
-            return res.json({
-                username: result.username
-            })
-        } else {
-            return res.status(500).json({
-                message: result.errorCode
-            })
-        }
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({
-            message: e
-        })
-
+router.get("/myUsername", passport.authenticate('jwt', {session: false}), (req, res) => {
+    if (req.user.accessLvl !== -1) {
+        return res.status(200).json({"username": req.user.username});
     }
+    return res.status(400).json({message: "unregistered"});
 });
 
 router.get("/policy", (req, res) => {

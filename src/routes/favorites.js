@@ -29,9 +29,12 @@ router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), a
         return res.status(500).json({message: "BD error"});
     }
 });
-router.get("/allFavorites", async (req, res) => {
+router.get("/allFavorites", passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if (req.user.accessLvl === -1) {
+        return res.status(401).json({message: 'unauthorized'})
+    }
     try {
-        const result = await Controller.getAllFavorites(req.query.userId);
+        const result = await Controller.getAllFavorites(req.user.userId);
         if (result.success) {
             return res.json({
                 favorites: result.favorites

@@ -36,8 +36,12 @@ const favorites = require('./routes/favorites');
 const feed = require('./routes/feed');
 const feedback = require('./routes/feedback');
 const moderator = require('./routes/moderator');
+const newAccount = require("./routes/new/account");
+const newFavorites = require("./routes/new/favorites");
 
 //routes
+app.use('/v1/account', newAccount);
+app.use('/v1/favorites', newFavorites);
 app.use('/config', config);
 app.use('/feed', feed);
 app.use('/favorites', favorites);
