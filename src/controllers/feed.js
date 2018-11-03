@@ -171,7 +171,8 @@ async function resolveViewAchievement(user, count) {
             nextPrice: viewLvls[user.viewsAchievementLvl].price,
             currentValue: user.viewsCount,
             name: "views",
-            achievementName: viewLvls[user.viewsAchievementLvl].name
+            achievementName: viewLvls[user.viewsAchievementLvl].name,
+            isFinalLevel: viewLvls[user.viewsAchievementLvl].isFinalLevel
         } : {}
     }
 }

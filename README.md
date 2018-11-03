@@ -1,6 +1,10 @@
 # memspaceServ
 This is the main server of MemSpace - meme network 
 #
+
+!!IMPORTANT - USE VK TOKEN PROVIDED IN SKELETON.ENV TO RUN SERVER
+Remember: to use server in Ukraine - you need to install VPN
+
 to install:
 1. install `docker`
 2. install `docker-compose`

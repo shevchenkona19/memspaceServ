@@ -138,7 +138,7 @@ async function getUserAchievementsById(id) {
             lvl: user.likeAchievementLvl,
             count: user.likesCount,
             nextPrice: Achievements.likes[user.likeAchievementLvl].price,
-            isFinalLevel: Achievements.likes.max === Achievements.likes[user.likeAchievementLvl].lvl,
+            isFinalLevel: Achievements.likes[user.likeAchievementLvl].isFinalLevel,
             name: "likes",
             achievementName: Achievements.likes[user.likeAchievementLvl].name,
             allNames: Achievements.likes.allNames
@@ -147,7 +147,7 @@ async function getUserAchievementsById(id) {
             lvl: user.dislikesAchievementLvl,
             count: user.dislikesCount,
             nextPrice: Achievements.dislikes[user.dislikesAchievementLvl].price,
-            isFinalLevel: Achievements.dislikes.max === Achievements.dislikes[user.dislikesAchievementLvl].lvl,
+            isFinalLevel: Achievements.dislikes[user.dislikesAchievementLvl].isFinalLevel,
             name: "dislikes",
             achievementName: Achievements.dislikes[user.dislikesAchievementLvl].name,
             allNames: Achievements.dislikes.allNames
@@ -156,7 +156,7 @@ async function getUserAchievementsById(id) {
             lvl: user.commentsAchievementLvl,
             count: user.commentsCount,
             nextPrice: Achievements.comments[user.commentsAchievementLvl].price,
-            isFinalLevel: Achievements.comments.max === Achievements.comments[user.commentsAchievementLvl].lvl,
+            isFinalLevel: Achievements.comments[user.commentsAchievementLvl].isFinalLevel,
             name: "comments",
             achievementName: Achievements.comments[user.commentsAchievementLvl].name,
             allNames: Achievements.comments.allNames
@@ -165,7 +165,7 @@ async function getUserAchievementsById(id) {
             lvl: user.favouritesAchievementLvl,
             count: user.favouritesCount,
             nextPrice: Achievements.favourites[user.favouritesAchievementLvl].price,
-            isFinalLevel: Achievements.favourites.max === Achievements.favourites[user.favouritesAchievementLvl].lvl,
+            isFinalLevel: Achievements.favourites[user.favouritesAchievementLvl].isFinalLevel,
             name: "favourites",
             achievementName: Achievements.favourites[user.favouritesAchievementLvl].name,
             allNames: Achievements.favourites.allNames
@@ -174,7 +174,7 @@ async function getUserAchievementsById(id) {
             lvl: user.viewsAchievementLvl,
             count: user.viewsCount,
             nextPrice: Achievements.views[user.viewsAchievementLvl].price,
-            isFinalLevel: Achievements.views.max === Achievements.views[user.viewsAchievementLvl].lvl,
+            isFinalLevel: Achievements.views[user.viewsAchievementLvl].isFinalLevel,
             name: "views",
             achievementName: Achievements.views[user.viewsAchievementLvl].name,
             allNames: Achievements.views.allNames

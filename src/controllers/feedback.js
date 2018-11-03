@@ -58,7 +58,8 @@ async function resolveLikesAchievement(user) {
             nextPrice: likeLvls[user.likeAchievementLvl].price,
             currentValue: user.likesCount,
             name: "likes",
-            achievementName: likeLvls[user.likeAchievementLvl].name
+            achievementName: likeLvls[user.likeAchievementLvl].name,
+            isFinalLevel: likeLvls[user.likeAchievementLvl].isFinalLevel
         } : {}
     }
 }
@@ -85,7 +86,8 @@ async function resolveDislikesAchievement(user) {
             nextPrice: dislikeLvls[user.dislikesAchievementLvl].price,
             currentValue: user.dislikesCount,
             name: "dislikes",
-            achievementName: dislikeLvls[user.dislikesAchievementLvl].name
+            achievementName: dislikeLvls[user.dislikesAchievementLvl].name,
+            isFinalLevel: dislikeLvls[user.dislikesAchievementLvl].isFinalLevel
         } : {}
     }
 }
@@ -112,7 +114,8 @@ async function resolveCommentsAchievement(user) {
             nextPrice: commentsLvls[user.commentsAchievementLvl].price,
             currentValue: user.commentsCount,
             name: "comments",
-            achievementName: commentsLvls[user.commentsAchievementLvl].name
+            achievementName: commentsLvls[user.commentsAchievementLvl].name,
+            isFinalLevel: commentsLvls[user.commentsAchievementLvl].isFinalLevel,
         } : {}
     }
 }

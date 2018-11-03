@@ -32,7 +32,8 @@ async function addToFavorites(imageId, user) {
                 newLvl: user.favouritesAchievementLvl,
                 nextPrice: favouritesLvls[user.favouritesAchievementLvl].price,
                 currentValue: user.favouritesCount,
-                achievementName: favouritesLvls[user.favouritesAchievementLvl].name
+                achievementName: favouritesLvls[user.favouritesAchievementLvl].name,
+                isFinalLevel: favouritesLvls[user.favouritesAchievementLvl].isFinalLevel
             } : {}
         }
     } catch (e) {
