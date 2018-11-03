@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Controller = require("../controllers/favorites");
-const ErrorCodes = require("../constants/errorCodes");
+const Controller = require("../../controllers/favorites");
+const ErrorCodes = require("../../constants/errorCodes");
 
 router.get("/allFavorites", async (req, res) => {
     try {
