@@ -73,7 +73,11 @@ module.exports = function (db, DataTypes) {
         firstThousand: {
             type: DataTypes.BOOLEAN
         }
-    }, {timestamps: false});
+    }, {timestamps: false,
+    associate: models => {
+        Users.hasMany(models.likes);
+        Users.hasMany(models.comments);
+    }});
 
     return Users;
 };

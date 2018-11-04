@@ -41,7 +41,11 @@ module.exports = function (db, DataTypes) {
             defaultValue: DataTypes.NOW
         }
     }, {
-        timestamps: false
+        timestamps: false,
+        associate: models => {
+            Images.hasMany(models.likes, {onDelete: "cascade"});
+            Images.hasMany(models.comments, {onDelete: "cascade"});
+        }
     });
     return Images;
 };
