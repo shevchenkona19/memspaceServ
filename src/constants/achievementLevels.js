@@ -57,7 +57,6 @@ module.exports = {
                 name: "",
                 lvl: 0
             },
-
             {
                 price: 50,
                 name: "Хейтер",
@@ -115,7 +114,7 @@ module.exports = {
             },
             {
                 price: 50,
-                name: "20 см",
+                name: "15+ см",
                 lvl: 2
             },
             {
