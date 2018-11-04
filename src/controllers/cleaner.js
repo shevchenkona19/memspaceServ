@@ -9,7 +9,7 @@ async function clearOldMemes() {
     const deleted = memesToDelete.length;
     const confirm = memesToDelete.filter(async mem => {
         const isFavorite = await Favorites.findOne({where: {imageId: mem.imageid}});
-        return isFavorite !== null;
+        return isFavorite === null;
     });
     const ids = confirm.map(mem => mem.imageId);
     try {
