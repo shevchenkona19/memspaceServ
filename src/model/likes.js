@@ -22,11 +22,7 @@ module.exports = function (db, DataTypes) {
         opinion: {
             type: DataTypes.INTEGER,
         }
-    }, {timestamps: false,
-    associate: models => {
-        Likes.belongsTo(models.users);
-        Likes.belongsTo(models.images);
-    }});
+    }, {timestamps: false});
 
     Likes.getOpinionByIds = async (userId, imageId) => {
         return await Likes.findOne({where: {userId, imageId}, attributes: ["opinion"]});
