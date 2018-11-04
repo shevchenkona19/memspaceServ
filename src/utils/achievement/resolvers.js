@@ -11,7 +11,7 @@ async function resolveFavouritesAchievementLevel(user, allFavs) {
         if (favouritesLvls.levels[i].isFinalLevel || allFavs < favouritesLvls.levels[i].price) {
             break;
         } else {
-            user.favouritesAchievementLvl = i;
+            user.favouritesAchievementLvl = i + 1;
             isAchievementUpdate = true;
         }
     }
@@ -36,10 +36,10 @@ async function resolveViewAchievement(user, count) {
     let isAchievementUpdate = false;
     const currentLvl = user.viewsAchievementLvl;
     for (let i = currentLvl; i < viewLvls.max + 1; i++) {
-        if (viewLvls.levels[i].isFinalLevel || allViews < viewLvls.levels[i].max) {
+        if (viewLvls.levels[i].isFinalLevel || allViews < viewLvls.levels[i].price) {
             break;
         } else {
-            user.viewsAchievementLvl = i;
+            user.viewsAchievementLvl = i + 1;
             isAchievementUpdate = true;
         }
     }
@@ -66,7 +66,7 @@ async function resolveLikesAchievement(user, allLikes) {
         if (likeLvls.levels[i].isFinalLevel || allLikes < likeLvls[currentLvl].price) {
             break;
         } else {
-            user.likeAchievementLvl = i;
+            user.likeAchievementLvl = i + 1;
             isAchievementUpdate = true;
         }
     }
@@ -93,7 +93,7 @@ async function resolveDislikesAchievement(user, allDislikes) {
         if (dislikeLvls.levels[i].isFinalLevel || allDislikes < dislikeLvls[currentLvl].price) {
             break;
         } else {
-            user.dislikesAchievementLvl = i;
+            user.dislikesAchievementLvl = i + 1;
             isAchievementUpdate = true;
         }
     }
@@ -121,7 +121,7 @@ async function resolveCommentsAchievement(user, allComments) {
         if (commentsLvls.levels[i].isFinalLevel || allComments < commentsLvls[currentLvl].price) {
             break;
         } else {
-            user.commentsAchievementLvl = i;
+            user.commentsAchievementLvl = i + 1;
             isAchievementUpdate = true;
         }
     }
