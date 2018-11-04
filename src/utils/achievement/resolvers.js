@@ -7,12 +7,14 @@ const commentsLvls = require("../../constants/achievementLevels").comments;
 async function resolveFavouritesAchievementLevel(user, allFavs) {
     let isAchievementUpdate = false;
     const currentLvl = user.favouritesAchievementLvl;
-    for (let i = currentLvl; i < favouritesLvls.max + 1; i++) {
-        if (favouritesLvls.levels[i].isFinalLevel || allFavs < favouritesLvls.levels[i].price) {
-            break;
-        } else {
-            user.favouritesAchievementLvl = i + 1;
-            isAchievementUpdate = true;
+    if (currentLvl !== favouritesLvls.max) {
+        for (let i = currentLvl; i < favouritesLvls.max; i++) {
+            if (allFavs < favouritesLvls.levels[i].price) {
+                break;
+            } else {
+                user.favouritesAchievementLvl = i + 1;
+                isAchievementUpdate = true;
+            }
         }
     }
     user.favouritesCount = allFavs;
@@ -35,12 +37,14 @@ async function resolveViewAchievement(user, count) {
     const allViews = user.viewsCount + parseInt(count);
     let isAchievementUpdate = false;
     const currentLvl = user.viewsAchievementLvl;
-    for (let i = currentLvl; i < viewLvls.max + 1; i++) {
-        if (viewLvls.levels[i].isFinalLevel || allViews < viewLvls.levels[i].price) {
-            break;
-        } else {
-            user.viewsAchievementLvl = i + 1;
-            isAchievementUpdate = true;
+    if (currentLvl !== viewLvls.max) {
+        for (let i = currentLvl; i < viewLvls.max; i++) {
+            if (allViews < viewLvls.levels[i].price) {
+                break;
+            } else {
+                user.viewsAchievementLvl = i + 1;
+                isAchievementUpdate = true;
+            }
         }
     }
     user.viewsCount = allViews;
@@ -62,12 +66,14 @@ async function resolveViewAchievement(user, count) {
 async function resolveLikesAchievement(user, allLikes) {
     let isAchievementUpdate = false;
     const currentLvl = user.likeAchievementLvl;
-    for (let i = currentLvl; i < likeLvls.max + 1; i++) {
-        if (likeLvls.levels[i].isFinalLevel || allLikes < likeLvls[currentLvl].price) {
-            break;
-        } else {
-            user.likeAchievementLvl = i + 1;
-            isAchievementUpdate = true;
+    if (currentLvl !== favouritesLvls.max) {
+        for (let i = currentLvl; i < likeLvls.max; i++) {
+            if (allLikes < likeLvls[currentLvl].price) {
+                break;
+            } else {
+                user.likeAchievementLvl = i + 1;
+                isAchievementUpdate = true;
+            }
         }
     }
     user.likesCount = allLikes;
@@ -89,12 +95,14 @@ async function resolveLikesAchievement(user, allLikes) {
 async function resolveDislikesAchievement(user, allDislikes) {
     let isAchievementUpdate = false;
     const currentLvl = user.dislikesAchievementLvl;
-    for (let i = currentLvl; i < dislikeLvls.max + 1; i++) {
-        if (dislikeLvls.levels[i].isFinalLevel || allDislikes < dislikeLvls[currentLvl].price) {
-            break;
-        } else {
-            user.dislikesAchievementLvl = i + 1;
-            isAchievementUpdate = true;
+    if (currentLvl !== favouritesLvls.max) {
+        for (let i = currentLvl; i < dislikeLvls.max; i++) {
+            if (allDislikes < dislikeLvls[currentLvl].price) {
+                break;
+            } else {
+                user.dislikesAchievementLvl = i + 1;
+                isAchievementUpdate = true;
+            }
         }
     }
     user.dislikesCount = allDislikes;
@@ -117,12 +125,14 @@ async function resolveDislikesAchievement(user, allDislikes) {
 async function resolveCommentsAchievement(user, allComments) {
     let isAchievementUpdate = false;
     const currentLvl = user.commentsAchievementLvl;
-    for (let i = currentLvl; i < commentsLvls.max + 1; i++) {
-        if (commentsLvls.levels[i].isFinalLevel || allComments < commentsLvls[currentLvl].price) {
-            break;
-        } else {
-            user.commentsAchievementLvl = i + 1;
-            isAchievementUpdate = true;
+    if (currentLvl !== favouritesLvls.max) {
+        for (let i = currentLvl; i < commentsLvls.max; i++) {
+            if (allComments < commentsLvls[currentLvl].price) {
+                break;
+            } else {
+                user.commentsAchievementLvl = i + 1;
+                isAchievementUpdate = true;
+            }
         }
     }
     user.commentsCount = allComments;
