@@ -47,8 +47,8 @@ async function postLike(user, imageId) {
     } else {
         await setLike(userId, imageId);
     }
-    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
-    const achievement = await resolveLikesAchievement(user, allDislikes);
+    const allLikes = (await Likes.findAll({where: {userId: user.userId, opinion: 1}})).length;
+    const achievement = await resolveLikesAchievement(user, allLikes);
     return {
         success: true,
         mem: await getFinalMem(userId, imageId),
@@ -67,8 +67,8 @@ async function postDislike(user, imageId) {
     } else {
         await setDislike(userId, imageId);
     }
-    const allLikes = (await Likes.findAll({where: {userId: user.userId, opinion: 1}})).length;
-    const achievement = await resolveDislikesAchievement(user, allLikes);
+    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const achievement = await resolveDislikesAchievement(user, allDislikes);
     return {
         success: true,
         mem: await getFinalMem(userId, imageId),
