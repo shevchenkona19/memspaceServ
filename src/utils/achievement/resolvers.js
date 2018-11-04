@@ -68,7 +68,7 @@ async function resolveLikesAchievement(user, allLikes) {
     const currentLvl = user.likeAchievementLvl;
     if (currentLvl !== favouritesLvls.max) {
         for (let i = currentLvl; i < likeLvls.max; i++) {
-            if (allLikes < likeLvls.levels[currentLvl].price) {
+            if (allLikes < likeLvls.levels[i].price) {
                 break;
             } else {
                 user.likeAchievementLvl = i + 1;
@@ -97,7 +97,7 @@ async function resolveDislikesAchievement(user, allDislikes) {
     const currentLvl = user.dislikesAchievementLvl;
     if (currentLvl !== favouritesLvls.max) {
         for (let i = currentLvl; i < dislikeLvls.max; i++) {
-            if (allDislikes < dislikeLvls.levels[currentLvl].price) {
+            if (allDislikes < dislikeLvls.levels[i].price) {
                 break;
             } else {
                 user.dislikesAchievementLvl = i + 1;
@@ -127,7 +127,7 @@ async function resolveCommentsAchievement(user, allComments) {
     const currentLvl = user.commentsAchievementLvl;
     if (currentLvl !== favouritesLvls.max) {
         for (let i = currentLvl; i < commentsLvls.max; i++) {
-            if (allComments < commentsLvls.levels[currentLvl].price) {
+            if (allComments < commentsLvls.levels[i].price) {
                 break;
             } else {
                 user.commentsAchievementLvl = i + 1;
