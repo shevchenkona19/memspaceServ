@@ -40,26 +40,26 @@ async function resolveLikesAchievement(user) {
     const allLikes = (await Likes.findAll({where: {userId: user.userId, opinion: 1}})).length;
     let isAchievementUpdate = false;
     const currentLvl = user.likeAchievementLvl;
-    if (allLikes < likeLvls[currentLvl].price) {
-        user.likesCount = allLikes;
-        await user.save();
-    } else {
-        user.likesCount = allLikes;
-        if (currentLvl + 1 <= likeLvls.max) {
-            user.likeAchievementLvl = likeLvls[currentLvl + 1].lvl;
+    for (let i = currentLvl; i < likeLvls.max + 1; i++) {
+        if (!likeLvls.levels[i].isFinalLevel && allLikes < likeLvls[currentLvl].price) {
+            break;
+        } else {
+            user.likeAchievementLvl = i;
             isAchievementUpdate = true;
         }
-        await user.save();
     }
+    user.likesCount = allLikes;
+    await user.save();
+    const achievement = likeLvls.levels[user.likeAchievementLvl];
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.likeAchievementLvl,
-            nextPrice: likeLvls[user.likeAchievementLvl].price,
+            nextPrice: achievement.price,
             currentValue: user.likesCount,
             name: "likes",
-            achievementName: likeLvls[user.likeAchievementLvl].name,
-            isFinalLevel: likeLvls[user.likeAchievementLvl].isFinalLevel
+            achievementName: achievement.name,
+            isFinalLevel: achievement.isFinalLevel
         } : {}
     }
 }
@@ -68,26 +68,26 @@ async function resolveDislikesAchievement(user) {
     const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
     let isAchievementUpdate = false;
     const currentLvl = user.dislikesAchievementLvl;
-    if (allDislikes < dislikeLvls[currentLvl].price) {
-        user.dislikesCount = allDislikes;
-        await user.save();
-    } else {
-        user.dislikesCount = allDislikes;
-        if (currentLvl + 1 <= dislikeLvls.max) {
-            user.dislikesAchievementLvl = dislikeLvls[currentLvl + 1].lvl;
+    for (let i = currentLvl; i < dislikeLvls.max + 1; i++) {
+        if (!dislikeLvls.levels[i].isFinalLevel && allDislikes < dislikeLvls[currentLvl].price) {
+            break;
+        } else {
+            user.dislikesAchievementLvl = i;
             isAchievementUpdate = true;
         }
-        await user.save();
     }
+    user.dislikesCount = allDislikes;
+    await user.save();
+    const achievement = dislikeLvls.levels[user.dislikesAchievementLvl];
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.dislikesAchievementLvl,
-            nextPrice: dislikeLvls[user.dislikesAchievementLvl].price,
+            nextPrice: achievement.price,
             currentValue: user.dislikesCount,
             name: "dislikes",
-            achievementName: dislikeLvls[user.dislikesAchievementLvl].name,
-            isFinalLevel: dislikeLvls[user.dislikesAchievementLvl].isFinalLevel
+            achievementName: achievement.name,
+            isFinalLevel: achievement.isFinalLevel
         } : {}
     }
 }
@@ -96,26 +96,26 @@ async function resolveCommentsAchievement(user) {
     const allComments = (await Comments.findAll({where: {userId: user.userId}})).length;
     let isAchievementUpdate = false;
     const currentLvl = user.commentsAchievementLvl;
-    if (allComments < commentsLvls[currentLvl].price) {
-        user.commentsCount = allComments;
-        await user.save();
-    } else {
-        user.commentsCount = allComments;
-        if (currentLvl + 1 <= commentsLvls.max) {
-            user.commentsAchievementLvl = commentsLvls[currentLvl + 1].lvl;
+    for (let i = currentLvl; i < commentsLvls.max + 1; i++) {
+        if (!commentsLvls.levels[i].isFinalLevel && allComments < commentsLvls[currentLvl].price) {
+            break;
+        } else {
+            user.commentsAchievementLvl = i;
             isAchievementUpdate = true;
         }
-        await user.save();
     }
+    user.commentsCount = allComments;
+    await user.save();
+    const achievement = commentsLvls.levels[user.commentsAchievementLvl];
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.commentsAchievementLvl,
-            nextPrice: commentsLvls[user.commentsAchievementLvl].price,
+            nextPrice: achievement.price,
             currentValue: user.commentsCount,
             name: "comments",
-            achievementName: commentsLvls[user.commentsAchievementLvl].name,
-            isFinalLevel: commentsLvls[user.commentsAchievementLvl].isFinalLevel,
+            achievementName: achievement.name,
+            isFinalLevel: achievement.isFinalLevel
         } : {}
     }
 }

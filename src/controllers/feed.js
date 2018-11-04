@@ -153,26 +153,26 @@ async function resolveViewAchievement(user, count) {
     const allViews = user.viewsCount + parseInt(count);
     let isAchievementUpdate = false;
     const currentLvl = user.viewsAchievementLvl;
-    if (allViews < viewLvls[currentLvl].price) {
-        user.viewsCount = allViews;
-        await user.save();
-    } else {
-        user.viewsCount = allViews;
-        if (currentLvl + 1 <= viewLvls.max) {
-            user.viewsAchievementLvl = viewLvls[currentLvl + 1].lvl;
+    for (let i = currentLvl; i < viewLvls.max + 1; i++) {
+        if (!viewLvls.levels[i].isFinalLevel && allViews < viewLvls.levels[i].max) {
+            break;
+        } else {
+            user.viewsAchievementLvl = i;
             isAchievementUpdate = true;
         }
-        await user.save();
     }
+    user.viewsCount = allViews;
+    await user.save();
+    const achievement = viewLvls.levels[user.viewsAchievementLvl];
     return {
         achievementUpdate: isAchievementUpdate,
         achievement: isAchievementUpdate ? {
             newLvl: user.viewsAchievementLvl,
-            nextPrice: viewLvls[user.viewsAchievementLvl].price,
+            nextPrice: achievement.price,
             currentValue: user.viewsCount,
             name: "views",
-            achievementName: viewLvls[user.viewsAchievementLvl].name,
-            isFinalLevel: viewLvls[user.viewsAchievementLvl].isFinalLevel
+            achievementName: achievement.name,
+            isFinalLevel: achievement.isFinalLevel
         } : {}
     }
 }
