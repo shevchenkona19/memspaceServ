@@ -6,8 +6,7 @@ const Sequelize = require("sequelize").Op;
 const db = require("../model/index").getDb().sequelize;
 const Users = require("../model/index").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
-const viewLvls = require("../constants/achievementLevels").views;
-
+const resolveViewAchievement = require("../utils/achievement/resolvers").resolveViewAchievement;
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -146,34 +145,6 @@ async function getUserPhoto(username) {
     return {
         success: true,
         imageData: image.imageData
-    }
-}
-
-async function resolveViewAchievement(user, count) {
-    const allViews = user.viewsCount + parseInt(count);
-    let isAchievementUpdate = false;
-    const currentLvl = user.viewsAchievementLvl;
-    for (let i = currentLvl; i < viewLvls.max + 1; i++) {
-        if (!viewLvls.levels[i].isFinalLevel && allViews < viewLvls.levels[i].max) {
-            break;
-        } else {
-            user.viewsAchievementLvl = i;
-            isAchievementUpdate = true;
-        }
-    }
-    user.viewsCount = allViews;
-    await user.save();
-    const achievement = viewLvls.levels[user.viewsAchievementLvl];
-    return {
-        achievementUpdate: isAchievementUpdate,
-        achievement: isAchievementUpdate ? {
-            newLvl: user.viewsAchievementLvl,
-            nextPrice: achievement.price,
-            currentValue: user.viewsCount,
-            name: "views",
-            achievementName: achievement.name,
-            isFinalLevel: achievement.isFinalLevel
-        } : {}
     }
 }
 

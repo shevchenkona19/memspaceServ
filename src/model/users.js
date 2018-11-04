@@ -1,4 +1,3 @@
-const achievementLvls = require("../constants/achievementLevels");
 
 module.exports = function (db, DataTypes) {
     const Users = db.define("users", {
@@ -30,7 +29,7 @@ module.exports = function (db, DataTypes) {
         },
         likeAchievementLvl: {
             type: DataTypes.SMALLINT,
-            defaultValue: achievementLvls.likes["0"].lvl
+            defaultValue: 0
         },
         likesCount: {
             type: DataTypes.INTEGER,
@@ -38,7 +37,7 @@ module.exports = function (db, DataTypes) {
         },
         dislikesAchievementLvl: {
             type: DataTypes.SMALLINT,
-            defaultValue: achievementLvls.dislikes["0"].lvl
+            defaultValue: 0
         },
         dislikesCount: {
             type: DataTypes.INTEGER,
@@ -46,7 +45,7 @@ module.exports = function (db, DataTypes) {
         },
         commentsAchievementLvl: {
             type: DataTypes.SMALLINT,
-            defaultValue: achievementLvls.comments["0"].lvl
+            defaultValue: 0
         },
         commentsCount: {
             type: DataTypes.INTEGER,
@@ -54,7 +53,7 @@ module.exports = function (db, DataTypes) {
         },
         favouritesAchievementLvl: {
             type: DataTypes.SMALLINT,
-            defaultValue: achievementLvls.favourites["0"].lvl
+            defaultValue: 0
         },
         favouritesCount: {
             type: DataTypes.INTEGER,
@@ -62,7 +61,7 @@ module.exports = function (db, DataTypes) {
         },
         viewsAchievementLvl: {
             type: DataTypes.SMALLINT,
-            defaultValue: achievementLvls.views["0"].lvl
+            defaultValue: 0
         },
         viewsCount: {
             type: DataTypes.INTEGER,
