@@ -118,9 +118,6 @@ router.post("/comment", passport.authenticate('jwt', {session: false}), async (r
     }
 });
 router.get("/comments", passport.authenticate('jwt', {session: false}), async (req, res) => {
-    if (req.user.accessLvl === -1) {
-        return res.status(401).json({message: "unauthorized"});
-    }
     if (!req.query.id || !req.query.count || !req.query.offset) {
         return res.status(400).json({message: "incorrect query"});
     }
@@ -128,7 +125,7 @@ router.get("/comments", passport.authenticate('jwt', {session: false}), async (r
     const count = req.query.count;
     const offset = req.query.offset;
     try {
-        const result = await Controller.getComments(req.user.userId, imageId, count, offset);
+        const result = await Controller.getComments(imageId, count, offset);
         if (result.success) {
             return res.json({
                 comments: result.comments,

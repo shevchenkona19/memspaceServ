@@ -125,7 +125,7 @@ async function postComment(user, imageId, text) {
     }
 }
 
-async function getComments(userId, imageId, count, offset) {
+async function getComments(imageId, count, offset) {
     const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", username, text, date FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} LIMIT ${count} OFFSET ${offset}`);
     return {
         success: true,
