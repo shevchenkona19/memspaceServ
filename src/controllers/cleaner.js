@@ -1,4 +1,5 @@
 const Images = require("../model/index").getImagesModel();
+const ImagesCategories = require("../model/index").getImagesCategoriesModel();
 const Favorites = require("../model/index").getFavoritesModel();
 const Sequelize = require("sequelize").Op;
 const moment = require("moment");
@@ -16,6 +17,7 @@ async function clearOldMemes() {
         confirm.forEach(async mem => {
             fs.unlinkSync(mem.imageData);
         });
+        await ImagesCategories.destroy({where: {imageId: ids}});
         await Images.destroy({where: {imageId: ids}});
     } catch (e) {
         console.error("Error in clearing memes!", e.stack);
