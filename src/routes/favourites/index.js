@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const favouritesMethods = require("./favorites");
 const auth = require("../../middleware/auth");
-const passport = require('../app').passport;
+const passport = require('../../app').passport;
 
 router.post("/addToFavorites", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, favouritesMethods.addToFavorites);
 

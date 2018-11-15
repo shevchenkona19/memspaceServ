@@ -30,15 +30,16 @@ module.exports = {
 app.use(bodyParser({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 
-const config = require('./routes/config');
-const account = require('./routes/account');
+const config = require('./routes/config/index');
+const account = require('./routes/account/index');
 const favorites = require('./routes/favourites/index');
-const feed = require('./routes/feed');
-const feedback = require('./routes/feedback');
-const moderator = require('./routes/moderator');
-const newAccount = require("./routes/new/account");
-const newFavorites = require("./routes/new/favorites");
+const feed = require('./routes/feed/index');
+const feedback = require('./routes/feedback/index');
+const moderator = require('./routes/moderator/index');
+const newAccount = require("./routes/new/account/index");
+const newFavorites = require("./routes/new/favorites/index");
 const errorHandler = require("./middleware/errorHandler");
+
 //routes
 app.use('/v1/account', newAccount);
 app.use('/v1/favorites', newFavorites);
