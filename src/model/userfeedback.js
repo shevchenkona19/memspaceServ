@@ -25,6 +25,15 @@ module.exports = function (db, DataTypes) {
             allowNull: false,
             defaultValue: DataTypes.NOW
         }
-    }, {timestamps: false, freezeTableName: true});
+    }, {
+        timestamps: false,
+        freezeTableName: true,
+        associate: models => {
+            UserFeedback.belongsTo(models.users, {
+                foreignKey: "userId",
+                as: "user"
+            })
+        }
+    });
     return UserFeedback;
 };

@@ -8,6 +8,20 @@ module.exports = function (db, DataTypes) {
         categoryName: {
             type: DataTypes.STRING,
         }
-    }, {timestamps: false});
+    }, {
+        timestamps: false,
+        associate: models => {
+            Categories.belongsToMany(models.users, {
+                through: "userscategories",
+                as: "category",
+                foreignKey: "categoryId",
+            });
+            Categories.belongsToMany(models.images, {
+                through: "imagescategories",
+                as: "category",
+                foreignKey: "categoryId",
+            });
+        }
+    });
     return Categories;
 };

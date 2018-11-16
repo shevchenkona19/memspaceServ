@@ -43,8 +43,26 @@ module.exports = function (db, DataTypes) {
     }, {
         timestamps: false,
         associate: models => {
-            Images.hasMany(models.likes, {onDelete: "cascade"});
-            Images.hasMany(models.comments, {onDelete: "cascade"});
+            Images.belongsToMany(models.users, {
+                through: "likes",
+                as: "image",
+                foreignKey: "imageId"
+            });
+            Images.belongsToMany(models.users, {
+                through: "comments",
+                as: "image",
+                foreignKey: "imageId"
+            });
+            Images.belongsToMany(models.users, {
+                through: "favorites",
+                as: "image",
+                foreignKey: "imageId"
+            });
+            Images.belongsToMany(models.categories, {
+                through: "imagescategories",
+                as: "image",
+                foreignKey: "imageId"
+            });
         }
     });
     return Images;

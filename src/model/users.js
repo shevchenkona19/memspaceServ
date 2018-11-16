@@ -1,4 +1,3 @@
-
 module.exports = function (db, DataTypes) {
     const Users = db.define("users", {
         userId: {
@@ -73,11 +72,32 @@ module.exports = function (db, DataTypes) {
         firstThousand: {
             type: DataTypes.BOOLEAN
         }
-    }, {timestamps: false,
-    associate: models => {
-        Users.hasMany(models.likes);
-        Users.hasMany(models.comments);
-    }});
+    }, {
+        timestamps: false,
+        associate: models => {
+            Users.belongsToMany(models.images, {
+                through: "favorites",
+                as: "user",
+                foreignKey: "userId"
+            });
+            Users.belongsToMany(models.categories, {
+                through: "userscategories",
+                as: "category",
+                foreignKey: "userId"
+            });
+            Users.hasMany(models.userfeedback, {onDelete: "cascade", foreignKey: "userId"});
+            Users.belongsToMany(models.images, {
+                through: "likes",
+                as: "user",
+                foreignKey: "userId"
+            });
+            Users.belongsToMany(models.images, {
+                through: "comments",
+                as: "user",
+                foreignKey: "userId"
+            })
+        }
+    });
 
     return Users;
 };
