@@ -1,4 +1,4 @@
-module.exports = function(db, DataTypes) {
+module.exports = function (db, DataTypes) {
     const Favorites = db.define('favorites', {
         userId: {
             type: DataTypes.INTEGER,
@@ -14,7 +14,14 @@ module.exports = function(db, DataTypes) {
                 key: "imageId"
             }
         }
-    }, {timestamps: false});
+    }, {
+        timestamps: false,
+        associate: models => {
+            Favorites.belongsTo(models.images, {foreignKey: "imageId"});
+            Favorites.belongsTo(models.users, {foreignKey: "userId"});
+        }
+    });
+
 
     return Favorites;
 };
