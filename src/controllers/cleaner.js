@@ -9,6 +9,7 @@ const fs = require("fs");
 const db = require("../model/index").getDb().sequelize;
 
 async function clearOldMemes() {
+    //kek
     const date = moment().subtract(30, "days").format("DD/MM/YYYY");
     const memes = await db.query(`SELECT images."imageId", images."imageData" from images left outer join favorites on (images."imageId" = favorites."imageId") where favorites."imageId" is NULL AND images."createdAt" < to_date('${date}', 'DD/MM/YYYY');`, {model: Images});
     let deleted = 0;

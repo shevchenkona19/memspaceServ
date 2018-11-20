@@ -63,7 +63,7 @@ async function deleteDislike(req, res) {
 
 async function postComment(req, res) {
     if (!req.query.id || !req.body.text) {
-        return res.status(400).json({message: "incorrect query"});
+        return res.status(400).json({message: ErrorCodes.INCORRECT_DATA});
     }
     const imageId = req.query.id;
     const text = req.body.text;
@@ -74,6 +74,45 @@ async function postComment(req, res) {
             achievementUpdate: result.achievementUpdate,
             achievement: result.achievement
         })
+    } else {
+        throw Error(ErrorCodes.INTERNAL_ERROR);
+    }
+}
+
+async function postCommentRespond(req, res) {
+    const imageId = req.query.id;
+    const commentId = req.query.commentId;
+    const text = req.body.text;
+    const answerUserId = req.query.answerUserId;
+    if (!imageId|| !commentId|| !text || !answerUserId) {
+        return res.status(400).json({
+            message: ErrorCodes.INCORRECT_DATA
+        });
+    }
+    const result = await Controller.postCommentRespond(req.user, answerUserId, imageId, commentId, text);
+    if (result.success) {
+        return res.json({
+            message: result.message,
+            achievementUpdate: result.achievementUpdate,
+            achievement: result.achievement
+        })
+    } else {
+        throw Error(ErrorCodes.INTERNAL_ERROR);
+    }
+}
+
+async function getAnswersForComment(req, res) {
+    const commentId = req.query.commentId;
+    if (!commentId) {
+        return res.status(400).json({
+            message: ErrorCodes.INCORRECT_DATA
+        });
+    }
+    const result = await Controller.getAnswersForComment(commentId);
+    if (result.success) {
+        return res.json({
+            comments: result.comments,
+        });
     } else {
         throw Error(ErrorCodes.INTERNAL_ERROR);
     }
@@ -140,4 +179,6 @@ module.exports = {
     getComments,
     postMessageForDev,
     getAllDevFeedback,
+    postCommentRespond,
+    getAnswersForComment,
 };

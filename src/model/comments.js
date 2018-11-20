@@ -24,6 +24,25 @@ module.exports = function (db, DataTypes) {
         },
         date: {
             type: DataTypes.DATE,
+        },
+        parentId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            defaultValue: null
+        },
+        answers: {
+            type: DataTypes.INTEGER,
+            defaultValue: null,
+            allowNull: true
+        },
+        answerUserId: {
+            type: DataTypes.INTEGER,
+            defaultValue: null,
+            allowNull: true,
+            references: {
+                model: "users",
+                key: "userId"
+            }
         }
     }, {
         timestamps: false

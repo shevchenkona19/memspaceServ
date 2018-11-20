@@ -52,7 +52,7 @@ app.use('/moderator', moderator);
 app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
-setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 15000, 1);
+setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
 
 const server = http.createServer(app);
 

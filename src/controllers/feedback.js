@@ -126,11 +126,20 @@ async function postComment(user, imageId, text) {
 }
 
 async function getComments(imageId, count, offset) {
-    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", username, text, date FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} LIMIT ${count} OFFSET ${offset}`);
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, answers, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} AND \"parentId\" IS NULL LIMIT ${count} OFFSET ${offset}`);
     return {
         success: true,
         comments: comments[0] || [],
         count: comments[0].length || 0
+    }
+}
+
+async function getAnswersForComment(commentId) {
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"parentId\" = ${commentId};`);
+
+    return {
+        success: true,
+        comments: comments[0] || [],
     }
 }
 
@@ -150,6 +159,28 @@ async function getAllDevMessages() {
     }
 }
 
+async function postCommentRespond(user, answerUserId, imageId, commentId, text) {
+    await Comments.build({
+        userId: user.userId,
+        imageId,
+        parentId: commentId,
+        text,
+        answerUserId,
+        date: Date.now()
+    }).save();
+    const comment = await Comments.findById(commentId);
+    if (comment.answers === null) comment.answers = 1;
+    else comment.answers = comment.answers + 1;
+    await comment.save();
+    const allComments = (await Comments.findAll({where: {userId: user.userId}})).length;
+    const achievement = await resolveCommentsAchievement(user, allComments);
+    return {
+        success: true,
+        message: SuccessCodes.SUCCESS,
+        ...achievement
+    }
+}
+
 module.exports = {
     postLike,
     deleteLike,
@@ -158,5 +189,7 @@ module.exports = {
     postComment,
     getComments,
     writeMessageForDev,
-    getAllDevMessages
+    getAllDevMessages,
+    postCommentRespond,
+    getAnswersForComment,
 };
