@@ -2,6 +2,7 @@ const Likes = require("../model/index").getLikesModel();
 const Images = require("../model/index").getImagesModel();
 const Comments = require("../model/index").getCommentsModel();
 const UserFeedback = require("../model/index").getUserFeedback();
+const Users = require("../model/index").getUsersModel();
 const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
@@ -126,7 +127,7 @@ async function postComment(user, imageId, text) {
 }
 
 async function getComments(imageId, count, offset) {
-    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, answers, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} AND \"parentId\" IS NULL LIMIT ${count} OFFSET ${offset}`);
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, answers, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"imageId\" = ${imageId} AND \"parentId\" IS NULL ORDER BY comments.date ASC LIMIT ${count} OFFSET ${offset};`);
     return {
         success: true,
         comments: comments[0] || [],
@@ -135,7 +136,7 @@ async function getComments(imageId, count, offset) {
 }
 
 async function getAnswersForComment(commentId) {
-    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"parentId\" = ${commentId};`);
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"parentId\" = ${commentId} ORDER BY comments.date ASC;`);
 
     return {
         success: true,
@@ -160,24 +161,51 @@ async function getAllDevMessages() {
 }
 
 async function postCommentRespond(user, answerUserId, imageId, commentId, text) {
-    await Comments.build({
+    const newComment = Comments.build({
         userId: user.userId,
         imageId,
         parentId: commentId,
         text,
         answerUserId,
         date: Date.now()
-    }).save();
+    });
+    await newComment.save();
     const comment = await Comments.findById(commentId);
     if (comment.answers === null) comment.answers = 1;
     else comment.answers = comment.answers + 1;
     await comment.save();
     const allComments = (await Comments.findAll({where: {userId: user.userId}})).length;
     const achievement = await resolveCommentsAchievement(user, allComments);
+    let sendNotification = true;
+    let sendUser = false;
+    if (user.userId === answerUserId) {
+        sendNotification = false;
+    }
+    if (sendNotification) {
+        sendUser = await Users.findById(answerUserId);
+    }
     return {
         success: true,
         message: SuccessCodes.SUCCESS,
+        sendNotification,
+        sendUser,
+        sendNewCommentId: newComment.id,
         ...achievement
+    }
+}
+
+async function getCommentsToCommentId(memId, commentId) {
+    const comments = await db.query(`select users."userId" as "userId", users."likeAchievementLvl" as "likeAchievementLvl", users."dislikesAchievementLvl" as "dislikesAchievementLvl", users."commentsAchievementLvl" as "commentsAchievementLvl", users."favouritesAchievementLvl" as "favouritesAchievementLvl", users."viewsAchievementLvl" as "viewsAchievementLvl", users."firstHundred" as "firstHundred", users."firstThousand" as "firstThousand", users.username as username, text, answers, "parentId", "answerUserId", date, id FROM comments INNER JOIN users ON comments."userId" = users."userId" where id <= ${commentId} AND "parentId" IS NULL AND "imageId" = ${memId} ORDER BY comments.date ASC;`);
+    if (comments) {
+        return {
+            success: true,
+            comments: comments[0] || []
+        }
+    } else {
+        return {
+            success: false,
+            errorCode: ErrorCodes.NO_SUCH_COMMENT
+        }
     }
 }
 
@@ -191,5 +219,6 @@ module.exports = {
     writeMessageForDev,
     getAllDevMessages,
     postCommentRespond,
+    getCommentsToCommentId,
     getAnswersForComment,
 };

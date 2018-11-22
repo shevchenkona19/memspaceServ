@@ -11,5 +11,6 @@ router.get("/categoryFeed", passport.authenticate('jwt', {session: false}), feed
 router.get("/hotFeed", passport.authenticate('jwt', {session: false}), feedMethods.getHotFeed);
 router.get("/imgs", feedMethods.getImgs);
 router.get("/userPhoto", feedMethods.getUserPhoto);
+router.get("/mem", feedMethods.getMemById);
 
 module.exports = router;

@@ -6,7 +6,14 @@ const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
 const imageDownloader = require("./vk/api");
 const cleaner = require("./controllers/cleaner");
+const firebase = require("firebase-admin");
+const serviceAccount = require("./firebase.json");
 require("./model/index");
+
+firebase.initializeApp({
+    credential: firebase.credential.cert(serviceAccount),
+    databaseURL: "https://memspace-809c5.firebaseio.com"
+});
 
 //Настройки авторизации
 let jwtOptions = {};

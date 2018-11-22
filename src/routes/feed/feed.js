@@ -107,6 +107,28 @@ async function getUserPhoto(req, res) {
     }
 }
 
+
+async function getMemById(req, res) {
+    const memId = req.query.memId;
+    if (!memId) {
+        return res.status(400).json({message: ErrorCodes.INCORRECT_DATA});
+    }
+    const mem = await Controller.getMemById(memId);
+    if (mem) {
+        const toSend = {
+            imageId: mem.imageId,
+            likes: mem.likes,
+            dislikes: mem.dislikes,
+            source: mem.source,
+            width: mem.width,
+            height: mem.height,
+        };
+        return res.json(toSend);
+    } else {
+        throw Error(ErrorCodes.NO_SUCH_MEM);
+    }
+}
+
 module.exports = {
     refreshMem,
     getMainFeed,
@@ -115,4 +137,5 @@ module.exports = {
     getHotFeed,
     getImgs,
     getUserPhoto,
+    getMemById
 };

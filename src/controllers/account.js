@@ -190,10 +190,21 @@ async function getUsername(id) {
     return {username: (await Users.findById(id)).username, success: true}
 }
 
+async function setFcmId(fcmId, userId) {
+    await Users.update(
+        {fcmId},
+        {where: {userId}}
+    );
+    return {
+        success: true
+    }
+}
+
 module.exports = {
     getUsername,
     getUserAchievementsById,
     login,
     register,
-    registerModer
+    registerModer,
+    setFcmId
 };

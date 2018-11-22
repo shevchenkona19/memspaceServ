@@ -148,6 +148,10 @@ async function getUserPhoto(username) {
     }
 }
 
+async function getMemById(memId) {
+    return await Images.findById(memId);
+}
+
 module.exports = {
     getImage,
     refreshMem,
@@ -155,7 +159,8 @@ module.exports = {
     getHotFeed,
     getCategoriesFeed,
     getCategoryFeed,
-    getUserPhoto
+    getUserPhoto,
+    getMemById
 };
 
 

@@ -10,5 +10,6 @@ router.post("/registerModer", accountMethods.registerModer);
 router.get("/myUsername", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.getMyUsername);
 router.get("/policy", accountMethods.getPolicy);
 router.get("/achievements", accountMethods.getAchievements);
+router.post("/fcmId", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.setFcmId);
 
 module.exports = router;

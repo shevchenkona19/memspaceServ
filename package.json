@@ -12,7 +12,8 @@
     "dc:migrate": "docker-compose up -d db && docker-compose run web node_modules/.bin/wait-port db:5432 && npm run migration:up && docker-compose stop db",
     "migration:up": "docker-compose run web node_modules/.bin/sequelize db:migrate --config ./development.json",
     "dc:uninstall": "docker-compose down -v",
-    "dc:start": "nodemon src/app.js"
+    "dc:start": "nodemon src/app.js",
+    "dc:rebuild": "docker-compose run npm install"
   },
   "dependencies": {
     "async-request": "^1.2.0",
@@ -20,6 +21,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "firebase-admin": "^6.2.0",
     "helmet": "^3.12.1",
     "jsonwebtoken": "^8.1.0",
     "moment": "^2.22.2",

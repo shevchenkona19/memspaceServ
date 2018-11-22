@@ -1,5 +1,6 @@
 const Controller = require("../../controllers/feedback");
 const ErrorCodes = require("../../constants/errorCodes");
+const firebase = require("firebase-admin");
 
 async function postLike(req, res) {
     if (!req.query.id) {
@@ -84,13 +85,34 @@ async function postCommentRespond(req, res) {
     const commentId = req.query.commentId;
     const text = req.body.text;
     const answerUserId = req.query.answerUserId;
-    if (!imageId|| !commentId|| !text || !answerUserId) {
+    if (!imageId || !commentId || !text || !answerUserId) {
         return res.status(400).json({
             message: ErrorCodes.INCORRECT_DATA
         });
     }
     const result = await Controller.postCommentRespond(req.user, answerUserId, imageId, commentId, text);
     if (result.success) {
+        if (result.sendNotification) {
+            const sendUser = result.sendUser;
+            if (sendUser) {
+                if (sendUser.fcmId) {
+                    const message = {
+                        data: {
+                            username: req.user.username,
+                            text,
+                            memId: imageId + "",
+                            parentCommentId: commentId + "",
+                            newCommentId: result.sendNewCommentId + "",
+                        },
+                        token: sendUser.fcmId
+                    };
+                    firebase.messaging().send(message)
+                        .catch(error => {
+                            console.error("Error in notification send: ", error);
+                        });
+                }
+            }
+        }
         return res.json({
             message: result.message,
             achievementUpdate: result.achievementUpdate,
@@ -136,6 +158,23 @@ async function getComments(req, res) {
     }
 }
 
+async function getCommentsToCommentId(req, res) {
+    const memId = req.query.memId;
+    const toCommentId = req.query.toCommentId;
+    if (!memId || !toCommentId) {
+        return res.status(400).json({message: ErrorCodes.INCORRECT_DATA});
+    }
+    const result = await Controller.getCommentsToCommentId(memId, toCommentId);
+    if (result.success) {
+        return res.json({
+            comments: result.comments,
+            count: result.comments.length
+        })
+    } else {
+        throw Error(res.error)
+    }
+}
+
 async function postMessageForDev(req, res) {
     const title = req.body.title;
     const message = req.body.message;
@@ -177,6 +216,7 @@ module.exports = {
     deleteDislike,
     postComment,
     getComments,
+    getCommentsToCommentId,
     postMessageForDev,
     getAllDevFeedback,
     postCommentRespond,

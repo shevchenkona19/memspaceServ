@@ -71,6 +71,11 @@ module.exports = function (db, DataTypes) {
         },
         firstThousand: {
             type: DataTypes.BOOLEAN
+        },
+        fcmId: {
+            type: DataTypes. STRING,
+            allowNull: true,
+            defaultNull: true
         }
     }, {
         timestamps: false,

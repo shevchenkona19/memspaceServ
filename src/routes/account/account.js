@@ -1,3 +1,5 @@
+const SuccessCodes = require("../../constants/successCodes");
+
 const Controller = require("../../controllers/account");
 const policyPath = require("../../app").policy;
 
@@ -53,11 +55,21 @@ async function getAchievements(req, res) {
     return res.json(achievements);
 }
 
+async function setFcmId(req, res) {
+    if (!req.query.fcmId) {
+        return res.status(401).json({message: ErrorCodes.INCORRECT_DATA});
+    }
+    await Controller.setFcmId(req.query.fcmId, req.user.userId);
+    return res.json({
+        message: SuccessCodes.SUCCESS
+    })
+}
 module.exports = {
     login,
     register,
     registerModer,
     getMyUsername,
     getPolicy,
-    getAchievements
+    getAchievements,
+    setFcmId
 };
