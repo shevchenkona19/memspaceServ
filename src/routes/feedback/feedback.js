@@ -1,6 +1,7 @@
 const Controller = require("../../controllers/feedback");
 const ErrorCodes = require("../../constants/errorCodes");
 const firebase = require("firebase-admin");
+const NOTIFICATION_TYPES = require("../../constants/notifications");
 
 async function postLike(req, res) {
     if (!req.query.id) {
@@ -98,7 +99,8 @@ async function postCommentRespond(req, res) {
                 if (sendUser.fcmId) {
                     const message = {
                         data: {
-                            username: req.user.username,
+                            type: NOTIFICATION_TYPES.COMMENT_RESPOND,
+                            username: req.user.username.charAt(0).toUpperCase() + req.user.username.slice(1),
                             text,
                             memId: imageId + "",
                             parentCommentId: commentId + "",
@@ -115,6 +117,7 @@ async function postCommentRespond(req, res) {
         }
         return res.json({
             message: result.message,
+            newCommentId: result.sendNewCommentId,
             achievementUpdate: result.achievementUpdate,
             achievement: result.achievement
         })
@@ -125,12 +128,14 @@ async function postCommentRespond(req, res) {
 
 async function getAnswersForComment(req, res) {
     const commentId = req.query.commentId;
-    if (!commentId) {
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    if (!commentId || !limit || !offset) {
         return res.status(400).json({
             message: ErrorCodes.INCORRECT_DATA
         });
     }
-    const result = await Controller.getAnswersForComment(commentId);
+    const result = await Controller.getAnswersForComment(commentId, limit, offset);
     if (result.success) {
         return res.json({
             comments: result.comments,
@@ -138,6 +143,24 @@ async function getAnswersForComment(req, res) {
     } else {
         throw Error(ErrorCodes.INTERNAL_ERROR);
     }
+}
+
+async function getAnswersForCommentToId(req, res) {
+    const parentCommentId = req.query.parentCommentId;
+    const childCommentId = req.query.childCommentId;
+    const imageId = req.query.imageId;
+    if (!parentCommentId || !childCommentId || !imageId) {
+        return res.status(400).json({
+            message: ErrorCodes.INCORRECT_DATA
+        });
+    }
+    const result = await Controller.getAnswersForCommentToId(parentCommentId, childCommentId, imageId);
+    if (result.success) {
+        return res.json({
+           comments: result.comments,
+           count: result.comments.length
+        });
+    } else throw Error(result.error);
 }
 
 async function getComments(req, res) {
@@ -171,7 +194,7 @@ async function getCommentsToCommentId(req, res) {
             count: result.comments.length
         })
     } else {
-        throw Error(res.error)
+        throw Error(result.errorCode)
     }
 }
 
@@ -221,4 +244,5 @@ module.exports = {
     getAllDevFeedback,
     postCommentRespond,
     getAnswersForComment,
+    getAnswersForCommentToId,
 };

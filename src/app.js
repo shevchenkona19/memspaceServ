@@ -8,6 +8,7 @@ const imageDownloader = require("./vk/api");
 const cleaner = require("./controllers/cleaner");
 const firebase = require("firebase-admin");
 const serviceAccount = require("./firebase.json");
+const notificationManager = require("./controllers/notificationManager");
 require("./model/index");
 
 firebase.initializeApp({
@@ -60,6 +61,7 @@ app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
 setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
+setInterval(notificationManager.notifyAboutMemes, process.env.NOTIFICATION_DELAY || 30000, 1);
 
 const server = http.createServer(app);
 

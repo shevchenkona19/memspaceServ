@@ -77,7 +77,8 @@ async function postDislike(user, imageId) {
     };
 }
 
-async function deleteLike(userId, imageId) {
+async function deleteLike(user, imageId) {
+    const userId = user.userId;
     const likes = await Likes.getOpinionByIds(userId, imageId);
     if (likes) {
         if (likes.opinion === 1) {
@@ -86,14 +87,17 @@ async function deleteLike(userId, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR)
     }
-    await resolveLikesAchievement(user);
+    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const achievement = await resolveLikesAchievement(user, allDislikes);
     return {
         success: true,
-        mem: await getFinalMem(userId, imageId)
+        mem: await getFinalMem(userId, imageId),
+        ...achievement
     }
 }
 
-async function deleteDislike(userId, imageId) {
+async function deleteDislike(user, imageId) {
+    const userId = user.userId;
     const likes = await Likes.getOpinionByIds(userId, imageId);
     if (likes) {
         if (likes.opinion === 0) {
@@ -102,10 +106,12 @@ async function deleteDislike(userId, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR);
     }
-    await resolveDislikesAchievement(user);
+    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const achievement = await resolveDislikesAchievement(user, allDislikes);
     return {
         success: true,
-        mem: await getFinalMem(userId, imageId)
+        mem: await getFinalMem(userId, imageId),
+        ...achievement
     }
 }
 
@@ -135,8 +141,8 @@ async function getComments(imageId, count, offset) {
     }
 }
 
-async function getAnswersForComment(commentId) {
-    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"parentId\" = ${commentId} ORDER BY comments.date ASC;`);
+async function getAnswersForComment(commentId, limit, offset) {
+    const comments = await db.query(`SELECT users.\"userId\" as \"userId\", users.\"likeAchievementLvl\" as \"likeAchievementLvl\", users.\"dislikesAchievementLvl\" as \"dislikesAchievementLvl\", users.\"commentsAchievementLvl\" as \"commentsAchievementLvl\", users.\"favouritesAchievementLvl\" as \"favouritesAchievementLvl\", users.\"viewsAchievementLvl\" as \"viewsAchievementLvl\", users.\"firstHundred\" as \"firstHundred\", users.\"firstThousand\" as \"firstThousand\", users.username as username, text, \"parentId\", \"answerUserId\", date, id FROM comments INNER JOIN users ON comments.\"userId\" = users.\"userId\" WHERE \"parentId\" = ${commentId} ORDER BY comments.date ASC LIMIT ${limit} OFFSET ${offset};`);
 
     return {
         success: true,
@@ -209,6 +215,21 @@ async function getCommentsToCommentId(memId, commentId) {
     }
 }
 
+async function getAnswersForCommentToId(parentCommentId, childCommentId, imageId) {
+    const comments = await db.query(`select users."userId" as "userId", users."likeAchievementLvl" as "likeAchievementLvl", users."dislikesAchievementLvl" as "dislikesAchievementLvl", users."commentsAchievementLvl" as "commentsAchievementLvl", users."favouritesAchievementLvl" as "favouritesAchievementLvl", users."viewsAchievementLvl" as "viewsAchievementLvl", users."firstHundred" as "firstHundred", users."firstThousand" as "firstThousand", users.username as username, text, answers, "parentId", "answerUserId", date, id FROM comments INNER JOIN users ON comments."userId" = users."userId" where id <= ${childCommentId} AND "parentId" = ${parentCommentId} AND "imageId" = ${imageId} ORDER BY comments.date ASC;`);
+    if (comments) {
+        return {
+            success: true,
+            comments: comments[0] || []
+        }
+    } else {
+        return {
+            success: false,
+            errorCode: ErrorCodes.NO_SUCH_COMMENT
+        }
+    }
+}
+
 module.exports = {
     postLike,
     deleteLike,
@@ -221,4 +242,5 @@ module.exports = {
     postCommentRespond,
     getCommentsToCommentId,
     getAnswersForComment,
+    getAnswersForCommentToId,
 };

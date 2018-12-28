@@ -71,7 +71,9 @@ async function getCategoriesFeed(user, count, offset) {
     }
     catStr = catStr.substring(0, catStr.length - 4);
     const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion, `
-        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count FROM images `
+        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
+        + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\" `
+        + `FROM images `
         + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
@@ -86,7 +88,8 @@ async function getCategoriesFeed(user, count, offset) {
 async function getCategoryFeed(user, categoryId, count, offset) {
     const userId = user.userId;
     const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, `
-        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
+        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
+        + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\" `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE `
         + `EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
         + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
@@ -115,7 +118,8 @@ async function getHotFeed(user, count, offset) {
     });
     avg = Math.ceil(avg / images.length);
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
-        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count `
+        + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
+        + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\" `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} WHERE \"createdAt\" > '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3).toDateString()}' AND likes >= ${avg} `
         + `ORDER BY \"likes\" DESC, images.\"imageId\" LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);

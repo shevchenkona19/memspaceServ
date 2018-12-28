@@ -191,6 +191,8 @@ async function getUsername(id) {
 }
 
 async function setFcmId(fcmId, userId) {
+    if (fcmId === "") fcmId = null;
+    console.warn("SET FCMID ---------------------------------");
     await Users.update(
         {fcmId},
         {where: {userId}}

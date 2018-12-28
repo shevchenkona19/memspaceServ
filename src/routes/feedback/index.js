@@ -15,5 +15,6 @@ router.get("/allFeedbackDev", feedbackMethods.getAllDevFeedback);
 router.post("/commentAnswer", passport.authenticate("jwt", {session: false}), auth.allButNotRegistered, feedbackMethods.postCommentRespond);
 router.get("/answersForComment", feedbackMethods.getAnswersForComment);
 router.get("/commentsToCommentId", feedbackMethods.getCommentsToCommentId);
+router.get("/answersForCommentToId", feedbackMethods.getAnswersForCommentToId);
 
 module.exports = router;

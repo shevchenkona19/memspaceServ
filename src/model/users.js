@@ -73,9 +73,14 @@ module.exports = function (db, DataTypes) {
             type: DataTypes.BOOLEAN
         },
         fcmId: {
-            type: DataTypes. STRING,
+            type: DataTypes.STRING,
             allowNull: true,
             defaultNull: true
+        },
+        lastVisited: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            defaultValue: null
         }
     }, {
         timestamps: false,

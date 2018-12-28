@@ -1,4 +1,5 @@
 const Favorites = require("../model/index").getFavoritesModel();
+const db = require("../model/index").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
 const resolveFavouritesAchievement = require("../utils/achievement/resolvers").resolveFavouritesAchievementLevel;
@@ -18,11 +19,11 @@ async function addToFavorites(imageId, user) {
 
 
 async function getAllFavorites(userId) {
-    const favorites = await Favorites.findAll({where: {userId}, attributes: ["imageId"]});
-    if (favorites) {
+    const favs = await db.query(`select "imageId" from favorites where "userId" = ${userId} order by "imageId" desc;`);
+    if (favs) {
         return {
             success: true,
-            favorites
+            favorites: favs[0] || []
         }
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR);

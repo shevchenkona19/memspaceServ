@@ -1,5 +1,5 @@
 const SuccessCodes = require("../../constants/successCodes");
-
+const ErrorCodes = require("../../constants/errorCodes");
 const Controller = require("../../controllers/account");
 const policyPath = require("../../app").policy;
 
