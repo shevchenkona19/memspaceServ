@@ -61,7 +61,7 @@ app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
 setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
-setInterval(notificationManager.notifyAboutMemes, process.env.NOTIFICATION_DELAY || 30000, 1);
+setInterval(notificationManager.notifyAboutMemes, process.env.NOTIFICATION_DELAY || 43200000, 1);
 
 const server = http.createServer(app);
 
