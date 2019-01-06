@@ -54,13 +54,13 @@ const getImages = async (offset) => {
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_604 && body.response.items[0].attachments[0].photo.id) {
+                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_807 && body.response.items[0].attachments[0].photo.id) {
 
                 const height = body.response.items[0].attachments[0].photo.height;
                 const width = body.response.items[0].attachments[0].photo.width;
                 const id = body.response.items[0].attachments[0].photo.id;
                 const ownerId = body.response.items[0].attachments[0].photo.owner_id;
-                path = body.response.items[0].attachments[0].photo.photo_604;
+                path = body.response.items[0].attachments[0].photo.photo_807;
 
                 console.log('attempting to GET %j', path);
                 request1({url: path, encoding: null}, async (error, response, body) => {
