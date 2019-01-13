@@ -22,6 +22,7 @@ let jwtOptions = {};
 require('./middleware/passport')(passport, jwtOptions);
 
 const app = express();
+app.use(cors());
 app.use(helmet());
 app.use(passport.initialize());
 
