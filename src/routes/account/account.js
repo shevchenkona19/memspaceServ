@@ -3,7 +3,7 @@ const ErrorCodes = require("../../constants/errorCodes");
 const Controller = require("../../controllers/account");
 const policyPath = require("../../app").policy;
 
-async function login(req, res) {
+async function login(req, res, next) {
     const result = await Controller.login(req.body);
     if (result.success) {
         return res.json({
@@ -11,11 +11,11 @@ async function login(req, res) {
             id: result.userId
         })
     } else {
-        throw Error(result.errorCode)
+        next(result.errorCode);
     }
 }
 
-async function register(req, res) {
+async function register(req, res, next) {
     const result = await Controller.register(req.body);
     if (result.success) {
         return res.json({
@@ -23,18 +23,18 @@ async function register(req, res) {
             token: result.token
         })
     } else {
-        throw Error(result.errorCode);
+        next(result.errorCode);
     }
 }
 
-async function registerModer(req, res) {
+async function registerModer(req, res, next) {
     const result = await Controller.registerModer(req.body);
     if (result.success) {
         return res.json({
             token: result.token
         })
     } else {
-        throw Error(result.errorCode);
+       next(result.errorCode);
     }
 }
 
