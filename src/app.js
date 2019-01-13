@@ -23,7 +23,6 @@ require('./middleware/passport')(passport, jwtOptions);
 
 const app = express();
 app.use(helmet());
-app.use(cors());
 app.use(passport.initialize());
 
 const imagePath = __dirname + "/public";
@@ -51,6 +50,7 @@ const newFavorites = require("./routes/new/favorites/index");
 const errorHandler = require("./middleware/errorHandler");
 
 //routes
+app.options('*', cors());
 app.use('/v1/account', newAccount);
 app.use('/v1/favorites', newFavorites);
 app.use('/config', config);
