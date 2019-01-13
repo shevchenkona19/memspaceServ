@@ -9,6 +9,7 @@ const cleaner = require("./controllers/cleaner");
 const firebase = require("firebase-admin");
 const serviceAccount = require("./firebase.json");
 const notificationManager = require("./controllers/notificationManager");
+const cors = require("cors");
 require("./model/index");
 
 firebase.initializeApp({
@@ -22,6 +23,7 @@ require('./middleware/passport')(passport, jwtOptions);
 
 const app = express();
 app.use(helmet());
+app.use(cors());
 app.use(passport.initialize());
 
 const imagePath = __dirname + "/public";
