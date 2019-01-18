@@ -46,7 +46,7 @@ const getImages = async (offset) => {
     let path, response;
     for (let groupName in groups) {
         let groupId = groups[groupName];
-        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=1&offset=${offset}&v=5.73`;
+        path = `https://api.vk.com/method/wall.get?access_token=${process.env.VKTOKEN}&owner_id=-${groupId}&count=5&v=5.73`;
         try {
             console.log('attempting to GET %j', path);
             response = await request(path);
@@ -54,13 +54,12 @@ const getImages = async (offset) => {
 
             if (body && body.response && body.response.items && body.response.items[0]
                 && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                && body.response.items[0].attachments[0].photo && body.response.items[0].attachments[0].photo.photo_807 && body.response.items[0].attachments[0].photo.id) {
-
+                && body.response.items[0].attachments[0].photo && (body.response.items[0].attachments[0].photo.photo_807 || body.response.items[0].attachments[0].photo.photo_604) && body.response.items[0].attachments[0].photo.id) {
                 const height = body.response.items[0].attachments[0].photo.height;
                 const width = body.response.items[0].attachments[0].photo.width;
                 const id = body.response.items[0].attachments[0].photo.id;
                 const ownerId = body.response.items[0].attachments[0].photo.owner_id;
-                path = body.response.items[0].attachments[0].photo.photo_807;
+                path = body.response.items[0].attachments[0].photo.photo_807 || body.response.items[0].attachments[0].photo.photo_604;
 
                 console.log('attempting to GET %j', path);
                 request1({url: path, encoding: null}, async (error, response, body) => {
@@ -99,7 +98,7 @@ const deleteImages = async () => {
         where: {
             isChecked: 0,
             createdAt: {
-                [Op.lt]: new Date(new Date() - 60000 * 60 * 4)
+                [Op.lt]: new Date(new Date() - 60000 * 60 * 5)
             }
         },
         attributes: ["imageData"]
@@ -110,7 +109,7 @@ const deleteImages = async () => {
             where: {
                 isChecked: 0,
                 createdAt: {
-                    [Op.lt]: new Date(new Date() - 60000 * 60 * 4)
+                    [Op.lt]: new Date(new Date() - 60000 * 60 * 5)
                 }
             }
         });
