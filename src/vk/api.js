@@ -94,11 +94,12 @@ const getImages = async (offset) => {
 };
 
 const deleteImages = async () => {
+    const date = new Date(new Date() - 60000 * 60 * 5);
     const images = await Images.findAll({
         where: {
             isChecked: 0,
             createdAt: {
-                [Op.lt]: new Date(new Date() - 60000 * 60 * 5)
+                [Op.lt]: date
             }
         },
         attributes: ["imageData"]
@@ -109,7 +110,7 @@ const deleteImages = async () => {
             where: {
                 isChecked: 0,
                 createdAt: {
-                    [Op.lt]: new Date(new Date() - 60000 * 60 * 5)
+                    [Op.lt]: date
                 }
             }
         });
