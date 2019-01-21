@@ -26,6 +26,9 @@ services:
       - './development.json:/app/development.json'
       - './migrations:/app/migrations'
       - './seeders:/app/seeders'
+      - './.babelrc:/app/.babelrc'
+      - './webpack.config.js:/app/webpack.config.js'
+      - './.env:/app/.env'
       - 'node_modules:/app/node_modules'
     environment:
       - SERVER_URL=${SERVER_URL}

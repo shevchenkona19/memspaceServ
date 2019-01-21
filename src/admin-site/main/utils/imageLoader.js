@@ -1,0 +1,1 @@
+export default memId => window.location.origin + "/feed/imgs?id=" + memId;
