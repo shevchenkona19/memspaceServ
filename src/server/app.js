@@ -4,13 +4,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const PORT = process.env.PORT || 8888;
-const imageDownloader = require("./vk/api");
+const imageDownloader = require("./vk/api.js");
 const cleaner = require("./controllers/cleaner");
 const firebase = require("firebase-admin");
 const serviceAccount = require("./firebase.json");
 const notificationManager = require("./controllers/notificationManager");
 const cors = require("cors");
-require("./model/index");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+
+require("./model");
 
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
@@ -24,14 +27,20 @@ require('./middleware/passport')(passport, jwtOptions);
 const app = express();
 app.use(cors());
 app.use(helmet());
+app.use(cookieParser());
 app.use(passport.initialize());
 
 const imagePath = __dirname + "/public";
 const policyPath = __dirname + "/public/policy/index.html";
+const main = path.join(__dirname, '../../dist/main.html');
+const login = path.join(__dirname, '../../dist/login.html');
+
 
 module.exports = {
     imageFolder: imagePath,
     policy: policyPath,
+    main,
+    login,
     passport,
     jwtOptions
 };
@@ -40,18 +49,19 @@ module.exports = {
 app.use(bodyParser({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 
-const config = require('./routes/config/index');
-const account = require('./routes/account/index');
-const favorites = require('./routes/favourites/index');
-const feed = require('./routes/feed/index');
-const feedback = require('./routes/feedback/index');
-const moderator = require('./routes/moderator/index');
-const newAccount = require("./routes/new/account/index");
-const newFavorites = require("./routes/new/favorites/index");
+const config = require('./routes/config');
+const account = require('./routes/account');
+const favorites = require('./routes/favourites');
+const feed = require('./routes/feed');
+const feedback = require('./routes/feedback');
+const moderator = require('./routes/moderator');
+const newAccount = require("./routes/new/account");
+const newFavorites = require("./routes/new/favorites");
 const errorHandler = require("./middleware/errorHandler");
-
+const admin = require("./routes/admin-site");
 //routes
 app.options('/*', cors());
+app.use(express.static(path.join(__dirname, "../../dist")));
 app.use('/v1/account', newAccount);
 app.use('/v1/favorites', newFavorites);
 app.use('/config', config);
@@ -60,6 +70,7 @@ app.use('/favorites', favorites);
 app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
+app.use("/admin", admin);
 app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
