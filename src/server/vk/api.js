@@ -1,4 +1,4 @@
-const Images = require("../model/index").getImagesModel();
+const Images = require("../model").getImagesModel();
 const request = require('async-request');
 const request1 = require('request');
 const fs = require("fs");
@@ -51,41 +51,43 @@ const getImages = async (offset) => {
             console.log('attempting to GET %j', path);
             response = await request(path);
             let body = JSON.parse(response.body);
-
-            if (body && body.response && body.response.items && body.response.items[0]
-                && body.response.items[0].attachments && body.response.items[0].attachments[0]
-                && body.response.items[0].attachments[0].photo && (body.response.items[0].attachments[0].photo.photo_807 || body.response.items[0].attachments[0].photo.photo_604) && body.response.items[0].attachments[0].photo.id) {
-                const height = body.response.items[0].attachments[0].photo.height;
-                const width = body.response.items[0].attachments[0].photo.width;
-                const id = body.response.items[0].attachments[0].photo.id;
-                const ownerId = body.response.items[0].attachments[0].photo.owner_id;
-                path = body.response.items[0].attachments[0].photo.photo_807 || body.response.items[0].attachments[0].photo.photo_604;
-
-                console.log('attempting to GET %j', path);
-                request1({url: path, encoding: null}, async (error, response, body) => {
-                    if (!fs.existsSync(images + "/memes")) {
-                        await new Promise(((resolve, reject) => {
-                            fs.mkdir(images + "/memes", err => {
-                                if (err) reject(err);
-                                resolve();
-                            });
-                        }))
-                    }
-                    const filename = images + "/memes/" + id + ownerId + ".jpg";
-                    if (!fs.existsSync(filename)) {
-                        fs.writeFileSync(filename, body);
-                        Images.build({
-                            imageData: filename,
-                            source: groupName,
-                            width,
-                            height
-                        }).save()
-                            .then(() => console.log("image downloaded"))
-                            .catch(e => console.error(e));
-                    }
+            if (body && body.response && body.response.items && body.response.items.length) {
+                const {response: {items}} = body;
+                items.forEach(item => {
+                   if (item.attachments && item.attachments.length) {
+                       const post = item.attachments[0];
+                       if (post.photo) {
+                           const path = post.photo.photo_807 || photo_604;
+                           const height = post.photo.height;
+                           const width = post.photo.width;
+                           const id = post.photo.id;
+                           const ownerId = post.photo.owner_id;
+                           request1({url: path, encoding: null}, async (err, res, body) => {
+                               if (!fs.existsSync(images + "/memes")) {
+                                   await new Promise(((resolve, reject) => {
+                                       fs.mkdir(images + "/memes", err => {
+                                           if (err) reject(err);
+                                           resolve();
+                                       });
+                                   }))
+                               }
+                               const filename = images + "/memes/" + id + ownerId + ".jpg";
+                               if (!fs.existsSync(filename)) {
+                                   fs.writeFileSync(filename, body);
+                                   Images.build({
+                                       imageData: filename,
+                                       source: groupName,
+                                       width,
+                                       height
+                                   }).save()
+                                       .then(() => console.log("image downloaded"))
+                                       .catch(e => console.error(e));
+                               }
+                           });
+                       }
+                   }
                 });
-
-            } else console.log('not full response')
+            }
         } catch (err) {
             console.log(err.stack);
             console.log('download failed');
