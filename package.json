@@ -12,9 +12,10 @@
     "dc:migrate": "docker-compose up -d db && docker-compose run web node_modules/.bin/wait-port db:5432 && npm run migration:up && docker-compose stop db",
     "migration:up": "docker-compose run web node_modules/.bin/sequelize db:migrate --config ./development.json",
     "dc:uninstall": "docker-compose down -v",
-    "dc:start": "nodemon src/app.js & npm run admin:start & wait",
+    "webpack:build": "env-cmd .env webpack --mode production --config webpack.config.js",
+    "dc:start": "nodemon src/app.js",
     "dc:rebuild": "docker-compose run npm install",
-    "admin:start": "env-cmd .env webpack --mode development --config webpack.config.js"
+    "admin:start": "env-cmd .env webpack --mode development --config webpack.development.config.js"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.2.3",

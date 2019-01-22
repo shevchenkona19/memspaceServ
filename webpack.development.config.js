@@ -5,8 +5,9 @@ const path = require("path");
 
 module.exports = {
     optimization: {
-        minimize: true,
+        minimize: false,
     },
+    watch: true,
     entry: {
         login: './src/admin-site/login/index.jsx',
         main: './src/admin-site/main/index.jsx',
@@ -43,6 +44,9 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         ]
+    },
+    devServer: {
+        historyApiFallback: true
     },
     resolve: {
         extensions: ['.js', '.jsx', '.html', '.css']

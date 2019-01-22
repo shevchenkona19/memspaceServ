@@ -29,6 +29,7 @@ services:
       - './.babelrc:/app/.babelrc'
       - './webpack.config.js:/app/webpack.config.js'
       - './.env:/app/.env'
+      - './dist:/app/dist'
       - 'node_modules:/app/node_modules'
     environment:
       - SERVER_URL=${SERVER_URL}

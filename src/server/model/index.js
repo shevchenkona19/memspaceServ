@@ -25,6 +25,7 @@ db.Sequelize = Sequelize;
 db.sequelize.models.imagescategories.removeAttribute("id");
 db.sequelize.models.userscategories.removeAttribute("id");
 db.sequelize.models.favorites.removeAttribute("id");
+db.sequelize.models.memeIds.removeAttribute("id");
 
 
 
@@ -38,5 +39,6 @@ module.exports = {
     getFavoritesModel: () => db.sequelize.models.favorites,
     getLikesModel: () => db.sequelize.models.likes,
     getUserFeedback: () => db.sequelize.models.userfeedback,
+    getMemeIdsModel: () => db.sequelize.models.memeIds,
     getDb: () => db,
 };
