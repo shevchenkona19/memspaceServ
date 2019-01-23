@@ -55,53 +55,53 @@ const getImages = async (offset) => {
             let body = JSON.parse(response.body);
             if (body && body.response && body.response.items && body.response.items.length) {
                 const {response: {items}} = body;
-                items.forEach(item => {
-                   if (item.attachments && item.attachments.length) {
-                       const post = item.attachments[0];
-                       if (post.photo) {
-                           const path = post.photo.photo_807 || post.photo.photo_604;
-                           const height = post.photo.height;
-                           const width = post.photo.width;
-                           const id = post.photo.id;
-                           const ownerId = post.photo.owner_id;
-                           const doesExists = MemeIds.findOne({
-                               where: {
-                                   memeId: id,
-                                   groupId
-                               }
-                           });
-                           if (doesExists !== null) {
-                               console.log("image already exists");
-                               return;
-                           }
-                           request1({url: path, encoding: null}, async (err, res, body) => {
-                               if (!fs.existsSync(images + "/memes")) {
-                                   await new Promise(((resolve, reject) => {
-                                       fs.mkdir(images + "/memes", err => {
-                                           if (err) reject(err);
-                                           resolve();
-                                       });
-                                   }))
-                               }
-                               const filename = images + "/memes/" + id + ownerId + ".jpg";
-                               if (!fs.existsSync(filename)) {
-                                   fs.writeFileSync(filename, body);
-                                   MemeIds.build({
-                                       groupId,
-                                       memeId: id,
-                                   });
-                                   Images.build({
-                                       imageData: filename,
-                                       source: groupName,
-                                       width,
-                                       height
-                                   }).save()
-                                       .then(() => console.log("image downloaded"))
-                                       .catch(e => console.error(e));
-                               }
-                           });
-                       }
-                   }
+                items.forEach(async item => {
+                    if (item.attachments && item.attachments.length) {
+                        const post = item.attachments[0];
+                        if (post.photo) {
+                            const path = post.photo.photo_807 || post.photo.photo_604;
+                            const height = post.photo.height;
+                            const width = post.photo.width;
+                            const id = post.photo.id;
+                            const ownerId = post.photo.owner_id;
+                            const doesExists = await MemeIds.findOne({
+                                where: {
+                                    memeId: id,
+                                    groupId
+                                }
+                            });
+                            if (doesExists !== null) {
+                                console.log("image already exists");
+                                return;
+                            }
+                            request1({url: path, encoding: null}, async (err, res, body) => {
+                                if (!fs.existsSync(images + "/memes")) {
+                                    await new Promise(((resolve, reject) => {
+                                        fs.mkdir(images + "/memes", err => {
+                                            if (err) reject(err);
+                                            resolve();
+                                        });
+                                    }))
+                                }
+                                const filename = images + "/memes/" + id + ownerId + ".jpg";
+                                if (!fs.existsSync(filename)) {
+                                    fs.writeFileSync(filename, body);
+                                    MemeIds.build({
+                                        groupId,
+                                        memeId: id,
+                                    });
+                                    Images.build({
+                                        imageData: filename,
+                                        source: groupName,
+                                        width,
+                                        height
+                                    }).save()
+                                        .then(() => console.log("image downloaded"))
+                                        .catch(e => console.error(e));
+                                }
+                            });
+                        }
+                    }
                 });
             }
         } catch (err) {
