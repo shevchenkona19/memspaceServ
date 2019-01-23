@@ -86,10 +86,10 @@ const getImages = async (offset) => {
                                 const filename = images + "/memes/" + id + ownerId + ".jpg";
                                 if (!fs.existsSync(filename)) {
                                     fs.writeFileSync(filename, body);
-                                    MemeIds.build({
+                                    await (MemeIds.build({
                                         groupId,
                                         memeId: id,
-                                    });
+                                    }).save());
                                     Images.build({
                                         imageData: filename,
                                         source: groupName,
