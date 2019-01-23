@@ -64,13 +64,13 @@ const getImages = async (offset) => {
                            const width = post.photo.width;
                            const id = post.photo.id;
                            const ownerId = post.photo.owner_id;
-                           const doesExists = Boolean(MemeIds.findOne({
+                           const doesExists = MemeIds.findOne({
                                where: {
                                    memeId: id,
                                    groupId
                                }
-                           }));
-                           if (doesExists) {
+                           });
+                           if (doesExists !== null) {
                                console.log("image already exists");
                                return;
                            }
