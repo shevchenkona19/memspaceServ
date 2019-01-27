@@ -43,12 +43,13 @@ async function postLike(user, imageId) {
     if (likes) {
         if (likes.opinion === 0) {
             await delDislike(userId, imageId);
+            user.dislikesCount = user.dislikesCount - 1;
             await setLike(userId, imageId);
         }
     } else {
         await setLike(userId, imageId);
     }
-    const allLikes = (await Likes.findAll({where: {userId: user.userId, opinion: 1}})).length;
+    const allLikes = user.likesCount + 1;
     const achievement = await resolveLikesAchievement(user, allLikes);
     return {
         success: true,
@@ -63,12 +64,13 @@ async function postDislike(user, imageId) {
     if (likes) {
         if (likes.opinion === 1) {
             await delLike(userId, imageId);
+            user.likesCount = user.likesCount - 1;
             await setDislike(userId, imageId);
         }
     } else {
         await setDislike(userId, imageId);
     }
-    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const allDislikes = user.dislikesCount + 1;
     const achievement = await resolveDislikesAchievement(user, allDislikes);
     return {
         success: true,
@@ -87,7 +89,7 @@ async function deleteLike(user, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR)
     }
-    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const allDislikes = user.likesCount - 1;
     const achievement = await resolveLikesAchievement(user, allDislikes);
     return {
         success: true,
@@ -106,7 +108,7 @@ async function deleteDislike(user, imageId) {
     } else {
         throw new Error(ErrorCodes.INTERNAL_ERROR);
     }
-    const allDislikes = (await Likes.findAll({where: {userId: user.userId, opinion: 0}})).length;
+    const allDislikes = user.dislikesCount - 1;
     const achievement = await resolveDislikesAchievement(user, allDislikes);
     return {
         success: true,
