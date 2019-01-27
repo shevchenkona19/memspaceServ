@@ -35,7 +35,10 @@ async function getAllFavoritesV2(userId) {
     if (favs) {
         return {
             success: true,
-            favorites: favs[0] || []
+            favorites: favs[0].map(fav => {
+                fav.isFavourite = true;
+                return fav;
+            }) || []
         }
     } else {
         return {
