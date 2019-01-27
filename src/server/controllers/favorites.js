@@ -30,6 +30,21 @@ async function getAllFavorites(userId) {
     }
 }
 
+async function getAllFavoritesV2(userId) {
+    const favs = await db.query(`select * from favorites inner join images on favorites."imageId" = images."imageId" where favorites."userId" = ${userId} order by favorites."imageId" desc; `);
+    if (favs) {
+        return {
+            success: true,
+            favorites: favs[0] || []
+        }
+    } else {
+        return {
+            success: false,
+            error: ErrorCodes.INTERNAL_ERROR
+        }
+    }
+}
+
 async function removeFromFavorites(user, imageId) {
     const userId = user.userId;
     await Favorites.destroy({where: {userId, imageId}});
@@ -53,5 +68,6 @@ module.exports = {
     addToFavorites,
     getAllFavorites,
     removeFromFavorites,
+    getAllFavoritesV2,
     isFavorite
 };
