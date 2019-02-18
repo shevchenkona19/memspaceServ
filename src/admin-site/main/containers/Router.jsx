@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NotFound from "../../common/components/NotFound";
 import MemPicker from "./MemPicker";
 import Home from "./Home";
+import UsersInfo from "./UsersInfo";
 
 class AppRouter extends React.Component {
     render() {
@@ -18,6 +19,11 @@ class AppRouter extends React.Component {
                         path={"/"}
                         exact
                         component={Home}
+                    />
+                    <Route
+                        path={"/usersInfo"}
+                        exact
+                        component={UsersInfo}
                     />
                     <Route
                         path={"/*"}

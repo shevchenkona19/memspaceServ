@@ -7,6 +7,7 @@ const db = require("../model").getDb().sequelize;
 const Users = require("../model").getUsersModel();
 const ErrorCodes = require("../constants/errorCodes");
 const resolveViewAchievement = require("../utils/achievement/resolvers").resolveViewAchievement;
+const images = require("../app").imageFolder;
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -147,7 +148,7 @@ async function getImage(id) {
 async function getUserPhoto(username) {
     const image = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
     if (!image) {
-        throw new Error(ErrorCodes.NO_SUCH_USER)
+        image.imageData = images + "/users/noimage.png";
     }
     return {
         success: true,

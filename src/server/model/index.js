@@ -3,7 +3,7 @@ const Sequelize = require("./db").Sequelize;
 const fs = require("fs");
 const path = require("path");
 
-let db = {};
+const db = {};
 
 fs.readdirSync(__dirname)
     .filter(file => {
@@ -26,7 +26,7 @@ db.sequelize.models.imagescategories.removeAttribute("id");
 db.sequelize.models.userscategories.removeAttribute("id");
 db.sequelize.models.favorites.removeAttribute("id");
 db.sequelize.models.memeIds.removeAttribute("id");
-
+db.sequelize.models.referral.removeAttribute("id");
 
 
 module.exports = {
@@ -40,5 +40,6 @@ module.exports = {
     getLikesModel: () => db.sequelize.models.likes,
     getUserFeedback: () => db.sequelize.models.userfeedback,
     getMemeIdsModel: () => db.sequelize.models.memeIds,
+    getReferral: () => db.sequelize.models.referral,
     getDb: () => db,
 };

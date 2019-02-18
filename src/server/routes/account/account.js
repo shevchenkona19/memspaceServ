@@ -34,7 +34,7 @@ async function registerModer(req, res, next) {
             token: result.token
         })
     } else {
-       next(result.errorCode);
+        next(result.errorCode);
     }
 }
 
@@ -64,6 +64,16 @@ async function setFcmId(req, res) {
         message: SuccessCodes.SUCCESS
     })
 }
+
+async function getMyReferralInfo(req, res, next) {
+    const result = await Controller.getMyReferralInfo(req.user);
+    if (result.success) {
+        return res.json({...result.ref})
+    } else {
+        next(result.message);
+    }
+}
+
 module.exports = {
     login,
     register,
@@ -71,5 +81,6 @@ module.exports = {
     getMyUsername,
     getPolicy,
     getAchievements,
-    setFcmId
+    setFcmId,
+    getMyReferralInfo
 };

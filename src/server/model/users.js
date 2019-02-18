@@ -66,6 +66,14 @@ module.exports = function (db, DataTypes) {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
+        referralAchievementLvl: {
+            type: DataTypes.SMALLINT,
+            defaultValue: 0,
+        },
+        referralCount: {
+            type: DataTypes.SMALLINT,
+            defaultValue: 0,
+        },
         firstHundred: {
             type: DataTypes.BOOLEAN
         },

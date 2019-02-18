@@ -8,6 +8,8 @@ const EmailValidator = require("../utils/validation/mailValidator");
 const images = require("../app").imageFolder;
 const saltRounds = 10;
 const Achievements = require("../constants/achievementLevels");
+const Referral = ModelLocator.getReferral();
+const codeGen = require("../utils/referral/codeGen");
 
 async function login(body) {
     const username = body.username;
@@ -48,6 +50,8 @@ async function register(body) {
     const password = body.password;
     const email = body.email;
 
+    const isReferralRegister = Boolean(body.referral) && body.referral.length > 0;
+    const referral = body.referral.toUpperCase();
 
     if (!EmailValidator.isEmail(email)) {
         return {
@@ -70,12 +74,31 @@ async function register(body) {
             errorCode: ErrorCodes.USERNAME_NOT_VALID
         }
     }
+    if (isReferralRegister) {
+        const isReferralPresent = await Referral.findOne({where: {myCode: referral}});
+        if (isReferralPresent === null) {
+            return {
+                success: false,
+                errorCode: ErrorCodes.REFERRAL_NOT_PRESENT
+            }
+        }
+    }
     const userImage = images + "/users/noimage.png";
     let user;
     try {
         const passwordToSave = await bcrypt.hash(password, saltRounds);
         user = Users.build({username, password: passwordToSave, email, imageData: userImage});
         await user.save();
+        let myCode = "";
+        do {
+            myCode = codeGen();
+        } while (Boolean(await Referral.findOne({where: {myCode}})));
+        const referralRef = Referral.build({
+            userId: user.userId,
+            myCode,
+            usedCode: isReferralRegister ? referral : null
+        });
+        await referralRef.save();
     } catch (e) {
         console.error(e);
         return {
@@ -179,6 +202,15 @@ async function getUserAchievementsById(id) {
             achievementName: Achievements.views.levels[user.viewsAchievementLvl].name,
             allNames: Achievements.views.allNames
         },
+        referral: {
+            lvl: user.referralAchievementLvl,
+            count: user.referralCount,
+            nextPrice: Achievements.referral.levels[user.referralAchievementLvl].price,
+            isFinalLevel: Achievements.referral.levels[user.referralAchievementLvl].isFinalLevel,
+            name: "referral",
+            achievementName: Achievements.referral.levels[user.referralAchievementLvl].name,
+            allNames: Achievements.referral.allNames
+        },
         firstHundred: user.firstHundred,
         firstThousand: user.firstThousand
     };
@@ -192,7 +224,6 @@ async function getUsername(id) {
 
 async function setFcmId(fcmId, userId) {
     if (fcmId === "") fcmId = null;
-    console.warn("SET FCMID ---------------------------------");
     await Users.update(
         {fcmId},
         {where: {userId}}
@@ -202,11 +233,30 @@ async function setFcmId(fcmId, userId) {
     }
 }
 
+async function getMyReferralInfo(user) {
+    const ref = await Referral.findOne({where: {userId: user.userId}});
+    if (ref === null) {
+        return {
+            success: false,
+            message: ErrorCodes.NO_SUCH_USER
+        }
+    }
+    return {
+        success: true,
+        ref: {
+            userId: ref.userId,
+            myCode: ref.myCode,
+            usedCode: ref.usedCode,
+        }
+    }
+}
+
 module.exports = {
     getUsername,
     getUserAchievementsById,
     login,
     register,
     registerModer,
-    setFcmId
+    setFcmId,
+    getMyReferralInfo,
 };

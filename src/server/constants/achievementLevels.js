@@ -251,4 +251,36 @@ module.exports = {
             "Он такой огромный"
         ]
     },
+    referral: {
+        max: 2,
+        levels: [
+            {
+                price: 1,
+                lvl: 0,
+                name: "",
+            },
+            {
+                price: 3,
+                lvl: 1,
+                name: "Магнит"
+            },
+            {
+                price: 6,
+                lvl: 2,
+                name: "Экстраверт"
+            },
+            {
+                price: 0,
+                lvl: 3,
+                name: "Мастер по ноготочкам",
+                isFinalLevel: true,
+            }
+        ],
+        allNames: [
+            "",
+            "Магнит",
+            "Экстраверт",
+            "Мастер по ноготочками"
+        ],
+    }
 };

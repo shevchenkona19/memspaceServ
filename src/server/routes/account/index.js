@@ -11,5 +11,6 @@ router.get("/myUsername", passport.authenticate('jwt', {session: false}), auth.a
 router.get("/policy", accountMethods.getPolicy);
 router.get("/achievements", accountMethods.getAchievements);
 router.post("/fcmId", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.setFcmId);
+router.get("/myReferralInfo", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.getMyReferralInfo);
 
 module.exports = router;

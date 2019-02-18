@@ -1,8 +1,10 @@
-const favouritesLvls = require("../../constants/achievementLevels").favourites;
-const viewLvls = require("../../constants/achievementLevels").views;
-const likeLvls = require("../../constants/achievementLevels").likes;
-const dislikeLvls = require("../../constants/achievementLevels").dislikes;
-const commentsLvls = require("../../constants/achievementLevels").comments;
+const achievements = require("../../constants/achievementLevels");
+const favouritesLvls = achievements.favourites;
+const viewLvls = achievements.views;
+const likeLvls = achievements.likes;
+const dislikeLvls = achievements.dislikes;
+const commentsLvls = achievements.comments;
+const referralLvls = achievements.referral;
 
 async function resolveFavouritesAchievementLevel(user, allFavs) {
     let isAchievementUpdate = false;
@@ -151,10 +153,39 @@ async function resolveCommentsAchievement(user, allComments) {
     }
 }
 
+async function resolveReferralAchievement(user, refCount) {
+    let isAchievementUpdate = false;
+    const currentLvl = user.referralAchievementLvl;
+    if (currentLvl !== referralLvls.max) {
+        for (let i = currentLvl; i < referralLvls.max; i++){
+            if (refCount < referralLvls.levels[i].price) {
+                break;
+            }
+            user.referralAchievementLvl =  i + 1;
+            isAchievementUpdate = true;
+        }
+    }
+    user.referralCount = refCount;
+    await user.save();
+    const achievement = referralLvls.levels[user.referralAchievementLvl];
+    return {
+      achievementUpdate: isAchievementUpdate,
+      achievement: isAchievementUpdate ? {
+          newLvl: user.referralAchievementLvl,
+          nextPrice: achievement.price,
+          currentValue: user.referralCount,
+          name: "referral",
+          achievementName: achievement.name,
+          isFinalLevel: achievement.isFinalLevel
+      } : {}
+    };
+}
+
 module.exports = {
     resolveFavouritesAchievementLevel,
     resolveViewAchievement,
     resolveLikesAchievement,
     resolveDislikesAchievement,
     resolveCommentsAchievement,
+    resolveReferralAchievement,
 };

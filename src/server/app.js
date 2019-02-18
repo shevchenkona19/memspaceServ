@@ -60,6 +60,7 @@ const newFavorites = require("./routes/v1/favorites");
 const v2Favorites = require("./routes/v2/favorites");
 const errorHandler = require("./middleware/errorHandler");
 const admin = require("./routes/admin-site");
+const info = require("./routes/info");
 //routes
 app.options('/*', cors());
 app.use(express.static(path.join(__dirname, "../../dist")));
@@ -73,11 +74,12 @@ app.use('/account', account);
 app.use('/feedback', feedback);
 app.use('/moderator', moderator);
 app.use("/admin", admin);
+app.use('/info', info);
 app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);
 setInterval(cleaner.clearOldMemes, process.env.CLEAR_DELAY || 3600000, 1);
-setInterval(notificationManager.notifyAboutMemes, process.env.NOTIFICATION_DELAY || 43200000, 1);
+setInterval(notificationManager.notifyAboutMemes, process.env.NOTIFICATION_DELAY || 30000, 1);
 
 const server = http.createServer(app);
 

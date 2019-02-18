@@ -15,7 +15,7 @@ async function notifyAboutMemes() {
         `AND images."createdAt" > to_date('${memeDate}', 'DD/MM/YYYY') ` +
         "AND users.\"fcmId\" IS NOT NULL " +
         "GROUP BY users.\"userId\" " +
-        "HAVING count(imagescategories.\"imageId\") > 10;");
+        "HAVING count(imagescategories.\"imageId\") > 0;");
     const usersArr = users[0];
     for (let i = 0; i < usersArr.length; i++) {
         const user = usersArr[i];
