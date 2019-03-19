@@ -12,5 +12,7 @@ router.get("/policy", accountMethods.getPolicy);
 router.get("/achievements", accountMethods.getAchievements);
 router.post("/fcmId", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.setFcmId);
 router.get("/myReferralInfo", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.getMyReferralInfo);
+router.post("/uploadMeme", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.uploadMeme);
+router.get("/userUploads", passport.authenticate('jwt', {session: false}), accountMethods.getUserUploads);
 
 module.exports = router;

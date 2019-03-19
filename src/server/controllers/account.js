@@ -10,6 +10,13 @@ const saltRounds = 10;
 const Achievements = require("../constants/achievementLevels");
 const Referral = ModelLocator.getReferral();
 const codeGen = require("../utils/referral/codeGen");
+const AccessLevels = require("../constants/accessLevels");
+const Images = ModelLocator.getImagesModel();
+const ImagesCategories = ModelLocator.getImagesCategoriesModel();
+const Uploads = ModelLocator.getUploads();
+const db = ModelLocator.getDb().sequelize;
+const fs = require("fs");
+const resolveReferralAchievement = require("../utils/achievement/resolvers").resolveReferralAchievement;
 
 async function login(body) {
     const username = body.username;
@@ -35,7 +42,7 @@ async function login(body) {
         }
     }
     const payload = {
-        id: user.get("userId")
+        id: user.userId
     };
     const token = jwt.sign(payload, jwtOptions.secretOrKey);
     return {
@@ -82,6 +89,8 @@ async function register(body) {
                 errorCode: ErrorCodes.REFERRAL_NOT_PRESENT
             }
         }
+        const user = await Users.findOne({where: {userId: isReferralPresent.userId}});
+        await resolveReferralAchievement(user, user.referralCount + 1);
     }
     const userImage = images + "/users/noimage.png";
     let user;
@@ -91,7 +100,7 @@ async function register(body) {
         await user.save();
         let myCode = "";
         do {
-            myCode = codeGen();
+            myCode = codeGen.genStringId();
         } while (Boolean(await Referral.findOne({where: {myCode}})));
         const referralRef = Referral.build({
             userId: user.userId,
@@ -251,6 +260,74 @@ async function getMyReferralInfo(user) {
     }
 }
 
+async function uploadMeme(user, categories, imageData) {
+    let imageId;
+    let filename;
+    do {
+        imageId = codeGen.getIntId(10);
+        filename = `${images}/memes/${imageId}--${user.userId}.jpg`;
+    } while (fs.existsSync(filename));
+    if (!fs.existsSync(images + "/memes")) {
+        await new Promise(((resolve, reject) => {
+            fs.mkdir(images + "/memes", err => {
+                if (err) reject(err);
+                resolve();
+            });
+        }))
+    }
+    if (!fs.existsSync(filename)) {
+        fs.writeFileSync(filename, imageData, "base64");
+        const uploadInstance = Uploads.build({
+            userId: user.userId
+        });
+        await uploadInstance.save();
+        const image = Images.build({
+            imageData: filename,
+            source: "",
+            isChecked: 1,
+            uploadId: uploadInstance.id,
+        });
+        await image.save();
+        categories = categories.charAt(categories.length - 1) === ' ' ? categories.slice(0, categories.length - 1) : categories;
+        const imagesCategories = categories.split(" ").map(categoryId => {
+            return {imageId: image.imageId, categoryId}
+        });
+        await ImagesCategories.bulkCreate(imagesCategories);
+        return {
+            success: true,
+        }
+    }
+    return {
+        success: false,
+        message: ErrorCodes.IMAGE_ALREADY_EXISTS,
+    }
+}
+
+async function getUserUploads(userId, offset, limit, me) {
+    const isRegistered = me.accessLvl !== AccessLevels.NOT_REGISTERED;
+    const query = `SELECT images."imageId", likes, dislikes, likes.opinion AS opinion, `
+        + `(SELECT COUNT(*) FROM comments WHERE images."imageId" = comments."imageId") AS comments_count, `
+        + (isRegistered ? `(select "imageId" from favorites where images."imageId" = favorites."imageId" and favorites."userId" = ${me.userId} limit 1) is not null as "isFavourite", ` : "")
+        + `users.username, uploads."userId", uploads."uploadDate" `
+        + `FROM images LEFT OUTER JOIN likes ON likes."imageId" = images."imageId" AND likes."userId" = ${userId} `
+        + `INNER JOIN uploads ON images."uploadId" = uploads.id `
+        + `LEFT OUTER JOIN users ON users."userId" = uploads."userId" `
+        + `WHERE images."isChecked" = 1 AND uploads."userId" = ${userId} ORDER BY uploads."uploadDate" DESC LIMIT ${limit} OFFSET ${offset};`;
+    const uploadsData = (await db.query(query));
+    if (uploadsData[0].length) {
+        const uploads = uploadsData[0];
+        return {
+            success: true,
+            uploads
+        }
+    } else {
+        return {
+            success: true,
+            uploads: []
+        }
+    }
+}
+
 module.exports = {
     getUsername,
     getUserAchievementsById,
@@ -259,4 +336,6 @@ module.exports = {
     registerModer,
     setFcmId,
     getMyReferralInfo,
+    uploadMeme,
+    getUserUploads
 };

@@ -9,11 +9,14 @@ const styles = {
         width: '100%'
     },
     page: {
-        display: 'inline-block'
+        display: 'inline-block',
+        marginLeft: 5,
+        cursor: 'pointer'
     },
     selectedPage: {
         display: 'inline-block',
         fontWeight: 600,
+        marginLeft: 5,
     },
     arrow: {
         display: 'inline-block',
@@ -30,11 +33,12 @@ class PageComponent extends React.Component {
 
     renderBackArrow = () => {
         const {currentPage, classes} = this.props;
+        let isDisabled = false;
         if (currentPage === 0) {
-            return null
+            isDisabled = true;
         }
         return (
-            <IconButton className={classes.arrow} onClick={this.onBackClick}>
+            <IconButton disabled={isDisabled} className={classes.arrow} onClick={this.onBackClick}>
                 <KeyboardArrowLeft/>
             </IconButton>
         );
@@ -42,11 +46,12 @@ class PageComponent extends React.Component {
 
     renderForwardArrow = () => {
         const {currentPage, allPages, classes} = this.props;
-        if (currentPage === allPages - 1) {
-            return null
+        let isDisabled = false;
+        if (currentPage > allPages - 1) {
+            isDisabled = true;
         }
         return (
-            <IconButton className={classes.arrow} onClick={this.onForwardClick}>
+            <IconButton disabled={isDisabled} className={classes.arrow} onClick={this.onForwardClick}>
                 <KeyboardArrowRight/>
             </IconButton>
         );
@@ -54,10 +59,14 @@ class PageComponent extends React.Component {
 
     renderPageNumbers = () => {
         const {currentPage, allPages, onPageSelected, classes} = this.props;
-        const pageItems = new Array(allPages);
-        return pageItems.map((page, index) => {
+        const pageItems = [];
+        for (let i = 0; i <= allPages; i++) {
+            pageItems.push(i);
+        }
+        return pageItems.map(page => {
             return (
-                <Typography onClick={() => onPageSelected(index)} className={index === currentPage ? classes.selectedPage : classes.page}>
+                <Typography onClick={() => onPageSelected(page)}
+                            className={page === currentPage ? classes.selectedPage : classes.page}>
                     {page}
                 </Typography>
             )

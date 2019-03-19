@@ -21,9 +21,15 @@ const getUserInfoFailedReducer = (state, action) => ({
     error: action
 });
 
-const getUserInfoSuccessReducer = (state, action) => ({
-    ...state,
-});
+const getUserInfoSuccessReducer = (state, action) => {
+    return ({
+        ...state,
+        users: action.data.users,
+        allUsers: action.data.allUsers,
+        currentPage: action.data.page,
+        allPages: Math.floor(action.data.allUsers / 20)
+    });
+};
 
 export default (state = initialState, action) => {
     switch (action.type) {

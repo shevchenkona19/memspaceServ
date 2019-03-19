@@ -132,7 +132,7 @@ class MemChecker extends React.Component {
                 <Card>
                     {currentMem.imageId === -1 ? null :
                         <CardMedia
-                            image={imageLoader(currentMem.imageId)}
+                            image={imageLoader.memLoader(currentMem.imageId)}
                             style={{
                                 height: 0,
                                 paddingTop: (currentMem.height / currentMem.width * 100) + "%",

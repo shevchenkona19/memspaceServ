@@ -74,6 +74,34 @@ async function getMyReferralInfo(req, res, next) {
     }
 }
 
+async function uploadMeme(req, res, next) {
+    const result = await Controller.uploadMeme(req.user, req.body.categories, req.body.photo);
+    if (result.success) {
+        return res.json({success: true,});
+    } else {
+        next(result.message);
+    }
+}
+
+async function getUserUploads(req, res, next) {
+    const userId = req.query.userId;
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    if (!userId || !limit || !offset) {
+        next(ErrorCodes.INCORRECT_DATA);
+    }
+    const result = await Controller.getUserUploads(userId, offset, limit, req.user);
+    console.log(JSON.stringify(result));
+    if (result.success) {
+        res.json({
+            success: true,
+            uploads: result.uploads,
+        });
+    } else {
+        next(result.message)
+    }
+}
+
 module.exports = {
     login,
     register,
@@ -82,5 +110,7 @@ module.exports = {
     getPolicy,
     getAchievements,
     setFcmId,
-    getMyReferralInfo
+    getMyReferralInfo,
+    uploadMeme,
+    getUserUploads
 };

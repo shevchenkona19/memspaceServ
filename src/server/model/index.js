@@ -41,5 +41,7 @@ module.exports = {
     getUserFeedback: () => db.sequelize.models.userfeedback,
     getMemeIdsModel: () => db.sequelize.models.memeIds,
     getReferral: () => db.sequelize.models.referral,
+    getUploads: () => db.sequelize.models.uploads,
+    getReports: () => db.sequelize.models.reports,
     getDb: () => db,
 };

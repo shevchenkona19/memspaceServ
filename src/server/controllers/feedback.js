@@ -1,6 +1,7 @@
 const Likes = require("../model").getLikesModel();
 const Images = require("../model").getImagesModel();
 const Comments = require("../model").getCommentsModel();
+const Favorites = require("../model").getFavoritesModel();
 const UserFeedback = require("../model").getUserFeedback();
 const Users = require("../model").getUsersModel();
 const db = require("../model").getDb().sequelize;
@@ -13,10 +14,12 @@ const resolveCommentsAchievement = require("../utils/achievement/resolvers").res
 const getFinalMem = async (userId, imageId) => {
     const refreshedMem = await Images.findById(imageId, {attributes: ["likes", "dislikes"]});
     const finalOpinion = await Likes.findOne({where: {userId, imageId}, attributes: ["opinion"]});
+    const favorite = await Favorites.findOne({where: {userId, imageId}});
     return {
         likes: refreshedMem.likes,
         dislikes: refreshedMem.dislikes,
-        opinion: finalOpinion.opinion
+        opinion: finalOpinion === null ? "-1" : finalOpinion.opinion,
+        isFavourite: Boolean(favorite),
     };
 };
 
@@ -87,7 +90,10 @@ async function deleteLike(user, imageId) {
             await delLike(userId, imageId);
         }
     } else {
-        throw new Error(ErrorCodes.INTERNAL_ERROR)
+        return {
+            success: false,
+            message: ErrorCodes.INCORRECT_DATA
+        }
     }
     const allDislikes = user.likesCount - 1;
     const achievement = await resolveLikesAchievement(user, allDislikes);

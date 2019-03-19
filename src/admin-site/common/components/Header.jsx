@@ -12,6 +12,7 @@ import Spinner from "./Spinner";
 const styles = {
     root: {
         flex: "0 1 auto",
+        zIndex: 1000
     },
     menu: {
         position: "absolute",

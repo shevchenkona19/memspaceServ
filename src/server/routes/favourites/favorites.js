@@ -9,6 +9,7 @@ async function addToFavorites(req, res) {
     if (result.success) {
         return res.json({
             message: result.message,
+            ...result.favourite,
             achievementUpdate: result.achievementUpdate,
             achievement: result.achievement
         });
@@ -35,6 +36,7 @@ async function removeFromFavorites(req, res) {
     const result = await Controller.removeFromFavorites(req.user, req.query.id);
     if (result.success) {
         return res.json({
+            ...result.favourite,
             message: result.message
         })
     } else {

@@ -61,6 +61,7 @@ const v2Favorites = require("./routes/v2/favorites");
 const errorHandler = require("./middleware/errorHandler");
 const admin = require("./routes/admin-site");
 const info = require("./routes/info");
+const reports = require("./routes/reports");
 //routes
 app.options('/*', cors());
 app.use(express.static(path.join(__dirname, "../../dist")));
@@ -75,6 +76,7 @@ app.use('/feedback', feedback);
 app.use('/moderator', moderator);
 app.use("/admin", admin);
 app.use('/info', info);
+app.use('/reports', reports);
 app.use(errorHandler);
 
 setInterval(imageDownloader.getImages, process.env.VKDELAY || 3600000, 1);

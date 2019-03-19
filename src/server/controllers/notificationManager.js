@@ -20,7 +20,6 @@ async function notifyAboutMemes() {
     for (let i = 0; i < usersArr.length; i++) {
         const user = usersArr[i];
         if (user.fcmId) {
-            console.warn("user: " + JSON.stringify(user));
             const message = {
                 data: {
                     type: NOTIFICATION_TYPES.NEW_MEMES,

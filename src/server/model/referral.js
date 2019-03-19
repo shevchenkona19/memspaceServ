@@ -3,6 +3,10 @@ module.exports = function (db, DataTypes) {
         userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: "users",
+                key: "userId"
+            }
         },
         myCode: {
             type: DataTypes.STRING,
@@ -13,7 +17,10 @@ module.exports = function (db, DataTypes) {
             allowNull: true,
             defaultValue: null
         }
-    }, {timestamps: false, freezeTableName: true,});
+    }, {timestamps: false, freezeTableName: true,
+    associate: models => {
+        Referral.belongsTo(models.users);
+    }});
 
     return Referral;
 };
