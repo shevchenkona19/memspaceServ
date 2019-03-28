@@ -19,6 +19,10 @@ class Home extends React.Component {
         this.props.history.push("/usersInfo");
     };
 
+    goToViewReports = () => {
+        this.props.history.push("/viewReports");
+    };
+
     render() {
         const {classes} = this.props;
         return (
@@ -40,6 +44,15 @@ class Home extends React.Component {
                                 subTitle={"Check users info and edit them"}
                                 isButton
                                 onClick={this.goToUsersInfo}
+                                buttonText={"Go"}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <HomeCard
+                                title={"View reports"}
+                                subTitle={"Delete memes if they are violating rules"}
+                                isButton
+                                onClick={this.goToViewReports}
                                 buttonText={"Go"}
                             />
                         </Grid>

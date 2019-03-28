@@ -1,15 +1,15 @@
-const Images = require("../model").getImagesModel();
-const ImagesCategories = require("../model").getImagesCategoriesModel();
-const Comments = require("../model").getCommentsModel();
-const Likes = require("../model").getLikesModel();
-const Op = require("sequelize").Op;
-const Sequelize = require("sequelize");
 const moment = require("moment");
 const fs = require("fs");
-const db = require("../model").getDb().sequelize;
+const ModelLocator = require("../model");
+const Images = ModelLocator.getImagesModel();
+const ImagesCategories = ModelLocator.getImagesCategoriesModel();
+const Comments = ModelLocator.getCommentsModel();
+const Likes = ModelLocator.getLikesModel();
+const Uploads = ModelLocator.getUploads();
+const Reports = ModelLocator.getReports();
+const db = ModelLocator.getDb().sequelize;
 
 async function clearOldMemes() {
-    //kek
     const date = moment().subtract(30, "days").format("DD/MM/YYYY");
     const memes = await db.query(`SELECT images."imageId", images."imageData" from images left outer join favorites on (images."imageId" = favorites."imageId") where favorites."imageId" is NULL AND images."createdAt" < to_date('${date}', 'DD/MM/YYYY');`, {model: Images});
     let deleted = 0;
@@ -20,6 +20,8 @@ async function clearOldMemes() {
             memes.forEach(async mem => {
                 fs.unlinkSync(mem.imageData);
             });
+            await Reports.destroy({where: {imageId: ids}});
+            await Uploads.destroy({where: {imageId: ids}});
             await ImagesCategories.destroy({where: {imageId: ids}});
             await Comments.destroy({where: {imageId: ids}});
             await Likes.destroy({where: {imageId: ids}});
@@ -31,7 +33,7 @@ async function clearOldMemes() {
     console.log("cleared: " + deleted);
     return {
         success: true,
-        deleted
+        ...deleted
     };
 }
 

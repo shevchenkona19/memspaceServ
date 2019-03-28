@@ -4,6 +4,7 @@ import NotFound from "../../common/components/NotFound";
 import MemPicker from "./MemPicker";
 import Home from "./Home";
 import UsersInfo from "./UsersInfo";
+import ViewReports from "./ViewReports";
 
 class AppRouter extends React.Component {
     render() {
@@ -24,6 +25,11 @@ class AppRouter extends React.Component {
                         path={"/usersInfo"}
                         exact
                         component={UsersInfo}
+                    />
+                    <Route
+                        path={"/viewReports"}
+                        exact
+                        component={ViewReports}
                     />
                     <Route
                         path={"/*"}

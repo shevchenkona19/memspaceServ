@@ -89,6 +89,11 @@ module.exports = function (db, DataTypes) {
             type: DataTypes.DATE,
             allowNull: true,
             defaultValue: null
+        },
+        isBanned: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
         }
     }, {
         timestamps: false,

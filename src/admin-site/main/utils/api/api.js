@@ -32,3 +32,11 @@ export const post = (url, body, options = {}) => {
         ...options
     })
 };
+
+export const _delete = (url, options = {}) => {
+    return request({
+        method: "DELETE",
+        url,
+        ...options,
+    })
+};

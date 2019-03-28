@@ -1,8 +1,6 @@
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
-import {KeyboardArrowLeft} from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
 import {
     Avatar,
     Button,
@@ -25,6 +23,7 @@ import DetailUserModal from "../components/DetailUserModal";
 import FiltersComponent from "../components/FiltersComponent";
 import FiltersDescriptor from "../utils/filterDescriptor";
 import ListSelect from "../components/ListSelect";
+import BackButton from "../components/BackButton";
 
 const styles = {
     root: {
@@ -209,9 +208,7 @@ class UsersInfo extends React.Component {
                     onClose={this.closeModal}
                     user={this.state.selectedUser}
                 />}
-                <IconButton onClick={this.onBackClicked} aria-label="Back">
-                    <KeyboardArrowLeft/>
-                </IconButton>
+                <BackButton onBackClick={this.onBackClicked}/>
                 <div className={classes.wrapper}>
                     <Card className={classes.filtersCard}>
                         <Typography variant={'h5'}>
