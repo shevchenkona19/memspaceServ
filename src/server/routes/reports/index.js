@@ -9,5 +9,6 @@ router.delete("/report", passport.authenticate('jwt', {session: false}), auth.re
 router.get("/reports", passport.authenticate('jwt', {session: false}), auth.requireModer, reportsMethods.getAllReports);
 router.delete("/meme", passport.authenticate('jwt', {session: false}), auth.requireModer, reportsMethods.deleteMeme);
 router.post("/banUser", passport.authenticate('jwt', {session: false}), auth.requireModer, reportsMethods.banUser);
+router.post("/unbanUser", passport.authenticate('jwt', {session: false}), auth.requireModer, reportsMethods.unbanUser);
 
 module.exports = router;

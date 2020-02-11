@@ -63,7 +63,7 @@ async function deleteMeme(req, res, next) {
 }
 
 async function banUser(req, res, next) {
-    const userId = req.query.userId;
+    const userId = req.body.userId;
     if (!userId) {
         next(ErrorCodes.INCORRECT_DATA);
     }
@@ -77,10 +77,24 @@ async function banUser(req, res, next) {
     }
 }
 
+async function unbanUser(req, res, next) {
+    const userId = req.body.userId;
+    if (!userId) {
+        next(ErrorCodes.INCORRECT_BODY);
+    }
+    const result = await Controller.unbanUser(userId);
+    if (result.success) {
+        return res.json({
+            success: true
+        })
+    } else next(result.error);
+}
+
 module.exports = {
     postReport,
     deleteReport,
     getAllReports,
     deleteMeme,
     banUser,
+    unbanUser
 };

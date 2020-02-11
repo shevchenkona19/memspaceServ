@@ -92,10 +92,24 @@ async function banUser(userId) {
     }
 }
 
+async function unbanUser(userId) {
+    const user = await Users.findById(userId);
+    if (user == null) {
+        return {
+            success: false,
+            error: ErrorCodes.NO_SUCH_USER
+        }
+    }
+    user.isBanned = false;
+    await user.save();
+    return {success: true}
+}
+
 module.exports = {
     postReport,
     deleteReport,
     getAllReports,
     deleteMeme,
     banUser,
+    unbanUser
 };

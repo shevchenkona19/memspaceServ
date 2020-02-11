@@ -11,7 +11,21 @@ const getUserInfo = (pageNum, filter) => {
     })
 };
 
+const banUser = userId => {
+    return post("/reports/banUser", {
+        userId
+    })
+};
+
+const unbanUser = userId => {
+    return post("/reports/unbanUser", {
+        userId
+    })
+};
+
 export {
-    getUserInfo
+    getUserInfo,
+    banUser,
+    unbanUser
 }
 

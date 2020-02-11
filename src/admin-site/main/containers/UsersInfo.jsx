@@ -200,6 +200,18 @@ class UsersInfo extends React.Component {
         this.getInfo();
     };
 
+    banUser = user => {
+        this.props.banUser(user);
+        this.closeModal();
+        this.getInfo(this.props.mainState.currentPage);
+    };
+
+    unbanUser = user => {
+        this.props.unbanUser(user);
+        this.closeModal();
+        this.getInfo(this.props.mainState.currentPage);
+    };
+
     render() {
         const {classes, mainState: {users, allUsers, currentPage, allPages}, isLoading} = this.props;
         return (
@@ -207,6 +219,8 @@ class UsersInfo extends React.Component {
                 {this.state.modalVisible && <DetailUserModal
                     onClose={this.closeModal}
                     user={this.state.selectedUser}
+                    ban={this.banUser}
+                    unban={this.unbanUser}
                 />}
                 <BackButton onBackClick={this.onBackClicked}/>
                 <div className={classes.wrapper}>
@@ -280,7 +294,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getUserInfoActionForPage: (params, forPage) => dispatch(UserInfoActions.getUserInfoAction(params, forPage))
+    getUserInfoActionForPage: (params, forPage) => dispatch(UserInfoActions.getUserInfoAction(params, forPage)),
+    banUser: ({userId}) => dispatch(UserInfoActions.banUserAction(userId)),
+    unbanUser: ({userId}) => dispatch(UserInfoActions.unbanUserAction(userId))
 });
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(UsersInfo));

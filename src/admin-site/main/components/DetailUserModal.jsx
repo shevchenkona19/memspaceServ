@@ -1,7 +1,7 @@
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from "prop-types";
-import {Avatar, Dialog, DialogContent, DialogTitle, Typography} from "@material-ui/core";
+import {Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@material-ui/core";
 import imageLoader from "../utils/imageLoader";
 import moment from "moment";
 
@@ -27,8 +27,10 @@ const styles = theme => ({
 });
 
 class DetailUserModal extends React.Component {
+
+
     render() {
-        const {classes, onClose, user} = this.props;
+        const {classes, onClose, ban, unban, user} = this.props;
         return (
             <Dialog
                 open
@@ -200,9 +202,23 @@ class DetailUserModal extends React.Component {
                                 <Typography>{user.lastVisited ? "Last online: " + moment(user.lastVisited).format("HH:MM DD/MM/YYYY").toString() : "Not recorded"}</Typography>
                             </td>
                         </tr>
+                        <tr className={classes.row}>
+                            <td className={classes.header}>
+                                <Typography>Is banned: </Typography>
+                            </td>
+                            <td className={classes.content}>
+                                <Typography>{user.isBanned ? "True" : "False"}</Typography>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </DialogContent>
+                <DialogActions>
+                    <Button color="primary" onClick={user.isBanned ? () => unban(user) : () => ban(user)}>
+                        {user.isBanned ? "Unban" : "Ban"}
+                    </Button>
+
+                </DialogActions>
             </Dialog>
         )
     }
@@ -210,6 +226,8 @@ class DetailUserModal extends React.Component {
 
 DetailUserModal.propTypes = {
     onClose: PropTypes.func.isRequired,
+    ban: PropTypes.func.isRequired,
+    unban: PropTypes.func.isRequired,
     user: PropTypes.shape({
         userId: PropTypes.number,
         username: PropTypes.string,
@@ -227,10 +245,11 @@ DetailUserModal.propTypes = {
         viewsCount: PropTypes.number,
         referralAchievementLvl: PropTypes.number,
         referralCount: PropTypes.number,
-        firstHundred: PropTypes.number,
-        firstThousand: PropTypes.number,
+        firstHundred: PropTypes.bool,
+        firstThousand: PropTypes.bool,
         fcmId: PropTypes.string,
         lastVisited: PropTypes.string,
+        isBanned: PropTypes.bool,
     }).isRequired,
 };
 
