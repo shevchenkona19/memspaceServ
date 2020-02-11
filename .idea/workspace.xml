@@ -4,23 +4,18 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="finished with associations">
-      <change afterPath="$PROJECT_DIR$/migrations/20200211121855-addReferralAchievement.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200211122324-addIsBanned.js" afterDir="false" />
+    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="Added ban/unban">
+      <change afterPath="$PROJECT_DIR$/src/admin-site/main/actions/categoryEditing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin-site/main/components/AddCategoryModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin-site/main/containers/EditCategories.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin-site/main/reducers/categoryEditing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/login/containers/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/login/containers/RegisterForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/admin-site/main/actions/types.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/actions/types.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/admin-site/main/actions/userInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/actions/userInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/components/DetailUserModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/components/DetailUserModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/UsersInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/UsersInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/reducers/userInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/reducers/userInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/utils/api/userInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/utils/api/userInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/controllers/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/reports.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/routes/moderator/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/moderator/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/routes/reports/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/reports/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/routes/reports/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/reports/reports.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/Router.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/Router.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin-site/main/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/reducers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/routes/moderator/moderator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/moderator/moderator.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,13 +231,7 @@
       <workItem from="1548088332701" duration="664000" />
       <workItem from="1581420232350" duration="11000" />
       <workItem from="1581420255551" duration="155000" />
-    </task>
-    <task id="LOCAL-00082" summary="fixing images">
-      <created>1530432646955</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1530432646957</updated>
+      <workItem from="1581448954088" duration="4318000" />
     </task>
     <task id="LOCAL-00083" summary="new photo system + post photo route">
       <created>1530434029137</created>
@@ -580,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548088835162</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="Added ban/unban">
+      <created>1581428799309</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1581428799309</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +628,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="fix hot feed" />
     <MESSAGE value="hot feed date" />
     <MESSAGE value="fix for float likes" />
     <MESSAGE value="fixes for hot feed" />
@@ -657,13 +652,22 @@
     <MESSAGE value="More intense mem downloading" />
     <MESSAGE value="Fixed image deleting" />
     <MESSAGE value="fixed vk meme downloading" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed vk meme downloading" />
+    <MESSAGE value="Added ban/unban" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ban/unban" />
   </component>
   <component name="WindowStateProjectService">
     <state x="528" y="238" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1581420238018">
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="528" y="238" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1680.960@0.23.1680.960" timestamp="1581420238018" />
+    <state x="343" y="105" key="CommitChangelistDialog2" timestamp="1581428799122">
+      <screen x="0" y="23" width="1680" height="960" />
+    </state>
+    <state x="343" y="105" key="CommitChangelistDialog2/0.23.1680.960@0.23.1680.960" timestamp="1581428799122" />
+    <state x="440" y="231" key="Vcs.Push.Dialog.v2" timestamp="1581428802184">
+      <screen x="0" y="23" width="1680" height="960" />
+    </state>
+    <state x="440" y="231" key="Vcs.Push.Dialog.v2/0.23.1680.960@0.23.1680.960" timestamp="1581428802184" />
     <state x="498" y="260" width="683" height="486" key="find.popup" timestamp="1581424090561">
       <screen x="0" y="23" width="1680" height="960" />
     </state>
@@ -672,5 +676,9 @@
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="540" y="223" key="git4idea.branch.GitSmartOperationDialog/0.23.1680.960@0.23.1680.960" timestamp="1581420294523" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1581453167423">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1581453167423" />
   </component>
 </project>

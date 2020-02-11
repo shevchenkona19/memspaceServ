@@ -9,7 +9,7 @@ async function createCategory(req, res) {
     const categoryName = req.body.categoryName;
     const result = await Controller.createCategory(categoryName);
     if (result.success) {
-        return res.json({message: result.message});
+        return res.json({success: true});
     } else {
         throw Error(ErrorCodes.INTERNAL_ERROR);
     }
@@ -32,7 +32,7 @@ async function deleteCategory(req, res) {
     const id = req.query.id;
     const result = await Controller.deleteCategory(id);
     if (result.success) {
-        return res.json({message: result.message});
+        return res.json({success: true});
     } else {
         throw Error(ErrorCodes.INTERNAL_ERROR);
     }

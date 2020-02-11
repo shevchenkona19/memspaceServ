@@ -1,6 +1,6 @@
 import t from "./types";
 import {finishLoading, startLoading} from "./loading";
-import {banUser, getUserInfo} from "../utils/api/userInfo";
+import {banUser,unbanUser, getUserInfo} from "../utils/api/userInfo";
 
 const getUserInfoAction = (params, forPage) => dispatch => {
     startLoading(dispatch);
@@ -46,7 +46,7 @@ const unbanUserAction = userId => dispatch => {
     dispatch({
         type: t.UNBAN_USER_SEND
     });
-    banUser(userId).then(() => {
+    unbanUser(userId).then(() => {
         finishLoading(dispatch);
         dispatch({
             type: t.UNBAN_USER_SUCCESS

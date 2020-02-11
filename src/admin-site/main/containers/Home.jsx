@@ -23,6 +23,10 @@ class Home extends React.Component {
         this.props.history.push("/viewReports");
     };
 
+    gotoEditCategories = () => {
+        this.props.history.push("/editCategories");
+    };
+
     render() {
         const {classes} = this.props;
         return (
@@ -54,6 +58,15 @@ class Home extends React.Component {
                                 isButton
                                 onClick={this.goToViewReports}
                                 buttonText={"Go"}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <HomeCard
+                                title={"Edit categories"}
+                                subTitle={"Create and delete categories for memes"}
+                                isButton
+                                onClick={this.gotoEditCategories}
+                                buttonText="Go"
                             />
                         </Grid>
                     </Grid>
