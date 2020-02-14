@@ -5,6 +5,7 @@ import memCheckerReducer from "./memChecker";
 import userInfoReducer from "./userInfo";
 import reportsReducer from "./reportsReducer";
 import categoryEditing from "./categoryEditing";
+import memAnalyzer from "./memAnalyzer";
 
 export default combineReducers({
     categories: categoriesReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
     userInfo: userInfoReducer,
     reports: reportsReducer,
     editCategories: categoryEditing,
+    memAnalyzer,
 });

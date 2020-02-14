@@ -2,6 +2,7 @@ import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import HomeCard from "../components/HomeCard";
+import {get} from "../utils/api/api";
 
 const styles = {
     root: {
@@ -25,6 +26,23 @@ class Home extends React.Component {
 
     gotoEditCategories = () => {
         this.props.history.push("/editCategories");
+    };
+
+    gotoMemAnalyzer = () => {
+        this.props.history.push("/memAnalyzer")
+    };
+
+    getNewMemes = () => {
+        get("/moderator/getImages?offset=0")
+            .then(res => {
+                if (res.success) {
+                    alert("Success!")
+                } else {
+                    alert("Error: " + res.message);
+                }
+            }).catch(err => {
+            alert("Error: " + err.toString());
+        })
     };
 
     render() {
@@ -66,6 +84,24 @@ class Home extends React.Component {
                                 subTitle={"Create and delete categories for memes"}
                                 isButton
                                 onClick={this.gotoEditCategories}
+                                buttonText="Go"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <HomeCard
+                                title={"Meme Analyzer"}
+                                subTitle={"Find broken memes"}
+                                isButton
+                                onClick={this.gotoMemAnalyzer}
+                                buttonText="Go"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <HomeCard
+                                title="Get new memes"
+                                subTitle="Manually get new memes"
+                                isButton
+                                onClick={this.getNewMemes}
                                 buttonText="Go"
                             />
                         </Grid>

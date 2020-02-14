@@ -19,9 +19,9 @@ async function createCategory(categoryName) {
 }
 
 async function deleteCategory(categoryId) {
-    await Categories.destroy({where: {categoryId}});
     await ImagesCategories.destroy({where: {categoryId}});
     await UsersCategories.destroy({where: {categoryId}});
+    await Categories.destroy({where: {categoryId}});
     return {
         success: true,
         message: SuccessCodes.SUCCESS
@@ -87,7 +87,20 @@ async function clearMemes() {
         await Images.destroy({where: {isChecked: '0'}, truncate: false});
     }
     return {success: true, message: SuccessCodes.SUCCESS};
+}
 
+async function findMemesWithoutImageData() {
+    const allImages = await Images.findAll();
+    let memesWithoutImageData = [];
+    if (allImages) {
+        memesWithoutImageData = allImages.filter(image => {
+           return !fs.existsSync(image.imageData);
+        });
+    }
+    return {
+        success: true,
+        memesWithoutImageData
+    }
 }
 
 module.exports = {
@@ -96,5 +109,6 @@ module.exports = {
     getNewMem,
     deleteCategory,
     createCategory,
-    clearMemes
+    clearMemes,
+    findMemesWithoutImageData
 };

@@ -42,10 +42,7 @@ module.exports = function (db, DataTypes) {
         },
         uploadId: {
             type: DataTypes.INTEGER,
-            references: {
-                model: "uploads",
-                key: "id"
-            }
+            allowNull: true,
         }
     }, {
         timestamps: false,

@@ -128,11 +128,12 @@ async function getHotFeed(user, count, offset) {
         avg -= image.dislikes;
     });
     avg = Math.ceil(avg / images.length);
+    if (!avg) avg = 0;
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\", `
         + `uploads."userId", uploads."uploadDate", users."username" `
-        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId}`
+        + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE \"createdAt\" > '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3).toDateString()}' AND likes >= ${avg} `
@@ -161,9 +162,10 @@ async function getImage(id) {
 async function getUserPhoto(username) {
     let image = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
     if (!image) {
-        image = {
-            imageData: images + "/users/noimage.png"
-        };
+        if (image.imageData === "")
+            image = {
+                imageData: images + "/users/noimage.png"
+            };
     }
     return {
         success: true,

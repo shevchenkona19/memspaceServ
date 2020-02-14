@@ -6,6 +6,7 @@ import Home from "./Home";
 import UsersInfo from "./UsersInfo";
 import ViewReports from "./ViewReports";
 import EditCategories from "./EditCategories";
+import MemAnalyzerPage from "./MemAnalyzerPage";
 
 class AppRouter extends React.Component {
     render() {
@@ -37,6 +38,10 @@ class AppRouter extends React.Component {
                         exact
                         component={EditCategories}
                     />
+                    <Route
+                        path={"/memAnalyzer"}
+                        exact
+                        component={MemAnalyzerPage}/>
                     <Route
                         path={"/*"}
                         component={NotFound}

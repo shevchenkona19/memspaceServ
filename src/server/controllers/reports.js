@@ -7,6 +7,7 @@ const Comments = ModelLocator.getCommentsModel();
 const Likes = ModelLocator.getLikesModel();
 const Users = ModelLocator.getUsersModel();
 const Uploads = ModelLocator.getUploads();
+const Favorites = ModelLocator.getFavoritesModel();
 const db = ModelLocator.getDb().sequelize;
 const fs = require("fs");
 
@@ -64,12 +65,19 @@ async function deleteMeme(memId) {
             error: ErrorCodes.NO_SUCH_MEM
         };
     }
-    fs.unlinkSync(meme.imageData);
+    if (fs.existsSync(meme.imageData))
+        fs.unlinkSync(meme.imageData);
+    const image = await Images.findById(memId);
+    image.uploadId = null;
+    await image.save();
     await Reports.destroy({where: {imageId: memId}});
-    await Uploads.destroy({where: {imageId: memId}});
     await ImagesCategories.destroy({where: {imageId: memId}});
     await Comments.destroy({where: {imageId: memId}});
     await Likes.destroy({where: {imageId: memId}});
+    await Favorites.destroy({where: {imageId: memId}});
+    if (await Uploads.findOne({where: {imageId: memId}})) {
+        await Uploads.destroy({where: {imageId: memId}});
+    }
     await Images.destroy({where: {imageId: memId}});
 
     return {

@@ -17,15 +17,16 @@ module.exports = function (db, DataTypes) {
                 model: "users",
                 key: "userId"
             }
+        },
+        imageId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         }
     }, {
         timestamps: false,
         associate: models => {
             Uploads.belongsTo(models.users, {
                 as: "user"
-            });
-            Uploads.hasOne(models.images, {
-                foreignKey: "uploadId"
             });
         }
     });

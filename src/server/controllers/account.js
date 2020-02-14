@@ -17,11 +17,18 @@ const Uploads = ModelLocator.getUploads();
 const db = ModelLocator.getDb().sequelize;
 const fs = require("fs");
 const resolveReferralAchievement = require("../utils/achievement/resolvers").resolveReferralAchievement;
+const Validator = require("../utils/validation/registerValidator");
 
 async function login(body) {
     const username = body.username;
     const password = body.password;
     if (!username || !password) {
+        return {
+            success: false,
+            errorCode: ErrorCodes.INCORRECT_DATA
+        }
+    }
+    if (username === "" || password === "") {
         return {
             success: false,
             errorCode: ErrorCodes.INCORRECT_DATA
@@ -53,6 +60,9 @@ async function login(body) {
 }
 
 async function register(body) {
+    const res = Validator.checkParameters(body);
+    if (!res.success) return res;
+
     const username = body.username;
     const password = body.password;
     const email = body.email;
@@ -127,6 +137,9 @@ async function register(body) {
 }
 
 async function registerModer(body) {
+    const res = Validator.checkParameters(body);
+    if (!res.success) return res;
+
     const username = body.username;
     const password = body.password;
     const email = body.email;
@@ -134,7 +147,10 @@ async function registerModer(body) {
     const isEmailUnique = (await Users.findOne({where: {email}}));
 
     if (isEmailUnique !== null) {
-        throw new Error(ErrorCodes.EMAIL_NOT_UNIQUE)
+        return {
+            success: false,
+            errorCode: ErrorCodes.EMAIL_NOT_UNIQUE
+        };
     }
     let image = images + "/users/noimage.png";
     let user;
@@ -143,7 +159,6 @@ async function registerModer(body) {
         user = Users.build({username, password: passwordToSave, email, imageData: image, accessLvl: 3});
         await user.save();
     } catch (e) {
-        console.log(e.message);
         return {
             success: false,
             errorCode: ErrorCodes.INTERNAL_ERROR
@@ -162,7 +177,10 @@ async function registerModer(body) {
 async function getUserAchievementsById(id) {
     const user = await Users.findById(id);
     if (user === null) {
-        throw new Error(ErrorCodes.NO_SUCH_USER)
+        return {
+            success: false,
+            errorCode: ErrorCodes.NO_SUCH_USER
+        };
     }
 
     return {
@@ -265,8 +283,8 @@ async function uploadMeme(user, categories, imageData) {
     let filename;
     do {
         imageId = codeGen.getIntId(10);
-        filename = `${images}/memes/${imageId}--${user.userId}.jpg`;
-    } while (fs.existsSync(filename));
+    } while (await Images.findById(imageId));
+    filename = `${images}/memes/${imageId}--${user.userId}.jpg`;
     if (!fs.existsSync(images + "/memes")) {
         await new Promise(((resolve, reject) => {
             fs.mkdir(images + "/memes", err => {
@@ -278,16 +296,20 @@ async function uploadMeme(user, categories, imageData) {
     if (!fs.existsSync(filename)) {
         fs.writeFileSync(filename, imageData, "base64");
         const uploadInstance = Uploads.build({
-            userId: user.userId
+            userId: user.userId,
+            imageId: null
         });
         await uploadInstance.save();
         const image = Images.build({
+            imageId,
             imageData: filename,
             source: "",
             isChecked: 1,
             uploadId: uploadInstance.id,
         });
         await image.save();
+        uploadInstance.imageId = imageId;
+        await uploadInstance.save();
         categories = categories.charAt(categories.length - 1) === ' ' ? categories.slice(0, categories.length - 1) : categories;
         const imagesCategories = categories.split(" ").map(categoryId => {
             return {imageId: image.imageId, categoryId}

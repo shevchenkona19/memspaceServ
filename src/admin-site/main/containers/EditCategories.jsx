@@ -25,6 +25,9 @@ const styles = {
         width: "100%",
         height: "100%",
         margin: "auto"
+    },
+    mainCard: {
+        margin: "16px"
     }
 };
 
@@ -94,7 +97,7 @@ class EditCategories extends React.Component {
                     this.addCategory(name)
                 }}/>}
                 <div className={classes.wrapper}>
-                    <Card>
+                    <Card className={classes.mainCard}>
                         <CardHeader>
                             <Typography>Actions:</Typography>
                         </CardHeader>

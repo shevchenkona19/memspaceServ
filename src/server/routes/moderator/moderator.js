@@ -22,7 +22,7 @@ async function getImages(req, res) {
     let offset = req.query.offset;
 
     await imageDownloader.getImages(offset);
-    return res.status(200).json({message: "200"});
+    return res.status(200).json({success: true, message: "200"});
 }
 
 async function deleteCategory(req, res) {
@@ -83,6 +83,15 @@ async function clearMemes(req, res) {
     }
 }
 
+async function findMemesWithoutImageData(req, res, next) {
+    const result = await Controller.findMemesWithoutImageData();
+    if (result.success) {
+        return res.json(result);
+    } else {
+        next(new Error(ErrorCodes.INTERNAL_ERROR));
+    }
+}
+
 module.exports = {
     createCategory,
     getImages,
@@ -90,5 +99,6 @@ module.exports = {
     getNewMem,
     discardMem,
     postMem,
-    clearMemes
+    clearMemes,
+    findMemesWithoutImageData
 };
