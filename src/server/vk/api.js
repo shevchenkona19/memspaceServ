@@ -59,7 +59,7 @@ const getImages = async (offset) => {
                     if (item.attachments && item.attachments.length) {
                         const post = item.attachments[0];
                         if (post.photo) {
-                            const path = post.photo.photo_807 || post.photo.photo_604;
+                            const path = post.photo.photo_604 || post.photo.photo_807;
                             const height = post.photo.height;
                             const width = post.photo.width;
                             const id = post.photo.id;

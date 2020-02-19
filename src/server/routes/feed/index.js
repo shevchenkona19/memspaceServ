@@ -13,5 +13,6 @@ router.get("/hotFeed", passport.authenticate('jwt', {session: false}), Tracker.t
 router.get("/imgs", feedMethods.getImgs);
 router.get("/userPhoto", feedMethods.getUserPhoto);
 router.get("/mem", feedMethods.getMemById);
+router.get("/searchUser", feedMethods.searchUsers);
 
 module.exports = router;

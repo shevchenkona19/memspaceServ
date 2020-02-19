@@ -2,7 +2,8 @@ const fs = require("fs");
 
 const deleteFiles = fileList => {
     fileList.forEach(file => {
-        fs.unlinkSync(file);
+        if (fs.existsSync(file))
+            fs.unlinkSync(file);
     });
 };
 

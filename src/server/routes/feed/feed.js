@@ -129,6 +129,20 @@ async function getMemById(req, res) {
     }
 }
 
+async function searchUsers(req, res, next) {
+    const username = req.query.query;
+    if (username && username.length > 3) {
+        const result = await Controller.searchUser(username);
+        if (result.success) {
+            return res.json({
+                success: true,
+                foundUsers: result.foundUsers
+            })
+        }
+    }
+    next(new Error(ErrorCodes.INCORRECT_DATA));
+}
+
 module.exports = {
     refreshMem,
     getMainFeed,
@@ -137,5 +151,6 @@ module.exports = {
     getHotFeed,
     getImgs,
     getUserPhoto,
-    getMemById
+    getMemById,
+    searchUsers
 };

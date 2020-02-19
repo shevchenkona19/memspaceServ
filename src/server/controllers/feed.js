@@ -160,7 +160,7 @@ async function getImage(id) {
 }
 
 async function getUserPhoto(username) {
-    let image = (await Users.findOne({where: {username}, attributes: ["imageData"]}));
+    let image = await Users.findOne({where: {username}, attributes: ["imageData"]});
     if (!image) {
         if (image.imageData === "")
             image = {
@@ -177,6 +177,18 @@ async function getMemById(memId) {
     return await Images.findById(memId);
 }
 
+async function searchUser(username) {
+    const foundUsers = await Users.findAll({
+        where: {username: {$like: '%' + username + '%'}},
+        limit: 10,
+        attributes: ["username", "userId"]
+    });
+    return {
+        success: true,
+        foundUsers
+    }
+}
+
 module.exports = {
     getImage,
     refreshMem,
@@ -185,7 +197,8 @@ module.exports = {
     getCategoriesFeed,
     getCategoryFeed,
     getUserPhoto,
-    getMemById
+    getMemById,
+    searchUser
 };
 
 
