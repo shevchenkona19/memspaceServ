@@ -2,7 +2,9 @@ import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import HomeCard from "../components/HomeCard";
-import {get} from "../utils/api/api";
+import {get, post} from "../utils/api/api";
+import CreateNoRegistrationUserModal from "../components/CreateNoRegistrationUserModal";
+import NoRegistrationInfoModal from "../components/NoRegistrationInfoModal";
 
 const styles = {
     root: {
@@ -11,6 +13,11 @@ const styles = {
 };
 
 class Home extends React.Component {
+
+    state = {
+        noRegistrationModalVisible: false,
+        noRegistrationInfoModalVisible: false,
+    };
 
     goToMemesChecker = () => {
         this.props.history.push("/mem");
@@ -32,6 +39,35 @@ class Home extends React.Component {
         this.props.history.push("/memAnalyzer")
     };
 
+    createNoRegistration = () => {
+        this.setState({noRegistrationModalVisible: true})
+    };
+
+    closeNoRegistrationModal = () => {
+        this.setState({noRegistrationModalVisible: false})
+    };
+
+    openNoRegistrationInfoModal = () => {
+        this.setState({noRegistrationInfoModalVisible: true})
+    };
+
+    closeNoRegistrationInfoModal = () => {
+        this.setState({noRegistrationInfoModalVisible: false})
+    };
+
+    createNoRegistrationUser(body) {
+        post("/account/createNoRegistrationUser", body)
+            .then(res => {
+                if (res.success) {
+                    alert("Success!")
+                } else {
+                    alert("Error: " + res.message);
+                }
+            }).catch(err => {
+            alert("Error: " + err.toString())
+        })
+    }
+
     getNewMemes = () => {
         get("/moderator/getImages?offset=0")
             .then(res => {
@@ -49,6 +85,12 @@ class Home extends React.Component {
         const {classes} = this.props;
         return (
             <Grid container className={classes.root} spacing={16}>
+                {this.state.noRegistrationModalVisible &&
+                <CreateNoRegistrationUserModal onClose={this.closeNoRegistrationModal}
+                                               save={this.createNoRegistrationUser}/>}
+                {this.state.noRegistrationInfoModalVisible &&
+                <NoRegistrationInfoModal onClose={this.closeNoRegistrationInfoModal}/>
+                }
                 <Grid item xs={12}>
                     <Grid container justify={"center"} spacing={40}>
                         <Grid item>
@@ -103,6 +145,17 @@ class Home extends React.Component {
                                 isButton
                                 onClick={this.getNewMemes}
                                 buttonText="Go"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <HomeCard
+                                title="Create no registration user"
+                                isButton
+                                onClick={this.createNoRegistration}
+                                buttonText="Create"
+                                useSecondButton
+                                secondButtonText="Info"
+                                secondButtonAction={this.openNoRegistrationInfoModal}
                             />
                         </Grid>
                     </Grid>

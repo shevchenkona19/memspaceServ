@@ -350,6 +350,41 @@ async function getUserUploads(userId, offset, limit, me) {
     }
 }
 
+async function createNoRegistrationUser(username, password, email) {
+
+    const isAlreadyCreated = !!(await NoRegUsers.findOne({where: {accessLvl: AccessLevels.NOT_REGISTERED}}));
+    if (isAlreadyCreated) return {
+        success: false,
+        errorCode: ErrorCodes.NO_REGISTRATION_USER_ALREADY_CREATED
+    };
+
+    const user = Users.build({username, password: passwordToSave, email, accessLvl: AccessLevels.NOT_REGISTERED});
+    await user.save();
+
+    const token = jwt.sign({
+        id: user.get("userId")
+    }, jwtOptions.secretOrKey);
+
+    return {
+        success: true,
+        token
+    }
+}
+
+async function loadNoRegistrationInfo() {
+    const noReg = await Users.findOne({where: {accessLvl: AccessLevels.NOT_REGISTERED}, attributes: ["userId", "username", "email"]});
+
+    if (!noReg) return {success: false, errorCode: ErrorCodes.NO_REGISTRATION_USER_NOT_CREATED}
+    return {
+        success: true,
+        user: {
+            userId: noReg.userId,
+            username: noReg.username,
+            email: noReg.email
+        }
+    }
+}
+
 module.exports = {
     getUsername,
     getUserAchievementsById,
@@ -359,5 +394,7 @@ module.exports = {
     setFcmId,
     getMyReferralInfo,
     uploadMeme,
-    getUserUploads
+    getUserUploads,
+    createNoRegistrationUser,
+    loadNoRegistrationInfo
 };

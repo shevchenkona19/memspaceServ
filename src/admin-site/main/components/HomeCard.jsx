@@ -13,7 +13,7 @@ const styles = {};
 
 class HomeCard extends React.Component {
     render() {
-        const {classes, title, subTitle, navLink, buttonText, isButton, onClick} = this.props;
+        const {classes, title, subTitle, navLink, buttonText, isButton, onClick, useSecondButton, secondButtonAction, secondButtonText} = this.props;
         return (
             <React.Fragment>
                 {
@@ -25,6 +25,7 @@ class HomeCard extends React.Component {
                             </CardContent>
                             <CardActions>
                                 <Button onClick={onClick}>{buttonText}</Button>
+                                {useSecondButton && <Button onClick={secondButtonAction}>{secondButtonText}</Button>}
                             </CardActions>
                         </Card> :
                         <Link to={navLink}>
@@ -48,6 +49,9 @@ HomeCard.propTypes = {
     isButton: PropTypes.bool,
     onClick: PropTypes.func,
     buttonText: PropTypes.string,
+    useSecondButton: PropTypes.bool,
+    secondButtonText: PropTypes.string,
+    secondButtonAction: PropTypes.func,
 };
 
 export default withStyles(styles)(HomeCard)

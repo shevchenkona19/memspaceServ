@@ -91,7 +91,6 @@ async function getUserUploads(req, res, next) {
         next(ErrorCodes.INCORRECT_DATA);
     }
     const result = await Controller.getUserUploads(userId, offset, limit, req.user);
-    console.log(JSON.stringify(result));
     if (result.success) {
         res.json({
             success: true,
@@ -99,6 +98,33 @@ async function getUserUploads(req, res, next) {
         });
     } else {
         next(result.message)
+    }
+}
+
+async function createNoRegistrationUser(req, res, next) {
+    const {username, password, email} = req.body;
+    if (!username || !password || !email) {
+        next(new Error(ErrorCodes.INCORRECT_DATA))
+    }
+    const result = await Controller.createNoRegistrationUser(username, password, email);
+    if (result.success) {
+        res.json({
+            success: true
+        });
+    } else {
+        next(new Error(result.errorCode));
+    }
+}
+
+async function getNoRegistrationInfo(req, res, next) {
+    const result = await Controller.loadNoRegistrationInfo();
+    if (result.success) {
+        res.json({
+            success: true,
+            user: result.user
+        })
+    } else {
+        next(result.errorCode)
     }
 }
 
@@ -112,5 +138,7 @@ module.exports = {
     setFcmId,
     getMyReferralInfo,
     uploadMeme,
-    getUserUploads
+    getUserUploads,
+    createNoRegistrationUser,
+    getNoRegistrationInfo
 };
