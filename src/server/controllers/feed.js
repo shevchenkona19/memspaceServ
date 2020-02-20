@@ -44,14 +44,14 @@ async function refreshMem(memId, userId) {
 }
 
 async function getMainFeed(userId, count, offset) {
-    const feed = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
+    const feed = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, images.\"createdAt\" likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `uploads."userId", uploads."uploadDate", users.username `
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON users."userId" = uploads."userId" `
         + `WHERE images.\"isChecked\" = 1 `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     return {
         success: true,
         memes: feed === null ? [] : feed
@@ -75,7 +75,7 @@ async function getCategoriesFeed(user, count, offset) {
         };
     }
     catStr = catStr.substring(0, catStr.length - 4);
-    const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\", likes, dislikes, likes.\"opinion\" AS opinion, `
+    const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\",images.\"createdAt\", likes, dislikes, likes.\"opinion\" AS opinion, `
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as "isFavourite", `
         + `uploads."userId", uploads."uploadDate", users.username `
@@ -84,7 +84,7 @@ async function getCategoriesFeed(user, count, offset) {
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
@@ -95,7 +95,7 @@ async function getCategoriesFeed(user, count, offset) {
 
 async function getCategoryFeed(user, categoryId, count, offset) {
     const userId = user.userId;
-    const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, `
+    const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, images.\"createdAt\", likes, dislikes, likes.opinion AS opinion, `
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\", `
         + `uploads."userId", uploads."uploadDate", users."username" `
@@ -103,7 +103,7 @@ async function getCategoryFeed(user, categoryId, count, offset) {
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
-        + `ORDER BY \"imageId\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"createdAt\" DESC, uploads.id DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,

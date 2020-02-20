@@ -351,12 +351,13 @@ async function getUserUploads(userId, offset, limit, me) {
 }
 
 async function createNoRegistrationUser(username, password, email) {
-
-    const isAlreadyCreated = !!(await NoRegUsers.findOne({where: {accessLvl: AccessLevels.NOT_REGISTERED}}));
+    const isAlreadyCreated = !!(await Users.findOne({where: {accessLvl: AccessLevels.NOT_REGISTERED}}));
     if (isAlreadyCreated) return {
         success: false,
         errorCode: ErrorCodes.NO_REGISTRATION_USER_ALREADY_CREATED
     };
+
+    const passwordToSave = await bcrypt.hash(password, saltRounds);
 
     const user = Users.build({username, password: passwordToSave, email, accessLvl: AccessLevels.NOT_REGISTERED});
     await user.save();
