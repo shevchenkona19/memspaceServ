@@ -16,5 +16,6 @@ router.post("/uploadMeme", passport.authenticate('jwt', {session: false}), auth.
 router.get("/userUploads", passport.authenticate('jwt', {session: false}), accountMethods.getUserUploads);
 router.post("/createNoRegistrationUser", passport.authenticate('jwt', {session: false}), auth.requireSuperAdmin, accountMethods.createNoRegistrationUser);
 router.get("/noRegistrationInfo", passport.authenticate('jwt', {session: false}), auth.requireAdmin, accountMethods.getNoRegistrationInfo);
+router.delete("/fcmId", passport.authenticate('jwt', {session: false}), auth.allButNotRegistered, accountMethods.deleteFCMId);
 
 module.exports = router;

@@ -282,7 +282,7 @@ async function uploadMeme(user, categories, imageData) {
     let imageId;
     let filename;
     do {
-        imageId = codeGen.getIntId(10);
+        imageId = codeGen.getIntId(7);
     } while (await Images.findById(imageId));
     filename = `${images}/memes/${imageId}--${user.userId}.jpg`;
     if (!fs.existsSync(images + "/memes")) {
@@ -386,6 +386,11 @@ async function loadNoRegistrationInfo() {
     }
 }
 
+async function deleteFcmId(user) {
+    user.fcmId = null;
+    await user.save();
+}
+
 module.exports = {
     getUsername,
     getUserAchievementsById,
@@ -397,5 +402,6 @@ module.exports = {
     uploadMeme,
     getUserUploads,
     createNoRegistrationUser,
-    loadNoRegistrationInfo
+    loadNoRegistrationInfo,
+    deleteFcmId
 };

@@ -128,6 +128,11 @@ async function getNoRegistrationInfo(req, res, next) {
     }
 }
 
+async function deleteFCMId(req, res, next) {
+    await Controller.deleteFcmId(req.user);
+    res.json({success: true});
+}
+
 module.exports = {
     login,
     register,
@@ -140,5 +145,6 @@ module.exports = {
     uploadMeme,
     getUserUploads,
     createNoRegistrationUser,
-    getNoRegistrationInfo
+    getNoRegistrationInfo,
+    deleteFCMId
 };

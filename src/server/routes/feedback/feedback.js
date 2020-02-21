@@ -9,6 +9,26 @@ async function postLike(req, res) {
     }
     const imageId = req.query.id;
     const result = await Controller.postLike(req.user, imageId);
+    const {notification} = result;
+    if (notification.isNotify) {
+        const user = notification.user;
+        if (user && user.fcmId) {
+            const message = {
+                data: {
+                    type: NOTIFICATION_TYPES.NOTIFY_ABOUT_POSTED_MEME,
+                    byUsername: req.user.username.toString(),
+                    byUserId: req.user.userId.toString(),
+                    myId: user.userId.toString(),
+                    imageId: notification.imageId.toString()
+                },
+                token: user.fcmId
+            };
+            firebase.messaging().send(message)
+                .catch(error => {
+                    console.error("Error in notification send: ", error);
+                });
+        }
+    }
     if (result.success) {
         return res.json({
             ...result.mem,
@@ -97,14 +117,15 @@ async function postCommentRespond(req, res) {
             const sendUser = result.sendUser;
             if (sendUser) {
                 if (sendUser.fcmId) {
+                    console.log("ImageId: " + imageId + " -----------------------------------------");
                     const message = {
                         data: {
                             type: NOTIFICATION_TYPES.COMMENT_RESPOND,
                             username: req.user.username.charAt(0).toUpperCase() + req.user.username.slice(1),
                             text,
-                            memId: imageId + "",
-                            parentCommentId: commentId + "",
-                            newCommentId: result.sendNewCommentId + "",
+                            memId: imageId.toString(),
+                            parentCommentId: commentId.toString(),
+                            newCommentId: result.sendNewCommentId.toString(),
                         },
                         token: sendUser.fcmId
                     };
@@ -157,8 +178,8 @@ async function getAnswersForCommentToId(req, res) {
     const result = await Controller.getAnswersForCommentToId(parentCommentId, childCommentId, imageId);
     if (result.success) {
         return res.json({
-           comments: result.comments,
-           count: result.comments.length
+            comments: result.comments,
+            count: result.comments.length
         });
     } else throw Error(result.error);
 }

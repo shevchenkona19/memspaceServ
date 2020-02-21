@@ -4,6 +4,7 @@ const Comments = require("../model").getCommentsModel();
 const Favorites = require("../model").getFavoritesModel();
 const UserFeedback = require("../model").getUserFeedback();
 const Users = require("../model").getUsersModel();
+const Uploads = require("../model").getUploads();
 const db = require("../model").getDb().sequelize;
 const ErrorCodes = require("../constants/errorCodes");
 const SuccessCodes = require("../constants/successCodes");
@@ -54,10 +55,20 @@ async function postLike(user, imageId) {
     }
     const allLikes = user.likesCount + 1;
     const achievement = await resolveLikesAchievement(user, allLikes);
+    const notification = await doNotify(await Uploads.findOne({where: {imageId}}));
     return {
         success: true,
         mem: await getFinalMem(userId, imageId),
-        ...achievement
+        ...achievement,
+        notification: {
+            isNotify: notification.isNotify && userId !== notification.user.userId,
+            user: {
+                userId: notification.user.userId,
+                username: notification.user.username,
+                fcmId: notification.user.fcmId
+            },
+            imageId
+        }
     };
 }
 
@@ -235,6 +246,20 @@ async function getAnswersForCommentToId(parentCommentId, childCommentId, imageId
             success: false,
             errorCode: ErrorCodes.NO_SUCH_COMMENT
         }
+    }
+}
+
+async function doNotify(upload) {
+    if (upload) {
+        const user = await Users.findById(upload.userId);
+        return {
+            isNotify: true,
+            user
+        }
+    }
+
+    return {
+        isNotify: false
     }
 }
 
