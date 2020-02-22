@@ -43,5 +43,6 @@ module.exports = {
     getReferral: () => db.sequelize.models.referral,
     getUploads: () => db.sequelize.models.uploads,
     getReports: () => db.sequelize.models.reports,
+    getFeedTime: () => db.sequelize.models.feedTime,
     getDb: () => db,
 };

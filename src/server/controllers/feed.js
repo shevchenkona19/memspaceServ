@@ -1,13 +1,16 @@
-const Images = require("../model").getImagesModel();
-const Favorites = require("../model").getFavoritesModel();
-const Likes = require("../model").getLikesModel();
-const UsersCategories = require("../model").getUsersCategoriesModel();
+const ModelLocator = require("../model");
+const Images = ModelLocator.getImagesModel();
+const Favorites = ModelLocator.getFavoritesModel();
+const Likes = ModelLocator.getLikesModel();
+const UsersCategories = ModelLocator.getUsersCategoriesModel();
 const Sequelize = require("sequelize").Op;
-const db = require("../model").getDb().sequelize;
-const Users = require("../model").getUsersModel();
+const db = ModelLocator.getDb().sequelize;
+const Users = ModelLocator.getUsersModel();
+const FeedTime = ModelLocator.getFeedTime();
 const ErrorCodes = require("../constants/errorCodes");
 const resolveViewAchievement = require("../utils/achievement/resolvers").resolveViewAchievement;
 const images = require("../app").imageFolder;
+const moment = require("moment");
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -75,6 +78,7 @@ async function getCategoriesFeed(user, count, offset) {
         };
     }
     catStr = catStr.substring(0, catStr.length - 4);
+    const feedTime = await getFeedTime(userId, offset, true, false, false);
     const memes = await db.query(`SELECT images.\"imageId\", images.\"source\", images.\"height\", images.\"width\",images.\"createdAt\", likes, dislikes, likes.\"opinion\" AS opinion, `
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as "isFavourite", `
@@ -83,7 +87,7 @@ async function getCategoriesFeed(user, count, offset) {
         + `LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) `
+        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS') `
         + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
@@ -95,6 +99,8 @@ async function getCategoriesFeed(user, count, offset) {
 
 async function getCategoryFeed(user, categoryId, count, offset) {
     const userId = user.userId;
+    const feedTime = await getFeedTime(userId, offset, false, false, true);
+
     const memes = await db.query(`SELECT images.\"imageId\", images.source, images.height, images.width, images.\"createdAt\", likes, dislikes, likes.opinion AS opinion, `
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\", `
@@ -102,7 +108,7 @@ async function getCategoryFeed(user, categoryId, count, offset) {
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
-        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) `
+        + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS')`
         + `ORDER BY \"createdAt\" DESC, uploads.id DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
@@ -129,6 +135,8 @@ async function getHotFeed(user, count, offset) {
     });
     avg = Math.ceil(avg / images.length);
     if (!avg) avg = 0;
+    const feedTime = await getFeedTime(userId, offset, false, true, false);
+
     const memes = await db.query('SELECT images.\"imageId\", images.source, images.height, images.width, likes, dislikes, likes.opinion AS opinion, '
         + `(SELECT COUNT(*) FROM comments WHERE images.\"imageId\" = comments.\"imageId\") AS comments_count, `
         + `(select \"imageId\" from favorites where images.\"imageId\" = favorites.\"imageId\" and favorites.\"userId\" = ${userId} limit 1) is not null as \"isFavourite\", `
@@ -136,7 +144,7 @@ async function getHotFeed(user, count, offset) {
         + `FROM images LEFT OUTER JOIN likes ON likes.\"imageId\" = images.\"imageId\" AND likes.\"userId\" = ${userId} `
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
-        + `WHERE \"createdAt\" > '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3).toDateString()}' AND likes >= ${avg} `
+        + `WHERE \"createdAt\" > '${new Date(new Date() - 1000 * 60 * 60 * 24 * 3).toDateString()}' AND likes >= ${avg} AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS') `
         + `ORDER BY \"likes\" DESC, images.\"imageId\" LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
@@ -187,6 +195,23 @@ async function searchUser(username) {
         success: true,
         foundUsers
     }
+}
+
+async function getFeedTime(userId, offset, isFeed, isHot, isCategories) {
+    let feedTime = await FeedTime.findOne({where: {userId, isFeed, isHot, isCategories}});
+    if (parseInt(offset) === 0) {
+        if (!feedTime) {
+            feedTime = FeedTime.build({
+                userId,
+                isFeed: true,
+                timestamp: moment().format("YYYY/MM/DD HH:mm:ss")
+            });
+        } else {
+            feedTime.timestamp = moment().format("YYYY/MM/DD HH:mm:ss");
+        }
+        await feedTime.save();
+    }
+    return feedTime;
 }
 
 module.exports = {
