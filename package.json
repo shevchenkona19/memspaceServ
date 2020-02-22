@@ -16,7 +16,8 @@
     "dc:start": "nodemon src/app.js",
     "dc:rebuild": "docker-compose run npm install",
     "admin:start": "env-cmd .env webpack --mode development --config webpack.development.config.js",
-    "dc:startAdmin": "docker-compose run web npm run admin:start"
+    "dc:startAdmin": "docker-compose run web npm run admin:start",
+    "dc:buildAdmin": "docker-compose run web npm run webpack:build"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.2.3",
