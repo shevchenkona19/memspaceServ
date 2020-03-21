@@ -88,7 +88,7 @@ async function getCategoriesFeed(user, count, offset) {
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS') `
-        + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY images.\"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
@@ -109,7 +109,7 @@ async function getCategoryFeed(user, categoryId, count, offset) {
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND \"categoryId\" = ${categoryId}) AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS')`
-        + `ORDER BY \"createdAt\" DESC, uploads.id DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
