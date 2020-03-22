@@ -9,6 +9,7 @@ services:
       - POSTGRES_USER=memspace
       - POSTGRES_PASSWORD=memspace
       - POSTGRES_DB=memspace-main
+      - TZ=${TZ}
     ports:
       - '5432:5432'
 
@@ -37,6 +38,7 @@ services:
       - DATABASE_URL=postgres://memspace:memspace@db:5432/memspace-main
       - PORT=13000
       - VKTOKEN=${VKTOKEN}
+      - TZ=${TZ}
 
   npm:
       image: node:10.1.0

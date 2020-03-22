@@ -2,7 +2,7 @@ const ModelLocator = require("../model");
 const Users = ModelLocator.getUsersModel();
 const db = require("../model").getDb().sequelize;
 const Images = ModelLocator.getImagesModel();
-const moment = require("moment");
+const moment = require("moment-timezone");
 
 // username, userImage, lastVisited
 // filter: lastVisited

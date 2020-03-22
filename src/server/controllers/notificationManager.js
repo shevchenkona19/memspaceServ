@@ -1,5 +1,5 @@
 const db = require("../model").getDb();
-const moment = require("moment");
+const moment = require("moment-timezone");
 const firebase = require("firebase-admin");
 const NOTIFICATION_TYPES = require("../constants/notifications");
 

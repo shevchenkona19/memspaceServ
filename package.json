@@ -37,6 +37,7 @@
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.1.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
     "nodemon": "^1.17.5",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",

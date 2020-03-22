@@ -4,127 +4,15 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="Add category editing on admin">
-      <change afterPath="$PROJECT_DIR$/migrations/20200213161533-addUploads.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200213161824-addUploadId.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200213172157-addReports.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200213172632-addImageIdToUploads.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200213175714-addReferral.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200214163530-changeImageIdInUploads.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200214164110-changeImageIdReference.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/20200214164724-changeImages.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin-site/main/actions/memAnalyzer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin-site/main/containers/MemAnalyzerPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin-site/main/reducers/memAnalyzer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin-site/main/utils/api/memAnalyzer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/154--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/3563728--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/456246607-139419686.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457267897-30532220.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457267924-30532220.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457267925-30532220.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457267927-30532220.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457270348-30277672.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457270349-30277672.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457270350-30277672.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457270352-30277672.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457272380-34491673.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457272389-34491673.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457272410-34491673.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457272411-34491673.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457272412-34491673.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457274536-131348832.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457283119-145954878.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457287998-41594691.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457288000-41594691.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457288036-41594691.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457300322-20744542.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457308232-12382740.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457308360-12382740.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457308361-12382740.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457308364-12382740.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457308365-12382740.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457332359-40800148.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457332527-40800148.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457343436-90937359.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457343471-90937359.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457343472-90937359.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457351968-28950133.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457351973-28950133.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457351975-28950133.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457351983-28950133.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457361660-39822792.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457361823-39822792.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457361824-39822792.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457361838-39822792.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457373583-41437811.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457373585-41437811.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457373590-41437811.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457373592-41437811.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457373599-41437811.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457399795-32041317.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457399797-32041317.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457399816-32041317.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457465173-31976785.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457465203-31976785.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457465210-31976785.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457511641-44781847.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457514202-39444069.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457514204-39444069.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457527340-60203425.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457527367-60203425.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457527369-60203425.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457563324-26419239.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457563388-26419239.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457563423-26419239.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457637964-36775802.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457638072-36775802.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457638076-36775802.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457638077-36775802.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457638079-36775802.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457704295-50059483.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457704297-50059483.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457704300-50059483.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457746411-460389.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457746562-460389.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457747123-460389.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457747179-460389.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457753818-32015300.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457753829-32015300.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457753832-32015300.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457826426-30602036.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457826893-30602036.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457827067-30602036.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457975275-67580761.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457975313-67580761.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/457975395-67580761.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/458053776-29534144.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/459562832-57846937.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/459562833-57846937.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/459562837-57846937.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/460097621-45745333.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/460097793-45745333.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/485590361--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/644--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/66644--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/public/memes/8--41.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/utils/validation/registerValidator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="Changed feed order by queries">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/actions/types.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/actions/types.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/EditCategories.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/EditCategories.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/Router.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/Router.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/containers/UsersInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/containers/UsersInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin-site/main/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin-site/main/reducers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/controllers/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/controllers/cleaner.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/cleaner.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/controllers/feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/controllers/moderator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/moderator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/controllers/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/reports.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/model/images.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/model/images.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/model/uploads.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/model/uploads.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/routes/moderator/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/moderator/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/routes/moderator/moderator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/routes/moderator/moderator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/controllers/info.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/info.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/controllers/notificationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/notificationManager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -347,13 +235,8 @@
       <workItem from="1581448954088" duration="4469000" />
       <workItem from="1581607191373" duration="6439000" />
       <workItem from="1581678174870" duration="4136000" />
-    </task>
-    <task id="LOCAL-00084" summary="added email validation">
-      <created>1530434575291</created>
-      <option name="number" value="00084" />
-      <option name="presentableId" value="LOCAL-00084" />
-      <option name="project" value="LOCAL" />
-      <updated>1530434575291</updated>
+      <workItem from="1584827589667" duration="1667000" />
+      <workItem from="1584870043737" duration="2291000" />
     </task>
     <task id="LOCAL-00085" summary="fixed blob instead of string">
       <created>1530435793421</created>
@@ -691,7 +574,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581454070164</updated>
     </task>
-    <option name="localTasksCounter" value="133" />
+    <task id="LOCAL-00133" summary="Changed feed order by queries">
+      <created>1584827702068</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1584827702069</updated>
+    </task>
+    <option name="localTasksCounter" value="134" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -744,7 +634,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fix for float likes" />
     <MESSAGE value="fixes for hot feed" />
     <MESSAGE value="fixes for date" />
     <MESSAGE value="fixes for hot" />
@@ -769,7 +658,8 @@
     <MESSAGE value="fixed vk meme downloading" />
     <MESSAGE value="Added ban/unban" />
     <MESSAGE value="Add category editing on admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add category editing on admin" />
+    <MESSAGE value="Changed feed order by queries" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed feed order by queries" />
   </component>
   <component name="WindowStateProjectService">
     <state x="544" y="335" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581611952097">
@@ -780,28 +670,28 @@
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="528" y="238" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1680.960@0.23.1680.960" timestamp="1581420238018" />
-    <state x="343" y="90" key="CommitChangelistDialog2" timestamp="1581699477836">
+    <state x="343" y="90" key="CommitChangelistDialog2" timestamp="1584827701832">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="343" y="90" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1581699477836" />
+    <state x="343" y="90" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1584827701832" />
     <state x="343" y="105" key="CommitChangelistDialog2/0.23.1680.960@0.23.1680.960" timestamp="1581428799122" />
-    <state x="440" y="228" key="Vcs.Push.Dialog.v2" timestamp="1581454073925">
+    <state x="440" y="228" key="Vcs.Push.Dialog.v2" timestamp="1584827703893">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="228" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1581454073925" />
+    <state x="440" y="228" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1584827703893" />
     <state x="440" y="231" key="Vcs.Push.Dialog.v2/0.23.1680.960@0.23.1680.960" timestamp="1581428802184" />
-    <state x="498" y="259" width="683" height="532" key="find.popup" timestamp="1581699387505">
+    <state x="498" y="259" width="683" height="532" key="find.popup" timestamp="1584877071187">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="498" y="259" width="683" height="532" key="find.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1581699387505" />
+    <state x="498" y="259" width="683" height="532" key="find.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1584877071187" />
     <state x="498" y="260" width="683" height="486" key="find.popup/0.23.1680.960@0.23.1680.960" timestamp="1581424090561" />
     <state x="540" y="223" key="git4idea.branch.GitSmartOperationDialog" timestamp="1581420294523">
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="540" y="223" key="git4idea.branch.GitSmartOperationDialog/0.23.1680.960@0.23.1680.960" timestamp="1581420294523" />
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1581699199800">
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1584829374468">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1581699199800" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1584829374468" />
   </component>
 </project>

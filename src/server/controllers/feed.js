@@ -10,7 +10,7 @@ const FeedTime = ModelLocator.getFeedTime();
 const ErrorCodes = require("../constants/errorCodes");
 const resolveViewAchievement = require("../utils/achievement/resolvers").resolveViewAchievement;
 const images = require("../app").imageFolder;
-const moment = require("moment");
+const moment = require("moment-timezone");
 
 async function refreshMem(memId, userId) {
     const isFavorite = !!(await Favorites.findOne({where: {userId, imageId: memId}}));
@@ -88,7 +88,7 @@ async function getCategoriesFeed(user, count, offset) {
         + `LEFT OUTER JOIN uploads ON uploads.id = images."uploadId" `
         + `LEFT OUTER JOIN users ON uploads."userId" = users."userId" `
         + `WHERE EXISTS (SELECT * FROM imagesCategories WHERE images.\"imageId\" = imagesCategories.\"imageId\" AND (${catStr})) AND \"createdAt\" < TO_TIMESTAMP('${moment(feedTime.timestamp).format("YYYY/MM/DD HH:mm:ss")}', 'YYYY/MM/DD HH24:MI:SS') `
-        + `ORDER BY images.\"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
+        + `ORDER BY \"createdAt\" DESC LIMIT ${count} OFFSET ${offset}`, {model: Images});
     const achievement = await resolveViewAchievement(user, count);
     return {
         success: true,
@@ -204,10 +204,10 @@ async function getFeedTime(userId, offset, isFeed, isHot, isCategories) {
             feedTime = FeedTime.build({
                 userId,
                 isFeed: true,
-                timestamp: moment().format("YYYY/MM/DD HH:mm:ss")
+                timestamp: moment(new Date()).format("YYYY/MM/DD HH:mm:ss")
             });
         } else {
-            feedTime.timestamp = moment().format("YYYY/MM/DD HH:mm:ss");
+            feedTime.timestamp = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
         }
         await feedTime.save();
     }
