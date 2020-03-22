@@ -203,7 +203,9 @@ async function getFeedTime(userId, offset, isFeed, isHot, isCategories) {
         if (!feedTime) {
             feedTime = FeedTime.build({
                 userId,
-                isFeed: true,
+                isFeed,
+                isHot,
+                isCategories,
                 timestamp: moment(new Date()).format("YYYY/MM/DD HH:mm:ss")
             });
         } else {
