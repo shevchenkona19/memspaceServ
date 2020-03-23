@@ -4,7 +4,7 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="Changed moment to be moment-timezone">
+    <list default="true" id="2d2c26f1-1354-4656-9491-324631cd331f" name="Default" comment="Fixed feedTime incorrect saving">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/controllers/feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/controllers/feed.js" afterDir="false" />
     </list>
@@ -230,14 +230,8 @@
       <workItem from="1581607191373" duration="6439000" />
       <workItem from="1581678174870" duration="4136000" />
       <workItem from="1584827589667" duration="1667000" />
-      <workItem from="1584870043737" duration="2805000" />
-    </task>
-    <task id="LOCAL-00086" summary="added helmet">
-      <created>1530436302050</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1530436302050</updated>
+      <workItem from="1584870043737" duration="3257000" />
+      <workItem from="1584964623497" duration="283000" />
     </task>
     <task id="LOCAL-00087" summary="new photo saving">
       <created>1530437102434</created>
@@ -575,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584877148626</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="Fixed feedTime incorrect saving">
+      <created>1584877891657</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1584877891657</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -628,7 +629,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fixes for date" />
     <MESSAGE value="fixes for hot" />
     <MESSAGE value="fixed greater op" />
     <MESSAGE value="hot fix for duplicates" />
@@ -653,7 +653,8 @@
     <MESSAGE value="Add category editing on admin" />
     <MESSAGE value="Changed feed order by queries" />
     <MESSAGE value="Changed moment to be moment-timezone" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed moment to be moment-timezone" />
+    <MESSAGE value="Fixed feedTime incorrect saving" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed feedTime incorrect saving" />
   </component>
   <component name="WindowStateProjectService">
     <state x="544" y="335" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581611952097">
@@ -664,15 +665,15 @@
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="528" y="238" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1680.960@0.23.1680.960" timestamp="1581420238018" />
-    <state x="343" y="90" key="CommitChangelistDialog2" timestamp="1584877148178">
+    <state x="343" y="90" key="CommitChangelistDialog2" timestamp="1584877891526">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="343" y="90" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1584877148178" />
+    <state x="343" y="90" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1584877891526" />
     <state x="343" y="105" key="CommitChangelistDialog2/0.23.1680.960@0.23.1680.960" timestamp="1581428799122" />
-    <state x="440" y="228" key="Vcs.Push.Dialog.v2" timestamp="1584877151245">
+    <state x="440" y="228" key="Vcs.Push.Dialog.v2" timestamp="1584877892924">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="228" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1584877151245" />
+    <state x="440" y="228" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1584877892924" />
     <state x="440" y="231" key="Vcs.Push.Dialog.v2/0.23.1680.960@0.23.1680.960" timestamp="1581428802184" />
     <state x="498" y="259" width="683" height="532" key="find.popup" timestamp="1584877071187">
       <screen x="0" y="0" width="1680" height="1050" />

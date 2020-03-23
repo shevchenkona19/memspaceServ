@@ -70,7 +70,19 @@ async function getCategoriesFeed(user, count, offset) {
         ]
     });
     let catStr = "";
-    selCategories.forEach(cat => catStr = catStr.concat(`imagesCategories.\"categoryId\" = ` + cat.categoryId + ` OR `));
+    let isOne = false;
+    let isTwo = false;
+    selCategories.forEach(cat => {
+        if (cat.categoryId === 1) isOne = true;
+        if (cat.categoryId === 2) isTwo = true;
+        catStr = catStr.concat(`imagesCategories.\"categoryId\" = ` + cat.categoryId + ` OR `);
+    });
+    if (!isOne) {
+        catStr = catStr.concat(`imagesCategories.\"categoryId\" = 1 OR `)
+    }
+    if (!isTwo) {
+        catStr = catStr.concat(`imagesCategories.\"categoryId\" = 2 OR `)
+    }
     if (catStr === "") {
         return {
             success: false,
